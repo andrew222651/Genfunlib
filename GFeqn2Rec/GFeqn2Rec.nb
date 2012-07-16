@@ -1,0 +1,335 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     10918,        326]
+NotebookOptionsPosition[     10133,        299]
+NotebookOutlinePosition[     10516,        315]
+CellTagsIndexPosition[     10473,        312]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{
+  "extract", " ", "coefficients", " ", "from", " ", "both", " ", "sides", " ",
+    "of", " ", "an", " ", "equation", " ", 
+   RowBox[{"(", 
+    RowBox[{"as", "-", "is"}], ")"}], " ", "in", " ", 
+   RowBox[{"a", "[", "x", "]"}], " ", "and", " ", "x"}], " ", "*)"}]], "Input",
+ CellChangeTimes->{{3.5498931216947994`*^9, 3.5498931374827023`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Clear", "[", "co", "]"}]], "Input",
+ CellChangeTimes->{{3.54988736339109*^9, 3.549887365522212*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", "addition", " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"co", "[", 
+     RowBox[{
+      RowBox[{"a_", "+", "b_"}], ",", "n_"}], "]"}], ":=", 
+    RowBox[{
+     RowBox[{"co", "[", 
+      RowBox[{"a", ",", "n"}], "]"}], "+", 
+     RowBox[{"co", "[", 
+      RowBox[{"b", ",", "n"}], "]"}]}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.549885623277561*^9, 3.5498856463308797`*^9}, {
+  3.5498856986348715`*^9, 3.5498857072743654`*^9}, {3.5498898919237137`*^9, 
+  3.5498898981390696`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"[", 
+     SuperscriptBox["x", "n"], "]"}], 
+    RowBox[{"a", "[", "x", "]"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"co", "[", 
+     RowBox[{
+      RowBox[{"a", "[", "x", "]"}], ",", "n_"}], "]"}], ":=", 
+    RowBox[{"cof", "[", "n", "]"}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.549885664397913*^9, 3.549885729946662*^9}, 
+   3.54988584721937*^9, {3.5498899172031593`*^9, 3.549889936235248*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"expressions", " ", "free", " ", "of", " ", "\"\<a\>\""}], " ", 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"co", "[", 
+     RowBox[{
+      RowBox[{"expr_", "?", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"FreeQ", "[", 
+          RowBox[{"#", ",", "a"}], "]"}], "&"}], ")"}]}], ",", "n_"}], "]"}], 
+    ":=", 
+    RowBox[{"SeriesCoefficient", "[", 
+     RowBox[{"expr", ",", 
+      RowBox[{"{", 
+       RowBox[{"x", ",", "0", ",", "n"}], "}"}]}], "]"}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.549885961182888*^9, 3.5498860612756133`*^9}, 
+   3.5498881359802794`*^9, {3.5498913782997293`*^9, 3.549891412714698*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"scaling", " ", 
+    RowBox[{"(", 
+     RowBox[{
+     "can", " ", "produce", " ", "simpler", " ", "expressions", " ", "than", 
+      " ", "multiplication"}], ")"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"co", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"fac_", "?", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"FreeQ", "[", 
+           RowBox[{"#", ",", "a"}], "]"}], "&"}], ")"}]}], "*", 
+       RowBox[{"expr_", "?", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"!", 
+           RowBox[{"FreeQ", "[", 
+            RowBox[{"#", ",", "a"}], "]"}]}], "&"}], ")"}]}]}], ",", "n_"}], 
+     "]"}], ":=", 
+    RowBox[{"fac", "*", 
+     RowBox[{"co", "[", 
+      RowBox[{"expr", ",", "n"}], "]"}]}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.5499188648867416`*^9, 3.5499189827949066`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"shift", " ", 
+    RowBox[{"(", 
+     RowBox[{
+     "can", " ", "produce", " ", "simpler", " ", "expressions", " ", "than", 
+      " ", "multiplication"}], ")"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"co", "[", 
+     RowBox[{
+      RowBox[{
+       SuperscriptBox["x", 
+        RowBox[{"k_:", "1"}]], "*", "expr_"}], ",", "n_"}], "]"}], ":=", 
+    RowBox[{
+     RowBox[{"Boole", "[", 
+      RowBox[{
+       RowBox[{"n", "-", "k"}], "\[GreaterEqual]", "0"}], "]"}], 
+     RowBox[{"co", "[", 
+      RowBox[{"expr", ",", 
+       RowBox[{"n", "-", "k"}]}], "]"}]}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.5498890519696712`*^9, 3.5498890635313325`*^9}, {
+  3.549889122866726*^9, 3.54988913552345*^9}, {3.549889205525454*^9, 
+  3.549889253452195*^9}, {3.5498899894832935`*^9, 3.5498899906423597`*^9}, {
+  3.5499034462753315`*^9, 3.5499034577239866`*^9}, {3.5499188749327555`*^9, 
+  3.549918882963767*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", "multiplication", " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"co", "[", 
+     RowBox[{
+      RowBox[{"expr1_", "*", "expr2_"}], ",", "n_"}], "]"}], ":=", 
+    RowBox[{"With", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"iterator", "=", 
+        RowBox[{"Unique", "[", "]"}]}], "}"}], ",", 
+      RowBox[{"Sum", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"co", "[", 
+          RowBox[{"expr1", ",", "iterator"}], "]"}], 
+         RowBox[{"co", "[", 
+          RowBox[{"expr2", ",", 
+           RowBox[{"n", "-", "iterator"}]}], "]"}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"iterator", ",", "0", ",", "n"}], "}"}]}], "]"}]}], 
+     "\[IndentingNewLine]", "]"}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.5498861679037123`*^9, 3.5498862224678326`*^9}, {
+  3.549886335644306*^9, 3.5498863375234137`*^9}, {3.5498870900844574`*^9, 
+  3.549887149676866*^9}, {3.549887203524946*^9, 3.5498872226930428`*^9}, {
+  3.549887256500976*^9, 3.549887256900999*^9}, {3.5498884872613716`*^9, 
+  3.5498884912525997`*^9}, {3.5498886703648443`*^9, 3.5498886777402663`*^9}, {
+  3.5498893179728856`*^9, 3.5498893550680075`*^9}, {3.549903422099949*^9, 
+  3.549903443645181*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", "derivatives", " ", "*)"}], 
+  RowBox[{
+   RowBox[{"co", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"Derivative", "[", "k_", "]"}], "[", "a", "]"}], "[", "x", 
+      "]"}], ",", "n_"}], "]"}], ":=", 
+   RowBox[{
+    RowBox[{"Pochhammer", "[", 
+     RowBox[{
+      RowBox[{"n", "+", "1"}], ",", "k"}], "]"}], 
+    RowBox[{"cof", "[", 
+     RowBox[{"n", "+", "k"}], "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.5498901329454994`*^9, 3.549890182698345*^9}, {
+   3.549890226690861*^9, 3.5498902273548994`*^9}, {3.54989062634772*^9, 
+   3.549890666050991*^9}, 3.549891034268052*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"(", "single", ")"}], " ", "integrals"}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"co", "[", 
+     RowBox[{
+      TagBox[
+       StyleBox[
+        RowBox[{"Integrate", "[", 
+         RowBox[{
+          RowBox[{"a", "[", "t_Symbol", "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"t_", ",", "0", ",", "x"}], "}"}]}], "]"}],
+        ShowSpecialCharacters->False,
+        ShowStringCharacters->True,
+        NumberMarks->True],
+       FullForm], ",", "n_"}], "]"}], ":=", 
+    RowBox[{
+     RowBox[{"Boole", "[", 
+      RowBox[{"n", "\[GreaterEqual]", "1"}], "]"}], 
+     FractionBox["1", "n"], 
+     RowBox[{"cof", "[", 
+      RowBox[{"n", "-", "1"}], "]"}]}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.549890715769835*^9, 3.5498907219381876`*^9}, {
+  3.549890778114401*^9, 3.549890789755067*^9}, {3.549890848019399*^9, 
+  3.5498908524036503`*^9}, {3.54989089068384*^9, 3.5498909117870464`*^9}, {
+  3.549890951803335*^9, 3.5498909597227883`*^9}, {3.5498910169310603`*^9, 
+  3.5498910239484615`*^9}, {3.54989136361889*^9, 3.5498913651069746`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"thread", " ", "over", " ", "equations"}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"co", "[", 
+     RowBox[{
+      RowBox[{"expr1_", "\[Equal]", "expr2_"}], ",", "n_"}], "]"}], ":=", 
+    RowBox[{
+     RowBox[{"co", "[", 
+      RowBox[{"expr1", ",", "n"}], "]"}], "\[Equal]", 
+     RowBox[{"co", "[", 
+      RowBox[{"expr2", ",", "n"}], "]"}]}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.5498868914890985`*^9, 3.5498869257560587`*^9}, {
+  3.549890152818636*^9, 3.549890157507904*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{"powers", " ", "of", " ", 
+   RowBox[{"a", "[", "x", "]"}]}], " ", "*)"}]], "Input",
+ CellChangeTimes->{{3.5498923436822996`*^9, 3.5498923508187075`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"co", "[", 
+    RowBox[{
+     SuperscriptBox[
+      RowBox[{"a", "[", "x", "]"}], "k_"], ",", "n_"}], "]"}], ":=", 
+   RowBox[{"co", "[", 
+    RowBox[{
+     RowBox[{"Unevaluated", "[", 
+      RowBox[{
+       RowBox[{"a", "[", "x", "]"}], "*", 
+       SuperscriptBox[
+        RowBox[{"a", "[", "x", "]"}], 
+        RowBox[{"k", "-", "1"}]]}], "]"}], ",", "n"}], "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.549892074403898*^9, 3.549892079651198*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{
+   RowBox[{"TODO", ":", " ", 
+    RowBox[{
+     RowBox[{"compositions", " ", "--"}], " ", 
+     RowBox[{"f", "[", 
+      RowBox[{"a", "[", "x", "]"}], "]"}], " ", "and", " ", 
+     RowBox[{
+      RowBox[{"a", "[", 
+       RowBox[{"f", "[", "x", "]"}], "]"}], ".", "\[IndentingNewLine]", "   ",
+       "general"}], " ", "composition", " ", "is", " ", "too", " ", 
+     "unhelpful"}]}], ",", " ", 
+   RowBox[{
+   "if", " ", "there", " ", "are", " ", "specific", " ", "cases", " ", "like",
+     " ", 
+    RowBox[{"a", "[", 
+     RowBox[{"k_", "*", "x"}], "]"}], " ", "that", " ", "are", " ", 
+    "simple"}], ",", " ", 
+   RowBox[{"they", " ", "could", " ", "be", " ", 
+    RowBox[{"implemented", "."}]}]}], " ", "*)"}]], "Input",
+ CellChangeTimes->{{3.5498865580960293`*^9, 3.5498865897068377`*^9}, {
+   3.5498924336344447`*^9, 3.5498924536345882`*^9}, {3.549917966972868*^9, 
+   3.5499180110923915`*^9}, 3.549918129357156*^9}]
+},
+WindowSize->{784, 822},
+WindowMargins->{{-800, Automatic}, {40, Automatic}},
+Magnification->1.5000001192092896`,
+FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (February 23, 2011)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 390, 8, 71, "Input"],
+Cell[950, 30, 124, 2, 43, "Input"],
+Cell[1077, 34, 556, 15, 71, "Input"],
+Cell[1636, 51, 507, 14, 71, "Input"],
+Cell[2146, 67, 715, 20, 98, "Input"],
+Cell[2864, 89, 912, 28, 152, "Input"],
+Cell[3779, 119, 996, 26, 128, "Input"],
+Cell[4778, 147, 1284, 30, 179, "Input"],
+Cell[6065, 179, 642, 18, 98, "Input"],
+Cell[6710, 199, 1159, 31, 125, "Input"],
+Cell[7872, 232, 577, 16, 71, "Input"],
+Cell[8452, 250, 199, 4, 43, "Input"],
+Cell[8654, 256, 501, 16, 48, "Input"],
+Cell[9158, 274, 971, 23, 125, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)

@@ -1,0 +1,347 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     15458,        338]
+NotebookOptionsPosition[     14406,        299]
+NotebookOutlinePosition[     14845,        317]
+CellTagsIndexPosition[     14802,        314]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["genfunlib Developer Documentation", "Title",
+ CellChangeTimes->{{3.5258767471351247`*^9, 3.525876752367424*^9}, {
+  3.525877176063658*^9, 3.52587718011189*^9}, {3.5289793836424613`*^9, 
+  3.5289793850245404`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Overview", "Section",
+ CellChangeTimes->{{3.5289844034575787`*^9, 3.528984405168676*^9}}],
+
+Cell[TextData[{
+ "genfunlib\n\t",
+ StyleBox["Package1",
+  FontWeight->"Bold"],
+ "\n\t\t",
+ StyleBox["User Documentation",
+  FontWeight->"Bold"],
+ "\n\t\t\tTutorial\n\t\t\tGuide/Help Files\n\t",
+ StyleBox["Package2",
+  FontWeight->"Bold"],
+ "\n\t\t",
+ StyleBox["User Documentation",
+  FontWeight->"Bold"],
+ "\n\t\t\tTutorial\n\t\t\tGuide/Help Files\n\t...\n\tEnumerative \
+Combinatorics Algorithms?\n\tDeveloper Documentation (this)\n\t",
+ StyleBox["genfunlib in Action",
+  FontWeight->"Bold"]
+}], "Text",
+ CellChangeTimes->{{3.5289842614644566`*^9, 3.528984361041152*^9}, {
+   3.531670138893263*^9, 3.5316701461876802`*^9}, 3.5363468025401254`*^9, {
+   3.536347263436487*^9, 3.5363472647875643`*^9}}]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Ideas and notes", "Section",
+ CellChangeTimes->{{3.5289844249528074`*^9, 3.5289844264168916`*^9}}],
+
+Cell[TextData[{
+ "computer-readable centralized database of mathematical facts proved by \
+humans, but not yet provable by computers\n\tprogram that extracts math \
+formulas and text from papers and converts the theorems to \
+computer-processable form\n\tcombination of \[OpenCurlyDoubleQuote]central \
+database for data such as random mapping results\[CloseCurlyDoubleQuote], the \
+algolib encyclopedia, and building known mathematical facts into a CAS idea \
+to be used in general ",
+ Cell[BoxData["Reduce"], "Code",
+  CellChangeTimes->{{3.542546829569436*^9, 3.5425468306014957`*^9}}],
+ "-type solving\n\tchallenges: format for computer-readable math, difference \
+between formulas in first paper and ",
+ StyleBox["Mathematica",
+  FontSlant->"Italic"],
+ " code that implements them -- which one do we use?"
+}], "Text",
+ CellChangeTimes->{{3.542477980512412*^9, 3.542478010329118*^9}, {
+  3.542491234666507*^9, 3.542491299482214*^9}, {3.5425461074171314`*^9, 
+  3.5425461352327223`*^9}, {3.54254673032076*^9, 3.542546762576605*^9}, {
+  3.5425468049930305`*^9, 3.542546931889289*^9}}],
+
+Cell[TextData[{
+ "symmath requirements:\n code in .m files\n data in .m files (if small \
+enough)\n user documentation: tutorial, guide, help pages - only a pointer to \
+mathematical background\n  formal specification?\n tests\n developer \
+documentation: ?\n  proofs of correctness?\n ",
+ StyleBox["In Action",
+  FontSlant->"Italic"],
+ " documents (separate)\n what about description of new math involved and \
+connection to Notes/publishing?"
+}], "Text",
+ CellChangeTimes->{{3.5422938026427193`*^9, 3.5422938057158957`*^9}, {
+  3.542301082813122*^9, 3.542301100517134*^9}, {3.5423011434365892`*^9, 
+  3.5423011655408535`*^9}, {3.5423012649245377`*^9, 3.5423012922370996`*^9}, {
+  3.5423015568612356`*^9, 3.542301579444527*^9}, {3.542301815622036*^9, 
+  3.542301825908624*^9}, {3.5423018569654007`*^9, 3.5423018926524415`*^9}, {
+  3.5423021149491563`*^9, 3.5423021186933703`*^9}, {3.5423035152142467`*^9, 
+  3.5423035248767996`*^9}, {3.5423039568445067`*^9, 3.54230396004469*^9}, {
+  3.5423067391016426`*^9, 3.5423067476611323`*^9}, {3.542306897260689*^9, 
+  3.542306902412984*^9}, {3.5423090969105015`*^9, 3.542309139860958*^9}, {
+  3.5423097540940905`*^9, 3.5423097551091485`*^9}, {3.542310175493193*^9, 
+  3.542310190933076*^9}, {3.5423102706616364`*^9, 3.542310271629692*^9}, {
+  3.542377134900719*^9, 3.5423771376358757`*^9}}],
+
+Cell["\<\
+The User Documentation doesn\[CloseCurlyQuote]t talk about how the \
+implementations compute; Developer Documentation or Enumerative Combinatorics \
+Algorithms does\
+\>", "Text",
+ CellChangeTimes->{{3.525883067152609*^9, 3.525883081991458*^9}, {
+   3.525883152920515*^9, 3.52588315389157*^9}, {3.525883227455778*^9, 
+   3.5258832376003585`*^9}, {3.525883288824288*^9, 3.525883289880348*^9}, {
+   3.5258833325947914`*^9, 3.525883372912098*^9}, {3.525883422297922*^9, 
+   3.5258834404279594`*^9}, {3.5258835052576675`*^9, 3.5258835735435734`*^9}, 
+   3.5289278518896017`*^9, {3.528977087313119*^9, 3.5289770879951577`*^9}, {
+   3.5289794356904383`*^9, 3.5289794661281796`*^9}, {3.5289795565243497`*^9, 
+   3.5289796135316105`*^9}, 3.528979706506928*^9, 3.5289800739969473`*^9, {
+   3.52898010744186*^9, 3.528980124152816*^9}, {3.5289801636650763`*^9, 
+   3.5289801774718657`*^9}, {3.528980226113648*^9, 3.5289802452967453`*^9}, {
+   3.528980382537595*^9, 3.5289804460362267`*^9}, 3.528980740377062*^9, {
+   3.5363458644204683`*^9, 3.5363458847076283`*^9}, {3.5363461763553095`*^9, 
+   3.5363462028598256`*^9}, {3.536346246043296*^9, 3.536346285419548*^9}, {
+   3.536346438243289*^9, 3.5363464428515525`*^9}, {3.536346583435593*^9, 
+   3.5363466436680384`*^9}, {3.5363467460528946`*^9, 3.536346761139757*^9}, {
+   3.536347127012684*^9, 3.5363471309079065`*^9}, {3.53634720019587*^9, 
+   3.5363472004838867`*^9}, {3.536347361269083*^9, 3.5363473784680667`*^9}, {
+   3.536347665324474*^9, 3.536347754011546*^9}, {3.5363479282115097`*^9, 
+   3.5363479287965436`*^9}, {3.5364350649718914`*^9, 3.536435069540153*^9}, {
+   3.5423026400091877`*^9, 3.5423026465085597`*^9}}],
+
+Cell[TextData[{
+ ButtonBox["Programmatic formatting for Mathematica code - possible?",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://mathematica.stackexchange.com/questions/2809/programmatic-\
+formatting-for-mathematica-code-possible"], None},
+  ButtonNote->
+   "http://mathematica.stackexchange.com/questions/2809/programmatic-\
+formatting-for-mathematica-code-possible"],
+ "\n",
+ ButtonBox["Syntax highlighting for your own functions",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://mathematica.stackexchange.com/questions/1446/syntax-\
+highlighting-for-your-own-functions"], None},
+  ButtonNote->
+   "http://mathematica.stackexchange.com/questions/1446/syntax-highlighting-\
+for-your-own-functions"],
+ "\n",
+ ButtonBox["Setting Up Mathematica Packages",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://reference.wolfram.com/mathematica/tutorial/\
+SettingUpMathematicaPackages.html"], None},
+  ButtonNote->
+   "http://reference.wolfram.com/mathematica/tutorial/\
+SettingUpMathematicaPackages.html"],
+ "\n",
+ ButtonBox["Making Mathematica packages",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://stackoverflow.com/questions/6633180/making-mathematica-\
+packages/6633769#6633769"], None},
+  ButtonNote->
+   "http://stackoverflow.com/questions/6633180/making-mathematica-packages/\
+6633769#6633769"]
+}], "Text",
+ CellChangeTimes->{{3.542304270537449*^9, 3.542304304021364*^9}, {
+  3.5423049040776854`*^9, 3.542304965770214*^9}, {3.542305664302168*^9, 
+  3.5423056759768353`*^9}}],
+
+Cell[TextData[{
+ "User documentation method:\n ",
+ ButtonBox["Authoring Using DocumentationTools",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://reference.wolfram.com/workbench/index.jsp?topic=/com.wolfram.\
+eclipse.help/html/reference/DocumentationTools/tutorial/\
+AuthoringSymbolPagesUsingDocumentationTools.html"], None},
+  ButtonNote->
+   "http://reference.wolfram.com/workbench/index.jsp?topic=/com.wolfram.\
+eclipse.help/html/reference/DocumentationTools/tutorial/\
+AuthoringSymbolPagesUsingDocumentationTools.html"],
+ "\n ",
+ ButtonBox["Mathematica Development User Guide > Tasks > Mathematica \
+Documentation",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://reference.wolfram.com/workbench/index.jsp?topic=/com.wolfram.\
+eclipse.help/html/helphome/help_home.html"], None},
+  ButtonNote->
+   "http://reference.wolfram.com/workbench/index.jsp?topic=/com.wolfram.\
+eclipse.help/html/helphome/help_home.html"]
+}], "Text",
+ CellChangeTimes->{{3.542305512619492*^9, 3.542305573100951*^9}}],
+
+Cell["\<\
+mathematical background - point to references, we shouldn't write about that \
+if it isn't necessary\
+\>", "Text",
+ CellChangeTimes->{{3.525883067152609*^9, 3.525883081991458*^9}, {
+   3.525883152920515*^9, 3.52588315389157*^9}, {3.525883227455778*^9, 
+   3.5258832376003585`*^9}, {3.525883288824288*^9, 3.525883289880348*^9}, {
+   3.5258833325947914`*^9, 3.525883372912098*^9}, {3.525883422297922*^9, 
+   3.5258834404279594`*^9}, {3.5258835052576675`*^9, 3.5258835735435734`*^9}, 
+   3.5289278518896017`*^9, {3.528977087313119*^9, 3.5289770879951577`*^9}, {
+   3.5289794356904383`*^9, 3.5289794661281796`*^9}, {3.5289795565243497`*^9, 
+   3.5289796135316105`*^9}, 3.528979706506928*^9, 3.5289800739969473`*^9, {
+   3.52898010744186*^9, 3.528980124152816*^9}, {3.5289801636650763`*^9, 
+   3.5289801774718657`*^9}, {3.528980226113648*^9, 3.5289802452967453`*^9}, {
+   3.528980382537595*^9, 3.5289804460362267`*^9}, 3.528980740377062*^9, {
+   3.5363458644204683`*^9, 3.5363458847076283`*^9}, {3.5363461763553095`*^9, 
+   3.5363462028598256`*^9}, {3.536346246043296*^9, 3.536346285419548*^9}, {
+   3.536346438243289*^9, 3.5363464428515525`*^9}, {3.536346583435593*^9, 
+   3.5363466436680384`*^9}, {3.5363467460528946`*^9, 3.536346761139757*^9}, {
+   3.536347127012684*^9, 3.5363471309079065`*^9}, {3.53634720019587*^9, 
+   3.5363472004838867`*^9}, {3.536347361269083*^9, 3.5363473784680667`*^9}, {
+   3.536347665324474*^9, 3.536347754011546*^9}, {3.5363479282115097`*^9, 
+   3.5363479287965436`*^9}, {3.5364350649718914`*^9, 3.536435069540153*^9}, {
+   3.5423026400091877`*^9, 3.542302647260603*^9}}],
+
+Cell["\<\
+Hosting: Google Code, https://launchpad.net/, Codeplex, Bitbucket or Github, \
+as well as andrewmacfie.com\
+\>", "Text",
+ CellChangeTimes->{{3.525883067152609*^9, 3.525883081991458*^9}, {
+   3.525883152920515*^9, 3.52588315389157*^9}, {3.525883227455778*^9, 
+   3.5258832376003585`*^9}, {3.525883288824288*^9, 3.525883289880348*^9}, {
+   3.5258833325947914`*^9, 3.525883372912098*^9}, {3.525883422297922*^9, 
+   3.5258834404279594`*^9}, {3.5258835052576675`*^9, 3.5258835735435734`*^9}, 
+   3.5289278518896017`*^9, {3.528977087313119*^9, 3.5289770879951577`*^9}, {
+   3.5289794356904383`*^9, 3.5289794661281796`*^9}, {3.5289795565243497`*^9, 
+   3.5289796135316105`*^9}, 3.528979706506928*^9, 3.5289800739969473`*^9, {
+   3.52898010744186*^9, 3.528980124152816*^9}, {3.5289801636650763`*^9, 
+   3.5289801774718657`*^9}, {3.528980226113648*^9, 3.5289802452967453`*^9}, {
+   3.528980382537595*^9, 3.5289804460362267`*^9}, 3.528980740377062*^9, {
+   3.5363458644204683`*^9, 3.5363458847076283`*^9}, {3.5363461763553095`*^9, 
+   3.5363462028598256`*^9}, {3.536346246043296*^9, 3.536346285419548*^9}, {
+   3.536346438243289*^9, 3.5363464428515525`*^9}, {3.536346583435593*^9, 
+   3.5363466436680384`*^9}, {3.5363467460528946`*^9, 3.536346761139757*^9}, {
+   3.536347127012684*^9, 3.5363471309079065`*^9}, {3.53634720019587*^9, 
+   3.5363472004838867`*^9}, {3.536347361269083*^9, 3.5363473784680667`*^9}, {
+   3.536347665324474*^9, 3.536347754011546*^9}, {3.5363479282115097`*^9, 
+   3.5363479287965436`*^9}, {3.5364350649718914`*^9, 3.536435069540153*^9}, {
+   3.5423026400091877`*^9, 3.5423026419733005`*^9}, {3.543770651347477*^9, 
+   3.5437706543076468`*^9}}],
+
+Cell["Put Web links to the project on relevant Web pages", "Text",
+ CellChangeTimes->{{3.531669983282363*^9, 3.5316700698673153`*^9}}],
+
+Cell["Wolfram|Alpha", "Text",
+ CellChangeTimes->{{3.5371041087490044`*^9, 3.537104111156142*^9}}],
+
+Cell["Package pallettes?", "Text",
+ CellChangeTimes->{{3.525883067152609*^9, 3.525883081991458*^9}, {
+   3.525883152920515*^9, 3.52588315389157*^9}, {3.525883227455778*^9, 
+   3.5258832376003585`*^9}, {3.525883288824288*^9, 3.525883289880348*^9}, {
+   3.5258833325947914`*^9, 3.525883372912098*^9}, {3.525883422297922*^9, 
+   3.5258834404279594`*^9}, {3.5258835052576675`*^9, 3.5258835735435734`*^9}, 
+   3.5289278518896017`*^9, {3.528977087313119*^9, 3.5289770879951577`*^9}, {
+   3.5289794356904383`*^9, 3.5289794661281796`*^9}, {3.5289795565243497`*^9, 
+   3.5289796135316105`*^9}, 3.528979706506928*^9, 3.5289800739969473`*^9, {
+   3.52898010744186*^9, 3.528980124152816*^9}, {3.5289801636650763`*^9, 
+   3.52898017912096*^9}}]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["blah", "Section",
+ CellChangeTimes->{{3.55136513565005*^9, 3.551365135978069*^9}}],
+
+Cell[TextData[{
+ "rec2GFeq\n\t\[OpenCurlyDoubleQuote]override\[CloseCurlyDoubleQuote] ",
+ Cell[BoxData["GeneratingFunction"], "Code",
+  CellChangeTimes->{{3.5513660856753883`*^9, 3.5513660885625534`*^9}}],
+ "\nspecies2GFeq\nsymbolicmethod2GFeq\n\timplicit specs\n\trestrictions, \
+additional params\nregularLang2GFeq\n\tDFA, NFA, regex, right regular grammar\
+\n\tclosure properties\n\tconversions\n\tambiguity test via NFA test (see \
+papers)\n\twords with occurrences of patterns\ncontextFree2GFeq\n\t\
+context-free grammars -- cannot be tested for ambiguity or converted to \
+unambiguous form\n\tclosure properties\n\tsemantic validity test via \
+symbolicmethod\nGFeq2asymptoticCoef(gdev)\nGFeq2GF(Kernel)\nGFeq2rec\n\
+GFeq2coefs"
+}], "Text",
+ CellChangeTimes->{{3.5513651493618345`*^9, 3.551365150017872*^9}, {
+   3.551365265714489*^9, 3.5513652744419885`*^9}, {3.5513653460980873`*^9, 
+   3.5513654380903482`*^9}, 3.551365629522298*^9, {3.551366071699589*^9, 
+   3.551366099466177*^9}, {3.5513751086796083`*^9, 3.5513751995348053`*^9}, {
+   3.551377237640378*^9, 3.551377270974285*^9}, {3.551378360486601*^9, 
+   3.551378373167327*^9}, {3.5513786144471273`*^9, 3.551378614911154*^9}, {
+   3.5513914777417297`*^9, 3.5513914933806243`*^9}, {3.551392339870041*^9, 
+   3.5513923838365555`*^9}, {3.5514444953390074`*^9, 3.551444498383181*^9}, {
+   3.551444823257763*^9, 3.551444823977804*^9}, {3.551444941322516*^9, 
+   3.5514449448797197`*^9}, {3.5514451046598587`*^9, 3.551445107472019*^9}, {
+   3.5514452094268503`*^9, 3.551445214824159*^9}, {3.551446403842167*^9, 
+   3.551446411375598*^9}}]
+}, Open  ]]
+}, Open  ]]
+},
+WindowToolbars->"EditBar",
+WindowSize->{784, 822},
+WindowMargins->{{-800, Automatic}, {40, Automatic}},
+DefaultNewCellStyle->"Text",
+Magnification->1.4000000953674316`,
+FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (February 23, 2011)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 219, 3, 190, "Title"],
+Cell[CellGroupData[{
+Cell[823, 29, 95, 1, 98, "Section"],
+Cell[921, 32, 700, 20, 317, "Text"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[1658, 57, 104, 1, 55, "Section"],
+Cell[1765, 60, 1085, 19, 248, "Text"],
+Cell[2853, 81, 1332, 21, 294, "Text"],
+Cell[4188, 104, 1673, 24, 85, "Text"],
+Cell[5864, 130, 1523, 39, 108, "Text"],
+Cell[7390, 171, 1014, 23, 108, "Text"],
+Cell[8407, 196, 1607, 23, 62, "Text"],
+Cell[10017, 221, 1667, 24, 62, "Text"],
+Cell[11687, 247, 134, 1, 38, "Text"],
+Cell[11824, 250, 97, 1, 38, "Text"],
+Cell[11924, 253, 731, 10, 38, "Text"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[12692, 268, 88, 1, 55, "Section"],
+Cell[12783, 271, 1595, 24, 504, "Text"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
