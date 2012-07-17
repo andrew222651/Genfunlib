@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     44578,       1100]
-NotebookOptionsPosition[     43186,       1058]
-NotebookOutlinePosition[     43586,       1075]
-CellTagsIndexPosition[     43543,       1072]
+NotebookDataLength[     46124,       1170]
+NotebookOptionsPosition[     44451,       1121]
+NotebookOutlinePosition[     44851,       1138]
+CellTagsIndexPosition[     44808,       1135]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -873,67 +873,16 @@ Cell[BoxData[
     RowBox[{
      RowBox[{"or", "[", 
       RowBox[{"first_", ",", "second_"}], "]"}], ",", "alphabetSize_"}], 
-    "]"}], ":=", 
-   RowBox[{"Module", "[", "\[IndentingNewLine]", 
+    "]"}], ":=", "\[IndentingNewLine]", 
+   RowBox[{"nfaUnion", "[", 
     RowBox[{
-     RowBox[{"{", "\[IndentingNewLine]", 
-      RowBox[{
-      "numStates1", ",", "as1", ",", "t1", ",", "acceptStates1", ",", 
-       "initialState1", ",", "numStates2", ",", "as2", ",", "t2", ",", 
-       "acceptStates2", ",", "initialState2"}], "\[IndentingNewLine]", "}"}], 
-     ",", "\[IndentingNewLine]", 
-     RowBox[{
-      RowBox[{
-       RowBox[{"{", 
-        RowBox[{
-        "numStates1", ",", "as1", ",", "t1", ",", "acceptStates1", ",", 
-         "initialState1"}], "}"}], "=", 
-       RowBox[{"regex2nfa", "[", 
-        RowBox[{"first", ",", "alphabetSize"}], "]"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{
-       RowBox[{"{", 
-        RowBox[{
-        "numStates2", ",", "as2", ",", "t2", ",", "acceptStates2", ",", 
-         "initialState2"}], "}"}], "=", 
-       RowBox[{"regex2nfa", "[", 
-        RowBox[{"second", ",", "alphabetSize"}], "]"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"{", 
-       RowBox[{
-        RowBox[{"numStates1", "+", "numStates2", "+", "1"}], ",", 
-        "alphabetSize", ",", "\[IndentingNewLine]", 
-        RowBox[{"Join", "[", "\[IndentingNewLine]", 
-         RowBox[{
-          RowBox[{"{", 
-           RowBox[{"ReplacePart", "[", 
-            RowBox[{
-             RowBox[{"ConstantArray", "[", 
-              RowBox[{
-               RowBox[{"{", "}"}], ",", 
-               RowBox[{"alphabetSize", "+", "1"}]}], "]"}], ",", 
-             RowBox[{
-              RowBox[{"alphabetSize", "+", "1"}], "\[Rule]", 
-              RowBox[{"{", 
-               RowBox[{
-                RowBox[{"initialState1", "+", "1"}], ",", 
-                RowBox[{"initialState2", "+", "1", "+", "numStates1"}]}], 
-               "}"}]}]}], "]"}], "}"}], ",", 
-          RowBox[{"t1", "+", "1"}], ",", 
-          RowBox[{"t2", "+", "1", "+", "numStates2"}]}], "]"}], ",", 
-        RowBox[{"Union", "[", 
-         RowBox[{
-          RowBox[{"1", "+", "acceptStates1"}], ",", 
-          RowBox[{"1", "+", "numStates1", "+", "acceptStates2"}]}], "]"}], 
-        ",", "1"}], "}"}]}]}], "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
- CellChangeTimes->{{3.5505880112680144`*^9, 3.5505880312871594`*^9}, {
-   3.550588071247445*^9, 3.5505880924236565`*^9}, {3.550588137895257*^9, 
-   3.550588181495751*^9}, {3.5505884031924314`*^9, 3.550588415513136*^9}, 
-   3.5505888237844877`*^9, {3.550588869442099*^9, 3.5505889696098285`*^9}, {
-   3.5505890684574823`*^9, 3.550589110361879*^9}, {3.5505891507701902`*^9, 
-   3.55058932350807*^9}, {3.5505980587138767`*^9, 3.55059806244909*^9}, {
-   3.5505981219304924`*^9, 3.5505981238496017`*^9}, {3.550598160898721*^9, 
-   3.550598167993127*^9}, {3.550598212329663*^9, 3.5505982127776885`*^9}}],
+     RowBox[{"regex2nfa", "[", 
+      RowBox[{"first", ",", "alphabetSize"}], "]"}], ",", 
+     RowBox[{"regex2nfa", "[", 
+      RowBox[{"second", ",", "alphabetSize"}], "]"}]}], "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.5514738248364697`*^9, 3.551473871360131*^9}, 
+   3.5514739031849513`*^9}],
 
 Cell[BoxData[
  RowBox[{
@@ -941,48 +890,14 @@ Cell[BoxData[
    RowBox[{"regex2nfa", "[", 
     RowBox[{
      RowBox[{"star", "[", "regex_", "]"}], ",", "alphabetSize_"}], "]"}], ":=", 
-   RowBox[{"Module", "[", "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{"{", "\[IndentingNewLine]", 
-      RowBox[{
-      "numStates1", ",", "as1", ",", "t1", ",", "acceptStates1", ",", 
-       "initialState1", ",", "newT"}], "\[IndentingNewLine]", "}"}], ",", 
-     "\[IndentingNewLine]", 
-     RowBox[{
-      RowBox[{
-       RowBox[{"{", 
-        RowBox[{
-        "numStates1", ",", "as1", ",", "t1", ",", "acceptStates1", ",", 
-         "initialState1"}], "}"}], "=", 
-       RowBox[{"regex2nfa", "[", 
-        RowBox[{"regex", ",", "alphabetSize"}], "]"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"newT", "=", "t1"}], ";", "\[IndentingNewLine]", 
-      RowBox[{"Map", "[", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"(", 
-          RowBox[{
-           RowBox[{"newT", "\[LeftDoubleBracket]", 
-            RowBox[{"#", ",", 
-             RowBox[{"alphabetSize", "+", "1"}]}], "\[RightDoubleBracket]"}], 
-           "=", 
-           RowBox[{
-            RowBox[{"newT", "\[LeftDoubleBracket]", 
-             RowBox[{"#", ",", 
-              RowBox[{"alphabetSize", "+", "1"}]}], "\[RightDoubleBracket]"}],
-             "\[Union]", 
-            RowBox[{"{", "initialState1", "}"}]}]}], ")"}], "&"}], ",", 
-        "acceptStates1"}], "]"}], ";", "\[IndentingNewLine]", 
-      RowBox[{"{", 
-       RowBox[{
-       "numStates1", ",", "alphabetSize", ",", "newT", ",", "acceptStates1", 
-        ",", "initialState1"}], "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
-  ";"}]], "Input",
+   RowBox[{"nfaStar", "[", 
+    RowBox[{"regex2nfa", "[", 
+     RowBox[{"regex", ",", "alphabetSize"}], "]"}], "]"}]}], ";"}]], "Input",
  CellChangeTimes->{{3.5505893248461466`*^9, 3.550589379657282*^9}, {
   3.550589460680916*^9, 3.5505894891295433`*^9}, {3.5505895293368425`*^9, 
   3.5505895363532443`*^9}, {3.550589579713724*^9, 3.550589700530635*^9}, {
-  3.550598457800703*^9, 3.5505984596958113`*^9}}],
+  3.550598457800703*^9, 3.5505984596958113`*^9}, {3.551474210314518*^9, 
+  3.551474224080305*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -992,32 +907,144 @@ Cell[BoxData[
      RowBox[{"concat", "[", 
       RowBox[{"first_", ",", "second_"}], "]"}], ",", "alphabetSize_"}], 
     "]"}], ":=", 
+   RowBox[{"nfaConcat", "[", 
+    RowBox[{
+     RowBox[{"regex2nfa", "[", 
+      RowBox[{"first", ",", "alphabetSize"}], "]"}], ",", 
+     RowBox[{"regex2nfa", "[", 
+      RowBox[{"second", ",", "alphabetSize"}], "]"}]}], "]"}]}], 
+  ";"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{
+   RowBox[{"closure", " ", 
+    RowBox[{"properties", ":", " ", "union"}]}], ",", " ", "intersection", 
+   ",", " ", "complement", ",", " ", "concatenation", ",", " ", "star", ",", 
+   " ", "reverse"}], " ", "*)"}]], "Input",
+ CellChangeTimes->{{3.5514680859992275`*^9, 3.551468088407365*^9}, {
+  3.55147287619221*^9, 3.551472925352022*^9}, {3.5514731633436346`*^9, 
+  3.551473164631708*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"nfaUnion", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "numStates1_Integer", ",", "alphabetSize1_Integer", ",", 
+       "transitionMatrix1_", ",", 
+       RowBox[{"acceptStates1_", "?", "VectorQ"}], ",", "initialState1_"}], 
+      "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+      "numStates2_Integer", ",", "alphabetSize2_Integer", ",", 
+       "transitionMatrix2_", ",", 
+       RowBox[{"acceptStates2_", "?", "VectorQ"}], ",", "initialState2_"}], 
+      "}"}]}], "]"}], ":=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"numStates1", "+", "numStates2", "+", "1"}], ",", 
+     "alphabetSize1", ",", "\[IndentingNewLine]", 
+     RowBox[{"Join", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"ReplacePart", "[", 
+         RowBox[{
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{
+            RowBox[{"{", "}"}], ",", 
+            RowBox[{"alphabetSize1", "+", "1"}]}], "]"}], ",", 
+          RowBox[{
+           RowBox[{"alphabetSize1", "+", "1"}], "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"initialState1", "+", "1"}], ",", 
+             RowBox[{"initialState2", "+", "1", "+", "numStates1"}]}], 
+            "}"}]}]}], "]"}], "}"}], ",", 
+       RowBox[{"transitionMatrix1", "+", "1"}], ",", 
+       RowBox[{"transitionMatrix2", "+", "1", "+", "numStates2"}]}], "]"}], 
+     ",", 
+     RowBox[{"Union", "[", 
+      RowBox[{
+       RowBox[{"1", "+", "acceptStates1"}], ",", 
+       RowBox[{"1", "+", "numStates1", "+", "acceptStates2"}]}], "]"}], ",", 
+     "1"}], "}"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.5514732008627806`*^9, 3.5514732051600266`*^9}, {
+  3.551473447671897*^9, 3.551473473369367*^9}, {3.5514737267468596`*^9, 
+  3.5514737439218416`*^9}, {3.5514737764757037`*^9, 3.5514737785168204`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"make", " ", "sure", " ", "this", " ", 
+     RowBox[{"isn", "'"}], "t"}], " ", "+"}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"nfaStar", "[", 
+     RowBox[{"{", 
+      RowBox[{
+      "numStates_Integer", ",", "alphabetSize_Integer", ",", 
+       "transitionMatrix_", ",", 
+       RowBox[{"acceptStates_", "?", "VectorQ"}], ",", "initialState_"}], 
+      "}"}], "]"}], ":=", 
+    RowBox[{"Module", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{"newT", "=", "transitionMatrix"}], "\[IndentingNewLine]", 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Map", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"newT", "\[LeftDoubleBracket]", 
+             RowBox[{"#", ",", 
+              RowBox[{"alphabetSize", "+", "1"}]}], "\[RightDoubleBracket]"}],
+             "=", 
+            RowBox[{
+             RowBox[{"newT", "\[LeftDoubleBracket]", 
+              RowBox[{"#", ",", 
+               RowBox[{"alphabetSize", "+", "1"}]}], 
+              "\[RightDoubleBracket]"}], "\[Union]", 
+             RowBox[{"{", "initialState", "}"}]}]}], ")"}], "&"}], ",", 
+         "acceptStates"}], "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+        "numStates", ",", "alphabetSize", ",", "newT", ",", "acceptStates", 
+         ",", "initialState"}], "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+   ";"}]}]], "Input",
+ CellChangeTimes->{{3.5514740023896255`*^9, 3.55147402083268*^9}, {
+  3.5514741252956553`*^9, 3.5514741965787325`*^9}, {3.551474613658588*^9, 
+  3.551474633858743*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"nfaConcat", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "numStates1_Integer", ",", "alphabetSize1_Integer", ",", 
+       "transitionMatrix1_", ",", 
+       RowBox[{"acceptStates1_", "?", "VectorQ"}], ",", "initialState1_"}], 
+      "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+      "numStates2_Integer", ",", "alphabetSize2_Integer", ",", 
+       "transitionMatrix2_", ",", 
+       RowBox[{"acceptStates2_", "?", "VectorQ"}], ",", "initialState2_"}], 
+      "}"}]}], "]"}], ":=", 
    RowBox[{"Module", "[", "\[IndentingNewLine]", 
     RowBox[{
      RowBox[{"{", "\[IndentingNewLine]", 
-      RowBox[{
-      "numStates1", ",", "as1", ",", "t1", ",", "acceptStates1", ",", 
-       "initialState1", ",", "numStates2", ",", "as2", ",", "t2", ",", 
-       "acceptStates2", ",", "initialState2", ",", "\[IndentingNewLine]", 
-       "newT1"}], "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"newT1", "=", "transitionMatrix1"}], "\[IndentingNewLine]", 
+      "}"}], ",", "\[IndentingNewLine]", 
      RowBox[{
-      RowBox[{
-       RowBox[{"{", 
-        RowBox[{
-        "numStates1", ",", "as1", ",", "t1", ",", "acceptStates1", ",", 
-         "initialState1"}], "}"}], "=", 
-       RowBox[{"regex2nfa", "[", 
-        RowBox[{"first", ",", "alphabetSize"}], "]"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{
-       RowBox[{"{", 
-        RowBox[{
-        "numStates2", ",", "as2", ",", "t2", ",", "acceptStates2", ",", 
-         "initialState2"}], "}"}], "=", 
-       RowBox[{"regex2nfa", "[", 
-        RowBox[{"second", ",", "alphabetSize"}], "]"}]}], ";", 
-      "\[IndentingNewLine]", 
-      RowBox[{"newT1", "=", "t1"}], ";", "\[IndentingNewLine]", 
       RowBox[{"Map", "[", 
        RowBox[{
         RowBox[{
@@ -1025,36 +1052,72 @@ Cell[BoxData[
           RowBox[{
            RowBox[{"newT1", "\[LeftDoubleBracket]", 
             RowBox[{"#", ",", 
-             RowBox[{"alphabetSize", "+", "1"}]}], "\[RightDoubleBracket]"}], 
-           "=", 
+             RowBox[{"alphabetSize1", "+", "1"}]}], "\[RightDoubleBracket]"}],
+            "=", 
            RowBox[{
             RowBox[{"newT1", "\[LeftDoubleBracket]", 
              RowBox[{"#", ",", 
-              RowBox[{"alphabetSize", "+", "1"}]}], "\[RightDoubleBracket]"}],
-             "\[Union]", 
+              RowBox[{"alphabetSize1", "+", "1"}]}], 
+             "\[RightDoubleBracket]"}], "\[Union]", 
             RowBox[{"{", 
              RowBox[{"initialState2", "+", "numStates1"}], "}"}]}]}], ")"}], 
          "&"}], ",", "acceptStates1"}], "]"}], ";", "\[IndentingNewLine]", 
       RowBox[{"{", 
        RowBox[{
-        RowBox[{"numStates1", "+", "numStates2"}], ",", "alphabetSize", ",", 
+        RowBox[{"numStates1", "+", "numStates2"}], ",", "alphabetSize1", ",", 
         RowBox[{"Join", "[", 
          RowBox[{"newT1", ",", 
-          RowBox[{"t2", "+", "numStates1"}]}], "]"}], ",", 
+          RowBox[{"transitionMatrix2", "+", "numStates1"}]}], "]"}], ",", 
         RowBox[{"acceptStates2", "+", "numStates1"}], ",", "initialState1"}], 
        "}"}]}]}], "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
- CellChangeTimes->{{3.5505880112680144`*^9, 3.5505880312871594`*^9}, {
-   3.550588071247445*^9, 3.5505880924236565`*^9}, {3.550588137895257*^9, 
-   3.550588181495751*^9}, {3.5505884031924314`*^9, 3.550588415513136*^9}, 
-   3.5505888237844877`*^9, {3.550588869442099*^9, 3.5505889696098285`*^9}, {
-   3.5505890684574823`*^9, 3.550589110361879*^9}, {3.5505891507701902`*^9, 
-   3.55058932350807*^9}, {3.55058972195586*^9, 3.550589796133103*^9}, {
-   3.5505898453079157`*^9, 3.550589930812806*^9}, {3.5505984279459953`*^9, 
-   3.5505984298981066`*^9}, {3.5505987427710023`*^9, 3.5505987480413036`*^9}}],
+ CellChangeTimes->{{3.5514742821656275`*^9, 3.5514742975125055`*^9}, {
+  3.551474733409437*^9, 3.5514747903396935`*^9}}],
 
 Cell[BoxData[
- RowBox[{"(*", " ", "*)"}]], "Input",
- CellChangeTimes->{{3.5514680859992275`*^9, 3.551468088407365*^9}}]
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"use", " ", "on", " ", "parsed", " ", "regexes"}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"regexReverse", "[", 
+     RowBox[{"letter", "[", "n_", "]"}], "]"}], ":=", 
+    RowBox[{"letter", "[", "n", "]"}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.5514761942219906`*^9, 3.551476196584126*^9}, {
+  3.5514762299600353`*^9, 3.5514762405676417`*^9}, {3.5514762852962*^9, 
+  3.551476293935694*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"regexReverse", "[", 
+    RowBox[{"or", "[", "args__", "]"}], "]"}], ":=", 
+   RowBox[{"or", "@@", 
+    RowBox[{"regexReverse", "/@", 
+     RowBox[{"{", "args", "}"}]}]}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.5514762957467976`*^9, 3.5514763326319075`*^9}, {
+  3.5514764116004243`*^9, 3.551476413208516*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"regexReverse", "[", 
+    RowBox[{"concat", "[", "args__", "]"}], "]"}], ":=", 
+   RowBox[{"concat", "@@", 
+    RowBox[{"regexReverse", "/@", 
+     RowBox[{"Reverse", "[", 
+      RowBox[{"{", "args", "}"}], "]"}]}]}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.551476349443869*^9, 3.5514764060321054`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"regexReverse", "[", 
+    RowBox[{"star", "[", "arg_", "]"}], "]"}], 
+   RowBox[{"star", "[", 
+    RowBox[{"regexReverse", "[", "arg", "]"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.5514764181637993`*^9, 3.5514764249641886`*^9}, {
+  3.551476458928131*^9, 3.5514764683836718`*^9}}]
 },
 WindowSize->{784, 862},
 WindowMargins->{{0, Automatic}, {0, Automatic}},
@@ -1098,10 +1161,17 @@ Cell[33289, 813, 156, 3, 37, "Input"],
 Cell[33448, 818, 428, 11, 37, "Input"],
 Cell[33879, 831, 289, 7, 37, "Input"],
 Cell[34171, 840, 1071, 26, 107, "Input"],
-Cell[35245, 868, 2943, 67, 406, "Input"],
-Cell[38191, 937, 1930, 47, 314, "Input"],
-Cell[40124, 986, 2936, 66, 452, "Input"],
-Cell[43063, 1054, 119, 2, 37, "Input"]
+Cell[35245, 868, 563, 16, 84, "Input"],
+Cell[35811, 886, 613, 13, 61, "Input"],
+Cell[36427, 901, 449, 14, 84, "Input"],
+Cell[36879, 917, 438, 9, 84, "Input"],
+Cell[37320, 928, 1862, 47, 291, "Input"],
+Cell[39185, 977, 1743, 45, 314, "Input"],
+Cell[40931, 1024, 1976, 49, 383, "Input"],
+Cell[42910, 1075, 487, 12, 61, "Input"],
+Cell[43400, 1089, 357, 9, 37, "Input"],
+Cell[43760, 1100, 350, 9, 61, "Input"],
+Cell[44113, 1111, 334, 8, 37, "Input"]
 }
 ]
 *)
