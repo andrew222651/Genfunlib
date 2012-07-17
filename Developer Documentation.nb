@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     15458,        338]
-NotebookOptionsPosition[     14406,        299]
-NotebookOutlinePosition[     14845,        317]
-CellTagsIndexPosition[     14802,        314]
+NotebookDataLength[     15411,        335]
+NotebookOptionsPosition[     14360,        296]
+NotebookOutlinePosition[     14799,        314]
+CellTagsIndexPosition[     14756,        311]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -219,10 +219,7 @@ if it isn't necessary\
    3.5363479287965436`*^9}, {3.5364350649718914`*^9, 3.536435069540153*^9}, {
    3.5423026400091877`*^9, 3.542302647260603*^9}}],
 
-Cell["\<\
-Hosting: Google Code, https://launchpad.net/, Codeplex, Bitbucket or Github, \
-as well as andrewmacfie.com\
-\>", "Text",
+Cell["Hosting: Github, as well as andrewmacfie.com", "Text",
  CellChangeTimes->{{3.525883067152609*^9, 3.525883081991458*^9}, {
    3.525883152920515*^9, 3.52588315389157*^9}, {3.525883227455778*^9, 
    3.5258832376003585`*^9}, {3.525883288824288*^9, 3.525883289880348*^9}, {
@@ -243,7 +240,7 @@ as well as andrewmacfie.com\
    3.536347665324474*^9, 3.536347754011546*^9}, {3.5363479282115097`*^9, 
    3.5363479287965436`*^9}, {3.5364350649718914`*^9, 3.536435069540153*^9}, {
    3.5423026400091877`*^9, 3.5423026419733005`*^9}, {3.543770651347477*^9, 
-   3.5437706543076468`*^9}}],
+   3.5437706543076468`*^9}, 3.5514795621436253`*^9}],
 
 Cell["Put Web links to the project on relevant Web pages", "Text",
  CellChangeTimes->{{3.531669983282363*^9, 3.5316700698673153`*^9}}],
@@ -262,7 +259,7 @@ Cell["Package pallettes?", "Text",
    3.5289796135316105`*^9}, 3.528979706506928*^9, 3.5289800739969473`*^9, {
    3.52898010744186*^9, 3.528980124152816*^9}, {3.5289801636650763`*^9, 
    3.52898017912096*^9}}]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -324,20 +321,20 @@ Cell[921, 32, 700, 20, 317, "Text"]
 }, Closed]],
 Cell[CellGroupData[{
 Cell[1658, 57, 104, 1, 55, "Section"],
-Cell[1765, 60, 1085, 19, 248, "Text"],
-Cell[2853, 81, 1332, 21, 294, "Text"],
-Cell[4188, 104, 1673, 24, 85, "Text"],
+Cell[1765, 60, 1085, 19, 225, "Text"],
+Cell[2853, 81, 1332, 21, 247, "Text"],
+Cell[4188, 104, 1673, 24, 62, "Text"],
 Cell[5864, 130, 1523, 39, 108, "Text"],
-Cell[7390, 171, 1014, 23, 108, "Text"],
+Cell[7390, 171, 1014, 23, 85, "Text"],
 Cell[8407, 196, 1607, 23, 62, "Text"],
-Cell[10017, 221, 1667, 24, 62, "Text"],
-Cell[11687, 247, 134, 1, 38, "Text"],
-Cell[11824, 250, 97, 1, 38, "Text"],
-Cell[11924, 253, 731, 10, 38, "Text"]
-}, Closed]],
+Cell[10017, 221, 1621, 21, 38, "Text"],
+Cell[11641, 244, 134, 1, 38, "Text"],
+Cell[11778, 247, 97, 1, 38, "Text"],
+Cell[11878, 250, 731, 10, 38, "Text"]
+}, Open  ]],
 Cell[CellGroupData[{
-Cell[12692, 268, 88, 1, 55, "Section"],
-Cell[12783, 271, 1595, 24, 504, "Text"]
+Cell[12646, 265, 88, 1, 98, "Section"],
+Cell[12737, 268, 1595, 24, 504, "Text"]
 }, Open  ]]
 }, Open  ]]
 }

@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     24603,        607]
-NotebookOptionsPosition[     23817,        580]
-NotebookOutlinePosition[     24221,        597]
-CellTagsIndexPosition[     24178,        594]
+NotebookDataLength[     25658,        634]
+NotebookOptionsPosition[     24870,        607]
+NotebookOutlinePosition[     25275,        624]
+CellTagsIndexPosition[     25232,        621]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -436,150 +436,177 @@ Cell[BoxData[
 Cell[BoxData[
  RowBox[{
   RowBox[{
-   RowBox[{"toGFeqns", "[", 
-    RowBox[{"spec_", ",", "indet_", ",", 
-     RowBox[{"labeled", "\[Rule]", "True"}]}], "]"}], ":=", 
-   RowBox[{"Module", "[", "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{"nonterminals", "=", 
-       RowBox[{"nonTerminals", "[", "spec", "]"}]}], "}"}], ",", 
-     "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"toGFeqns", "[", 
+     RowBox[{"spec_", ",", " ", "indet_", ",", " ", 
+      RowBox[{"labeled", " ", "->", " ", "True"}]}], "]"}], " ", ":=", " ", 
+    "\n", "   ", 
+    RowBox[{"Module", "[", 
      RowBox[{
-      RowBox[{"spec", "/.", 
-       RowBox[{"{", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"eClass", "\[Rule]", "1"}], ",", "\[IndentingNewLine]", 
-         RowBox[{"zClass", "\[RuleDelayed]", "indet"}], ",", 
-         "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{"nonterminals", " ", "=", " ", 
+        RowBox[{"nonTerminals", "[", "\n", "       ", "spec", "]"}]}], "}"}], 
+      ",", " ", 
+      RowBox[{
+       RowBox[{"spec", " ", "/.", " ", 
+        RowBox[{"{", 
          RowBox[{
-          RowBox[{"sym_Symbol", "?", 
+          RowBox[{"eClass", " ", "->", " ", "1"}], ",", " ", "\n", "       ", 
+          RowBox[{"zClass", " ", ":>", " ", "indet"}], ",", " ", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"(", "sym_Symbol", ")"}], "?", "\n", "         ", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"MemberQ", "[", 
+               RowBox[{"nonterminals", ",", " ", "#1"}], "]"}], " ", "&"}], 
+             " ", ")"}]}], " ", ":>", " ", "\n", "        ", 
+           RowBox[{"sym", "[", "indet", "]"}]}]}], "}"}]}], " ", "//.", " ", 
+       "\n", "     ", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"sum", "[", 
+           RowBox[{"first_", ",", " ", "second_"}], "]"}], " ", ":>", " ", 
+          "\n", "       ", 
+          RowBox[{"first", " ", "+", " ", "second"}]}], ",", " ", 
+         RowBox[{
+          RowBox[{"prod", "[", 
+           RowBox[{"first_", ",", " ", "\n", "        ", "second_"}], "]"}], 
+          " ", ":>", " ", 
+          RowBox[{"first", "*", "second"}]}], ",", " ", "\n", "      ", 
+         RowBox[{
+          RowBox[{"seq", "[", "expr_", "]"}], " ", ":>", " ", 
+          RowBox[{"1", "/", 
            RowBox[{"(", 
-            RowBox[{
-             RowBox[{"MemberQ", "[", 
-              RowBox[{"nonterminals", ",", "#"}], "]"}], "&"}], ")"}]}], 
-          "\[RuleDelayed]", 
-          RowBox[{"sym", "[", "indet", "]"}]}]}], "\[IndentingNewLine]", 
-        "}"}]}], "//.", 
-      RowBox[{"{", "\[IndentingNewLine]", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"sum", "[", 
-          RowBox[{"first_", ",", "second_"}], "]"}], "\[RuleDelayed]", 
-         RowBox[{"first", "+", "second"}]}], ",", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"prod", "[", 
-          RowBox[{"first_", ",", "second_"}], "]"}], "\[RuleDelayed]", 
-         RowBox[{"first", "*", "second"}]}], ",", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"seq", "[", "expr_", "]"}], "\[RuleDelayed]", 
-         FractionBox["1", 
-          RowBox[{"1", "-", "expr"}]]}], ",", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"cyc", "[", "expr_", "]"}], "\[RuleDelayed]", 
-         RowBox[{"Log", "[", 
-          FractionBox["1", 
-           RowBox[{"1", "-", "expr"}]], "]"}]}], ",", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"set", "[", "expr_", "]"}], "\[RuleDelayed]", 
-         RowBox[{"Exp", "[", "expr", "]"}]}]}], "\[IndentingNewLine]", 
-       "}"}]}]}], "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+            RowBox[{"1", " ", "-", " ", "expr"}], ")"}]}]}], ",", " ", "\n", 
+         "      ", 
+         RowBox[{
+          RowBox[{"cyc", "[", "expr_", "]"}], " ", ":>", " ", 
+          RowBox[{"Log", "[", 
+           RowBox[{"1", "/", 
+            RowBox[{"(", 
+             RowBox[{"1", " ", "-", " ", "expr"}], ")"}]}], "]"}]}], ",", " ",
+          "\n", "      ", 
+         RowBox[{
+          RowBox[{"set", "[", "expr_", "]"}], " ", ":>", " ", 
+          RowBox[{"Exp", "[", "expr", "]"}]}]}], "}"}]}]}], "]"}]}], ";"}], 
+  " "}]], "Input",
  CellChangeTimes->{{3.5504842367060204`*^9, 3.5504842402582235`*^9}, {
    3.550485781386371*^9, 3.550485789010807*^9}, {3.550485875466752*^9, 
    3.550485907131563*^9}, {3.5504859795157037`*^9, 3.550486013443644*^9}, {
    3.5504860505397663`*^9, 3.550486183118349*^9}, 3.5504871334307036`*^9, {
    3.5504872015506*^9, 3.5504872132382684`*^9}, {3.550487266287303*^9, 
    3.550487269670496*^9}, {3.55048736625502*^9, 3.5504874230552692`*^9}, {
-   3.5504874535350122`*^9, 3.5504875122073684`*^9}}],
+   3.5504874535350122`*^9, 3.5504875122073684`*^9}, 3.551479288918998*^9},
+ FormatType->"InputForm"],
 
 Cell[BoxData[
  RowBox[{
   RowBox[{
-   RowBox[{"toGFeqns", "[", 
-    RowBox[{"spec_", ",", "indet_", ",", 
-     RowBox[{"labeled", "\[Rule]", "False"}]}], "]"}], ":=", 
-   RowBox[{"Module", "[", "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{"nonterminals", "=", 
-       RowBox[{"nonTerminals", "[", "spec", "]"}]}], "}"}], ",", 
-     "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"toGFeqns", "[", 
+     RowBox[{"spec_", ",", " ", "indet_", ",", " ", 
+      RowBox[{"labeled", " ", "->", " ", "False"}]}], "]"}], " ", ":=", " ", 
+    "\n", "   ", 
+    RowBox[{"Module", "[", 
      RowBox[{
-      RowBox[{"spec", "/.", 
-       RowBox[{"{", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"eClass", "\[Rule]", "1"}], ",", "\[IndentingNewLine]", 
-         RowBox[{"zClass", "\[RuleDelayed]", "indet"}], ",", 
-         "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{"nonterminals", " ", "=", " ", 
+        RowBox[{"nonTerminals", "[", "\n", "       ", "spec", "]"}]}], "}"}], 
+      ",", " ", 
+      RowBox[{
+       RowBox[{"spec", " ", "/.", " ", 
+        RowBox[{"{", 
          RowBox[{
-          RowBox[{"sym_Symbol", "?", 
-           RowBox[{"(", 
-            RowBox[{
-             RowBox[{"MemberQ", "[", 
-              RowBox[{"nonterminals", ",", "#"}], "]"}], "&"}], ")"}]}], 
-          "\[RuleDelayed]", 
-          RowBox[{"sym", "[", "indet", "]"}]}]}], "\[IndentingNewLine]", 
-        "}"}]}], "//.", 
-      RowBox[{"{", "\[IndentingNewLine]", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"sum", "[", 
-          RowBox[{"first_", ",", "second_"}], "]"}], "\[RuleDelayed]", 
-         RowBox[{"first", "+", "second"}]}], ",", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"prod", "[", 
-          RowBox[{"first_", ",", "second_"}], "]"}], "\[RuleDelayed]", 
-         RowBox[{"first", "*", "second"}]}], ",", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"seq", "[", "expr_", "]"}], "\[RuleDelayed]", 
-         FractionBox["1", 
-          RowBox[{"1", "-", "expr"}]]}], ",", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"cyc", "[", "expr_", "]"}], "\[RuleDelayed]", 
-         RowBox[{"With", "[", 
+          RowBox[{"eClass", " ", "->", " ", "1"}], ",", " ", "\n", "       ", 
+          RowBox[{"zClass", " ", ":>", " ", "indet"}], ",", " ", 
           RowBox[{
-           RowBox[{"{", 
-            RowBox[{"k", "=", 
-             RowBox[{"Unique", "[", "]"}]}], "}"}], ",", 
            RowBox[{
-            UnderoverscriptBox["\[Sum]", 
-             RowBox[{"k", "=", "1"}], "\[Infinity]"], 
-            RowBox[{
-             FractionBox[
-              RowBox[{"EulerPhi", "[", "k", "]"}], "k"], 
-             RowBox[{"Log", "[", 
-              FractionBox["1", 
-               RowBox[{
-                RowBox[{"1", "-", "expr"}], "/.", 
-                RowBox[{"indet", "\[Rule]", 
-                 SuperscriptBox["indet", "k"]}]}]], "]"}]}]}]}], "]"}]}], ",",
-         "\[IndentingNewLine]", 
+            RowBox[{"(", "sym_Symbol", ")"}], "?", "\n", "         ", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"MemberQ", "[", 
+               RowBox[{"nonterminals", ",", " ", "#1"}], "]"}], " ", "&"}], 
+             " ", ")"}]}], " ", ":>", " ", "\n", "        ", 
+           RowBox[{"sym", "[", "indet", "]"}]}]}], "}"}]}], " ", "//.", " ", 
+       "\n", "     ", 
+       RowBox[{"{", 
         RowBox[{
-         RowBox[{"multiset", "[", "expr_", "]"}], "\[RuleDelayed]", 
-         RowBox[{"With", "[", 
-          RowBox[{
-           RowBox[{"{", 
-            RowBox[{"k", "=", 
-             RowBox[{"Unique", "[", "]"}]}], "}"}], ",", 
-           RowBox[{"Exp", "[", 
-            RowBox[{
-             UnderoverscriptBox["\[Sum]", 
-              RowBox[{"k", "=", "1"}], "\[Infinity]"], 
-             FractionBox[
-              RowBox[{"expr", "/.", 
-               RowBox[{"indet", "\[Rule]", 
-                SuperscriptBox["indet", "k"]}]}], "k"]}], "]"}]}], "]"}]}]}], 
-       "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
-  ";"}]], "Input",
+         RowBox[{
+          RowBox[{"sum", "[", 
+           RowBox[{"first_", ",", " ", "second_"}], "]"}], " ", ":>", " ", 
+          "\n", "       ", 
+          RowBox[{"first", " ", "+", " ", "second"}]}], ",", " ", 
+         RowBox[{
+          RowBox[{"prod", "[", 
+           RowBox[{"first_", ",", " ", "\n", "        ", "second_"}], "]"}], 
+          " ", ":>", " ", 
+          RowBox[{"first", "*", "second"}]}], ",", " ", "\n", "      ", 
+         RowBox[{
+          RowBox[{"seq", "[", "expr_", "]"}], " ", ":>", " ", 
+          RowBox[{"1", "/", 
+           RowBox[{"(", 
+            RowBox[{"1", " ", "-", " ", "expr"}], ")"}]}]}], ",", " ", "\n", 
+         "      ", 
+         RowBox[{
+          RowBox[{"cyc", "[", "expr_", "]"}], " ", ":>", " ", 
+          RowBox[{"With", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"k", " ", "=", " ", 
+              RowBox[{"Unique", "[", "]"}]}], "}"}], ",", " ", "\n", 
+            "        ", 
+            RowBox[{"Sum", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"EulerPhi", "[", "k", "]"}], "/", "k"}], ")"}], "*", 
+               "\n", "          ", 
+               RowBox[{"Log", "[", 
+                RowBox[{"1", "/", 
+                 RowBox[{"(", 
+                  RowBox[{
+                   RowBox[{"1", " ", "-", " ", "expr"}], " ", "/.", " ", 
+                   RowBox[{"indet", " ", "->", " ", "\n", "              ", 
+                    RowBox[{"indet", "^", "k"}]}]}], ")"}]}], "]"}]}], ",", 
+              " ", 
+              RowBox[{"{", 
+               RowBox[{"k", ",", " ", "1", ",", " ", "Infinity"}], "}"}]}], 
+             "]"}]}], "]"}]}], ",", " ", "\n", "      ", 
+         RowBox[{
+          RowBox[{"multiset", "[", "expr_", "]"}], " ", ":>", " ", "\n", 
+          "       ", 
+          RowBox[{"With", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"k", " ", "=", " ", 
+              RowBox[{"Unique", "[", "]"}]}], "}"}], ",", " ", "\n", 
+            "        ", 
+            RowBox[{"Exp", "[", 
+             RowBox[{"Sum", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{"expr", " ", "/.", " ", 
+                  RowBox[{"indet", " ", "->", " ", 
+                   RowBox[{"indet", "^", "k"}]}]}], ")"}], "/", "\n", 
+                "           ", "k"}], ",", " ", 
+               RowBox[{"{", 
+                RowBox[{"k", ",", " ", "1", ",", " ", "Infinity"}], "}"}]}], 
+              "]"}], "]"}]}], "]"}]}]}], "}"}]}]}], "]"}]}], ";"}], 
+  " "}]], "Input",
  CellChangeTimes->{{3.5504842514098616`*^9, 3.5504842523459153`*^9}, {
    3.5504862151471806`*^9, 3.550486236212386*^9}, {3.5504863657007923`*^9, 
    3.550486402005869*^9}, {3.550486470112764*^9, 3.5504864827584877`*^9}, {
    3.5504865590758524`*^9, 3.55048657319166*^9}, {3.550486672063315*^9, 
    3.550486736593006*^9}, {3.55048757937621*^9, 3.550487589457787*^9}, 
-   3.550487628515021*^9, 3.5505752284028764`*^9}]
+   3.550487628515021*^9, 3.5505752284028764`*^9, 3.5514792729780855`*^9},
+ FormatType->"InputForm"]
 },
 WindowSize->{784, 822},
-WindowMargins->{{-800, Automatic}, {40, Automatic}},
+WindowMargins->{{-1600, Automatic}, {40, Automatic}},
 ShowSelection->True,
 Magnification->1.4000000953674316`,
 FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (February 23, 2011)",
@@ -607,8 +634,8 @@ Cell[11349, 279, 1154, 24, 192, "Input"],
 Cell[12506, 305, 4728, 111, 442, "Input"],
 Cell[17237, 418, 384, 10, 41, "Input"],
 Cell[17624, 430, 150, 3, 41, "Input"],
-Cell[17777, 435, 2550, 57, 480, "Input"],
-Cell[20330, 494, 3483, 84, 600, "Input"]
+Cell[17777, 435, 2819, 66, 284, "Input"],
+Cell[20599, 503, 4267, 102, 416, "Input"]
 }
 ]
 *)

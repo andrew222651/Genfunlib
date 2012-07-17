@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     10918,        326]
-NotebookOptionsPosition[     10133,        299]
-NotebookOutlinePosition[     10516,        315]
-CellTagsIndexPosition[     10473,        312]
+NotebookDataLength[     11054,        327]
+NotebookOptionsPosition[     10269,        300]
+NotebookOutlinePosition[     10653,        316]
+CellTagsIndexPosition[     10610,        313]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -199,36 +199,31 @@ Cell[BoxData[
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{"(*", " ", 
-   RowBox[{
-    RowBox[{"(", "single", ")"}], " ", "integrals"}], " ", "*)"}], 
-  "\[IndentingNewLine]", 
   RowBox[{
    RowBox[{
     RowBox[{"co", "[", 
      RowBox[{
-      TagBox[
-       StyleBox[
-        RowBox[{"Integrate", "[", 
-         RowBox[{
-          RowBox[{"a", "[", "t_Symbol", "]"}], ",", 
-          RowBox[{"{", 
-           RowBox[{"t_", ",", "0", ",", "x"}], "}"}]}], "]"}],
-        ShowSpecialCharacters->False,
-        ShowStringCharacters->True,
-        NumberMarks->True],
-       FullForm], ",", "n_"}], "]"}], ":=", 
+      RowBox[{"FullForm", "[", 
+       RowBox[{"Integrate", "[", 
+        RowBox[{
+         RowBox[{"a", "[", "t_Symbol", "]"}], ",", " ", "\n", "      ", 
+         RowBox[{"{", 
+          RowBox[{"t_", ",", " ", "0", ",", " ", "x"}], "}"}]}], "]"}], "]"}],
+       ",", " ", "n_"}], "]"}], " ", ":=", " ", "\n", "   ", 
     RowBox[{
      RowBox[{"Boole", "[", 
-      RowBox[{"n", "\[GreaterEqual]", "1"}], "]"}], 
-     FractionBox["1", "n"], 
+      RowBox[{"n", " ", ">=", " ", "1"}], "]"}], "*", 
+     RowBox[{"(", 
+      RowBox[{"1", "/", "n"}], ")"}], "*", 
      RowBox[{"cof", "[", 
-      RowBox[{"n", "-", "1"}], "]"}]}]}], ";"}]}]], "Input",
+      RowBox[{"n", " ", "-", " ", "1"}], "]"}]}]}], ";"}], " "}]], "Input",
  CellChangeTimes->{{3.549890715769835*^9, 3.5498907219381876`*^9}, {
-  3.549890778114401*^9, 3.549890789755067*^9}, {3.549890848019399*^9, 
-  3.5498908524036503`*^9}, {3.54989089068384*^9, 3.5498909117870464`*^9}, {
-  3.549890951803335*^9, 3.5498909597227883`*^9}, {3.5498910169310603`*^9, 
-  3.5498910239484615`*^9}, {3.54989136361889*^9, 3.5498913651069746`*^9}}],
+   3.549890778114401*^9, 3.549890789755067*^9}, {3.549890848019399*^9, 
+   3.5498908524036503`*^9}, {3.54989089068384*^9, 3.5498909117870464`*^9}, {
+   3.549890951803335*^9, 3.5498909597227883`*^9}, {3.5498910169310603`*^9, 
+   3.5498910239484615`*^9}, {3.54989136361889*^9, 3.5498913651069746`*^9}, 
+   3.551479378901144*^9},
+ FormatType->"InputForm"],
 
 Cell[BoxData[
  RowBox[{
@@ -257,20 +252,26 @@ Cell[BoxData[
 Cell[BoxData[
  RowBox[{
   RowBox[{
-   RowBox[{"co", "[", 
-    RowBox[{
-     SuperscriptBox[
-      RowBox[{"a", "[", "x", "]"}], "k_"], ",", "n_"}], "]"}], ":=", 
-   RowBox[{"co", "[", 
-    RowBox[{
-     RowBox[{"Unevaluated", "[", 
+   RowBox[{
+    RowBox[{"co", "[", 
+     RowBox[{
       RowBox[{
-       RowBox[{"a", "[", "x", "]"}], "*", 
-       SuperscriptBox[
-        RowBox[{"a", "[", "x", "]"}], 
-        RowBox[{"k", "-", "1"}]]}], "]"}], ",", "n"}], "]"}]}], 
-  ";"}]], "Input",
- CellChangeTimes->{{3.549892074403898*^9, 3.549892079651198*^9}}],
+       RowBox[{"a", "[", "x", "]"}], "^", 
+       RowBox[{"(", "k_", ")"}]}], ",", " ", "n_"}], "]"}], " ", ":=", " ", 
+    "\n", "   ", 
+    RowBox[{"co", "[", 
+     RowBox[{
+      RowBox[{"Unevaluated", "[", 
+       RowBox[{
+        RowBox[{"a", "[", "x", "]"}], "*", "\n", "      ", 
+        RowBox[{
+         RowBox[{"a", "[", "x", "]"}], "^", 
+         RowBox[{"(", 
+          RowBox[{"k", " ", "-", " ", "1"}], ")"}]}]}], "]"}], ",", " ", 
+      "n"}], "]"}]}], ";"}], " "}]], "Input",
+ CellChangeTimes->{{3.549892074403898*^9, 3.549892079651198*^9}, 
+   3.551479384513465*^9},
+ FormatType->"InputForm"],
 
 Cell[BoxData[
  RowBox[{"(*", " ", 
@@ -298,7 +299,7 @@ Cell[BoxData[
    3.5499180110923915`*^9}, 3.549918129357156*^9}]
 },
 WindowSize->{784, 822},
-WindowMargins->{{-800, Automatic}, {40, Automatic}},
+WindowMargins->{{-1600, Automatic}, {40, Automatic}},
 Magnification->1.5000001192092896`,
 FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (February 23, 2011)",
 StyleDefinitions->"Default.nb"
@@ -323,11 +324,11 @@ Cell[2864, 89, 912, 28, 152, "Input"],
 Cell[3779, 119, 996, 26, 128, "Input"],
 Cell[4778, 147, 1284, 30, 179, "Input"],
 Cell[6065, 179, 642, 18, 98, "Input"],
-Cell[6710, 199, 1159, 31, 125, "Input"],
-Cell[7872, 232, 577, 16, 71, "Input"],
-Cell[8452, 250, 199, 4, 43, "Input"],
-Cell[8654, 256, 501, 16, 48, "Input"],
-Cell[9158, 274, 971, 23, 125, "Input"]
+Cell[6710, 199, 1087, 26, 90, "Input"],
+Cell[7800, 227, 577, 16, 71, "Input"],
+Cell[8380, 245, 199, 4, 43, "Input"],
+Cell[8582, 251, 709, 22, 90, "Input"],
+Cell[9294, 275, 971, 23, 125, "Input"]
 }
 ]
 *)
