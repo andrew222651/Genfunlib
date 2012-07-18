@@ -80,7 +80,7 @@ cflReversal[grammar_] :=
    NonCommutativeMultiply[args__] :> 
     NonCommutativeMultiply @@ Reverse@{args};
 
-cflConcatenation[grammar1_, grammar2_] := Module[
+cflConcat[grammar1_, grammar2_] := Module[
    {
     nonTerms1 = nonTerminals[grammar1],
     nonTerms2 = nonTerminals[grammar2],

@@ -1,5 +1,7 @@
 (* Mathematica Package *)
 
+(* TODO: allow EmptyString in symbolic regexes? *)
+
 BeginPackage["regular`"]
 (* Exported symbols added here with SymbolName::usage *)  
 
