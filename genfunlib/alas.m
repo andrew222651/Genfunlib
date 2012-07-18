@@ -1,7 +1,6 @@
 (* Mathematica Package *)
 
-BeginPackage["alas`"]
-(* Exported symbols added here with SymbolName::usage *)  
+BeginPackage["genfunlib`alas`"]
 
 Begin["`Private`"] (* Begin Private Context *) 
 (* TODO: more constructions, restrictions, additional parameters via \

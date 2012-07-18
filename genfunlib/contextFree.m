@@ -1,7 +1,6 @@
 (* Mathematica Package *)
 
-BeginPackage["contextFree`"]
-(* Exported symbols added here with SymbolName::usage *)  
+BeginPackage["genfunlib`contextFree`"]
 
 Begin["`Private`"] (* Begin Private Context *) 
 Protect[EmptyString];

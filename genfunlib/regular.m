@@ -1,9 +1,6 @@
 (* Mathematica Package *)
 
-(* TODO: allow EmptyString in symbolic regexes? *)
-
-BeginPackage["regular`"]
-(* Exported symbols added here with SymbolName::usage *)  
+BeginPackage["genfunlib`regular`"]
 
 Begin["`Private`"] (* Begin Private Context *) 
 (* transitions is a matrix like \

@@ -1,6 +1,6 @@
 (* Mathematica Package *)
 
-BeginPackage["util`"]
+BeginPackage["genfunlib`util`"]
 
 egf2ogf::usage = "efg2ogf[f, z] gives the OGF form of the EGF f in the indeterminate z";
 ogf2egf::usage = "ofg2egf[f, z] gives the EGF form of the OGF f in the indeterminate z";

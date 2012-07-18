@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     24338,        570]
-NotebookOptionsPosition[     22763,        514]
-NotebookOutlinePosition[     23204,        532]
-CellTagsIndexPosition[     23161,        529]
+NotebookDataLength[     23366,        538]
+NotebookOptionsPosition[     21908,        486]
+NotebookOutlinePosition[     22344,        504]
+CellTagsIndexPosition[     22301,        501]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -24,34 +24,6 @@ Cell["genfunlib Developer Documentation", "Title",
  CellChangeTimes->{{3.5258767471351247`*^9, 3.525876752367424*^9}, {
   3.525877176063658*^9, 3.52587718011189*^9}, {3.5289793836424613`*^9, 
   3.5289793850245404`*^9}}],
-
-Cell[CellGroupData[{
-
-Cell["Overview", "Section",
- CellChangeTimes->{{3.5289844034575787`*^9, 3.528984405168676*^9}}],
-
-Cell[TextData[{
- "genfunlib\n\t",
- StyleBox["Package1",
-  FontWeight->"Bold"],
- "\n\t\t",
- StyleBox["User Documentation",
-  FontWeight->"Bold"],
- "\n\t\t\tTutorial\n\t\t\tGuide/Help Files\n\t",
- StyleBox["Package2",
-  FontWeight->"Bold"],
- "\n\t\t",
- StyleBox["User Documentation",
-  FontWeight->"Bold"],
- "\n\t\t\tTutorial\n\t\t\tGuide/Help Files\n\t...\n\tEnumerative \
-Combinatorics Algorithms?\n\tDeveloper Documentation (this)\n",
- StyleBox["genfunlib in Action",
-  FontWeight->"Bold"]
-}], "Text",
- CellChangeTimes->{{3.5289842614644566`*^9, 3.528984361041152*^9}, {
-   3.531670138893263*^9, 3.5316701461876802`*^9}, 3.5363468025401254`*^9, {
-   3.536347263436487*^9, 3.5363472647875643`*^9}, 3.551526297097167*^9}]
-}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -514,7 +486,7 @@ Cell[BoxData[
 },
 WindowToolbars->"EditBar",
 WindowSize->{1020, 822},
-WindowMargins->{{-1036, Automatic}, {40, Automatic}},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
 DefaultNewCellStyle->"Text",
 Magnification->1.4000000953674316`,
 FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (February 23, 2011)",
@@ -534,40 +506,36 @@ Notebook[{
 Cell[CellGroupData[{
 Cell[579, 22, 219, 3, 115, "Title"],
 Cell[CellGroupData[{
-Cell[823, 29, 95, 1, 98, "Section"],
-Cell[921, 32, 720, 20, 317, "Text"]
+Cell[823, 29, 104, 1, 98, "Section"],
+Cell[930, 32, 1085, 19, 218, "Text"],
+Cell[2018, 53, 1332, 21, 345, "Text"],
+Cell[3353, 76, 1673, 24, 86, "Text"],
+Cell[5029, 102, 1523, 39, 151, "Text"],
+Cell[6555, 143, 1014, 23, 119, "Text"],
+Cell[7572, 168, 1607, 23, 53, "Text"],
+Cell[9182, 193, 134, 1, 53, "Text"],
+Cell[9319, 196, 97, 1, 53, "Text"],
+Cell[9419, 199, 731, 10, 53, "Text"]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[1678, 57, 104, 1, 55, "Section"],
-Cell[1785, 60, 1085, 19, 156, "Text"],
-Cell[2873, 81, 1332, 21, 247, "Text"],
-Cell[4208, 104, 1673, 24, 62, "Text"],
-Cell[5884, 130, 1523, 39, 108, "Text"],
-Cell[7410, 171, 1014, 23, 85, "Text"],
-Cell[8427, 196, 1607, 23, 38, "Text"],
-Cell[10037, 221, 134, 1, 38, "Text"],
-Cell[10174, 224, 97, 1, 38, "Text"],
-Cell[10274, 227, 731, 10, 38, "Text"]
-}, Closed]],
+Cell[10187, 214, 88, 1, 55, "Section"],
+Cell[10278, 217, 1348, 20, 179, "Text"],
 Cell[CellGroupData[{
-Cell[11042, 242, 88, 1, 55, "Section"],
-Cell[11133, 245, 1348, 20, 179, "Text"],
+Cell[11651, 241, 105, 1, 52, "Subsection"],
+Cell[11759, 244, 489, 13, 63, "Text"],
+Cell[12251, 259, 201, 3, 35, "Subsubsection"],
 Cell[CellGroupData[{
-Cell[12506, 269, 105, 1, 52, "Subsection"],
-Cell[12614, 272, 489, 13, 63, "Text"],
-Cell[13106, 287, 201, 3, 35, "Subsubsection"],
-Cell[CellGroupData[{
-Cell[13332, 294, 210, 3, 25, "Subsubsection"],
-Cell[13545, 299, 318, 6, 109, "Text"]
+Cell[12477, 266, 210, 3, 25, "Subsubsection"],
+Cell[12690, 271, 318, 6, 109, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[13900, 310, 184, 2, 35, "Subsubsection"],
-Cell[14087, 314, 6910, 154, 612, "Text"]
+Cell[13045, 282, 184, 2, 35, "Subsubsection"],
+Cell[13232, 286, 6910, 154, 612, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[21034, 473, 189, 2, 35, "Subsubsection"],
-Cell[21226, 477, 955, 20, 109, "Text"],
-Cell[22184, 499, 527, 9, 63, "Code"]
+Cell[20179, 445, 189, 2, 49, "Subsubsection"],
+Cell[20371, 449, 955, 20, 152, "Text"],
+Cell[21329, 471, 527, 9, 88, "Code"]
 }, Open  ]]
 }, Open  ]]
 }, Open  ]]

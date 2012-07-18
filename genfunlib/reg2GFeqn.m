@@ -1,7 +1,6 @@
 (* Mathematica Package *)
 
-BeginPackage["rec2GFeqn`"]
-(* Exported symbols added here with SymbolName::usage *)  
+BeginPackage["genfunlib`rec2GFeqn`"]
 
 Begin["`Private`"] (* Begin Private Context *) 
 (* problem solved: just take GeneratingFunction of both sides. \
