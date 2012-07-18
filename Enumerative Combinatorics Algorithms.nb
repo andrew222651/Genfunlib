@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     12369,        392]
-NotebookOptionsPosition[     10310,        315]
-NotebookOutlinePosition[     10880,        337]
-CellTagsIndexPosition[     10837,        334]
+NotebookDataLength[     12500,        396]
+NotebookOptionsPosition[     10403,        318]
+NotebookOutlinePosition[     10973,        340]
+CellTagsIndexPosition[     10930,        337]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -27,6 +27,9 @@ Counting and Enumeration Algorithms\
   3.5258763915117846`*^9, 3.525876398863205*^9}, {3.525876468610194*^9, 
   3.5258764906164527`*^9}, {3.525887223665348*^9, 3.5258872250324264`*^9}, {
   3.5485369909220505`*^9, 3.548536996464367*^9}}],
+
+Cell["test", "Text",
+ CellChangeTimes->{{3.5515667496045074`*^9, 3.5515667498375206`*^9}}],
 
 Cell[CellGroupData[{
 
@@ -338,60 +341,61 @@ CellTagsIndex->{}
 Notebook[{
 Cell[CellGroupData[{
 Cell[579, 22, 327, 6, 203, "Title"],
+Cell[909, 30, 90, 1, 41, "Text"],
 Cell[CellGroupData[{
-Cell[931, 32, 162, 2, 54, "Subsection"],
-Cell[1096, 36, 1289, 25, 458, "Text"]
+Cell[1024, 35, 162, 2, 54, "Subsection"],
+Cell[1189, 39, 1289, 25, 458, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[2422, 66, 155, 2, 54, "Subsection"],
-Cell[2580, 70, 960, 19, 262, "Text"]
+Cell[2515, 69, 155, 2, 54, "Subsection"],
+Cell[2673, 73, 960, 19, 262, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[3577, 94, 190, 4, 54, "Subsection"],
-Cell[3770, 100, 1281, 34, 164, "Text"]
+Cell[3670, 97, 190, 4, 54, "Subsection"],
+Cell[3863, 103, 1281, 34, 246, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[5088, 139, 220, 5, 54, "Subsection"],
-Cell[5311, 146, 674, 15, 140, "Text"]
+Cell[5181, 142, 220, 5, 81, "Subsection"],
+Cell[5404, 149, 674, 15, 210, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[6022, 166, 115, 1, 54, "Subsection"],
-Cell[6140, 169, 285, 9, 164, "Text"]
+Cell[6115, 169, 115, 1, 81, "Subsection"],
+Cell[6233, 172, 285, 9, 246, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[6462, 183, 130, 3, 54, "Subsection"],
-Cell[6595, 188, 173, 5, 66, "Text"]
+Cell[6555, 186, 130, 3, 81, "Subsection"],
+Cell[6688, 191, 173, 5, 99, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[6805, 198, 166, 2, 54, "Subsection"],
-Cell[6974, 202, 102, 1, 41, "Text"]
+Cell[6898, 201, 166, 2, 81, "Subsection"],
+Cell[7067, 205, 102, 1, 61, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[7113, 208, 99, 1, 54, "Subsection"],
-Cell[7215, 211, 798, 17, 140, "Text"]
+Cell[7206, 211, 99, 1, 81, "Subsection"],
+Cell[7308, 214, 798, 17, 210, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[8050, 233, 108, 1, 54, "Subsection"],
-Cell[8161, 236, 215, 4, 66, "Text"]
+Cell[8143, 236, 108, 1, 81, "Subsection"],
+Cell[8254, 239, 215, 4, 99, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[8413, 245, 103, 1, 54, "Subsection"],
+Cell[8506, 248, 103, 1, 81, "Subsection"],
 Cell[CellGroupData[{
-Cell[8541, 250, 103, 1, 38, "Subsubsection"],
-Cell[8647, 253, 351, 10, 67, "Code"]
+Cell[8634, 253, 103, 1, 57, "Subsubsection"],
+Cell[8740, 256, 351, 10, 100, "Code"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[9035, 268, 105, 1, 38, "Subsubsection"],
-Cell[9143, 271, 421, 12, 67, "Code"]
+Cell[9128, 271, 105, 1, 57, "Subsubsection"],
+Cell[9236, 274, 421, 12, 100, "Code"]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[9613, 289, 103, 1, 54, "Subsection"],
-Cell[9719, 292, 135, 3, 41, "Text"]
+Cell[9706, 292, 103, 1, 81, "Subsection"],
+Cell[9812, 295, 135, 3, 61, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[9891, 300, 95, 1, 54, "Subsection"],
-Cell[9989, 303, 293, 8, 140, "Text"]
+Cell[9984, 303, 95, 1, 81, "Subsection"],
+Cell[10082, 306, 293, 8, 210, "Text"]
 }, Open  ]]
 }, Open  ]]
 }
