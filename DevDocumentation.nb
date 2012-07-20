@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     23366,        538]
-NotebookOptionsPosition[     21908,        486]
-NotebookOutlinePosition[     22344,        504]
-CellTagsIndexPosition[     22301,        501]
+NotebookDataLength[     25671,        586]
+NotebookOptionsPosition[     24206,        534]
+NotebookOutlinePosition[     24647,        552]
+CellTagsIndexPosition[     24604,        549]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -246,8 +246,9 @@ Cell[TextData[{
  Cell[BoxData[
   RowBox[{
    RowBox[{"{", 
-    RowBox[{"RRGrammar", ",", " ", "CFL", ",", " ", "Regex"}], "}"}], "2", 
-   "Spec"}]], "Code",
+    RowBox[{
+    "CFL", ",", " ", "DFA", ",", " ", "Regex", ",", " ", "RRGrammar"}], "}"}],
+    "2", "Spec"}]], "Code",
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
     3.5515474012058425`*^9, 3.5515474106853848`*^9}}],
@@ -255,7 +256,8 @@ Cell[TextData[{
 }], "Text",
  CellChangeTimes->{
   3.551547449014577*^9, {3.551556063677307*^9, 3.5515560689596095`*^9}, {
-   3.551559793903664*^9, 3.5515598663328066`*^9}}],
+   3.551559793903664*^9, 3.5515598663328066`*^9}, {3.551612895421276*^9, 
+   3.5516129172375245`*^9}}],
 
 Cell["Species", "Subsubsection",
  CellChangeTimes->{{3.5515457794760847`*^9, 3.551545811340907*^9}, 
@@ -270,12 +272,13 @@ Cell["Symbolic Method", "Subsubsection",
   3.551547971284449*^9}}],
 
 Cell[TextData[{
- Cell[BoxData["symbolicMethod2GFeq"], "Code",
+ Cell[BoxData["Spec2GFeq"], "Code",
   CellChangeTimes->{3.5515469211423845`*^9}],
  " \nimplicit specs\npointing, substitution\nrestrictions, additional params"
 }], "Text",
  CellChangeTimes->{{3.5515457794760847`*^9, 3.5515458571565275`*^9}, {
-  3.551546902852338*^9, 3.5515469252686205`*^9}}]
+  3.551546902852338*^9, 3.5515469252686205`*^9}, {3.5516131787254806`*^9, 
+  3.551613179397519*^9}}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -353,7 +356,8 @@ possible \n",
  Cell[BoxData[
   RowBox[{
    RowBox[{"{", 
-    RowBox[{"Regex", ",", "RRGrammar"}], "}"}], "2", "GF"}]], "Code",
+    RowBox[{"DFA", ",", " ", "Regex", ",", " ", "RRGrammar"}], "}"}], "2", 
+   "GF"}]], "Code",
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
     3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
@@ -363,7 +367,8 @@ possible \n",
  Cell[BoxData[
   RowBox[{
    RowBox[{"{", 
-    RowBox[{"Regex", ",", "RRGrammar"}], "}"}], "2", "Spec"}]], "Code",
+    RowBox[{"DFA", ",", " ", "Regex", ",", " ", "RRGrammar"}], "}"}], "2", 
+   "Spec"}]], "Code",
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
     3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
@@ -383,7 +388,18 @@ possible \n",
     3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
     3.5515475726696496`*^9}, {3.5515479302621026`*^9, 
     3.5515479373255067`*^9}}],
- "\n\terror if regex/rrgrammar is ambiguous\n",
+ "\n\terror if regex/rrgrammar is ambiguous\n\tuses ",
+ Cell[BoxData[
+  RowBox[{"*", "2", "Spec"}]], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}, {3.5515479302621026`*^9, 
+    3.5515479373255067`*^9}, {3.551552114077403*^9, 3.551552118709668*^9}, {
+    3.551552260078754*^9, 3.551552292454606*^9}, 3.551558134878773*^9, {
+    3.5515584576292334`*^9, 3.551558512246358*^9}, {3.551559879078536*^9, 
+    3.5515598818056917`*^9}}],
+ "\n",
  Cell[BoxData[
   RowBox[{"Disambiguate", 
    RowBox[{"{", 
@@ -425,27 +441,48 @@ matches the input format\n\nDFA, NFA, regex, right regular grammar\nclosure \
 properties, conversions\nbasic issue: preserving tags/unambiguity in \
 operations\nambiguity test via NFA test (see Book and Even papers)\nBonus: \
 words with occurrences of patterns\n\[OpenCurlyDoubleQuote]a**\
-\[CloseCurlyDoubleQuote] is not considered ambiguous in Book\nsemantic \
-validity test via symbolicmethod"
+\[CloseCurlyDoubleQuote] is not considered ambiguous in Book, niether is \
+\[OpenCurlyDoubleQuote]a* | b*\[CloseCurlyDoubleQuote].  ",
+ StyleBox["our",
+  FontSlant->"Italic"],
+ " definition of ambiguity must include ",
+ StyleBox["e",
+  FontSlant->"Italic"],
+ ".\nsemantic validity test via symbolicmethod"
 }], "Text",
  CellChangeTimes->CompressedData["
-1:eJwdy1soQwEAxvHTZoqdkGZrWmtC7pQHubU6C0nxwCgyY2uMaInpLJcNSVJa
-WCSXkraHEVaWRFMkuc4U7cGlTKTUkhdLcb7z8PV7+f4JGkO1jkMQhIwZFBYb
-8iL6Pij3e0chfJxTUHDhzqWAXe6sK7j1UsSaeszlRjLutSyHQcFyjwjOKkdZ
-3748FOSVZpZBW/pTJUwyz1TB7PchLfTeNLZB33yQhtZQrQnGuv6UJKOcr62D
-zRU6FbRsCNvh1GQsDc/qCROUaloaohi/xiWt0G7s7YfGEGcQulPGR2Dcg3UM
-SpKjF+E0tbYEBYIcJ1Q5D9fhKtexD6XDgQN4kqi8YHtl7iXMqP8JwiNP5Te0
-+R1ENGONvCAcyshvPjSL5SQ8deTLodospmDIZy+HtNNSBUuek7Tw7zqTlf7s
-3oe/spUDaFcPH7O/jp1zuBdw+aB+aJfVaBHdwwme189KdgbgwLzrFRKTmyFo
-1dyyqnjb4hjGNH1TPPwHksfnJQ==
-  "]]
+1:eJwdzF1IWnEABfBLzkF1qWF3iSOiSNnMPqCH6GMYNyrGIInNgkZWKq0PFhF1
+w7ZKa4RIELIWRbSCGNcHi5owGaI4SCJqW+Wg8KEPyLEIBmE9rEth/3MfDr+X
+c062qedFWwJFUSoSmP60pzhx4Jz1nnWVwaOZShbO7XsqYbc3/xdcOy0XfRKS
+SJKIPuPCPcgs9MnhR/170b+xIAul1Xk1cDr3uBYqrVM6WHA2Yoa7e03tMDx7
+YYFOoX4QyjxxPU3UJpsbYOvzNgO0raR3wskJmQVuNVKDMNNkfJVCjNkzXkOe
+638HOSFhGHof28fgw0PnOMxQpc7DD+znT5BhCt3Q4P6+DJckLj/MHI0G4EaO
+/oe41xf9hJrG6wu4Hqy9gtMRF5VKfKktvQ+z6KtkaFVoabjpKtHCFquChUKY
+fwYtbpsOVp0ozTC+kydq+dfrhzdZiwHIt4yGxF7X123oi3rCsGPkmyhnkx9A
+h3Q3Ikq/icKhWc8fSE2sCtBp+i1qkH5RPCCqO5ofweMdXUxNrFNVXMITR+g/
+PPAaBcgPralz8celaOBwRJ7WRHy7McXAxZwCTTvxNjiZD+8AXEcOwQ==
+  "]],
+
+Cell[BoxData[
+ RowBox[{"2", "Spec"}]], "Code",
+ CellChangeTimes->{
+  3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+   3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+   3.5515475726696496`*^9}, {3.5515479302621026`*^9, 
+   3.5515479373255067`*^9}, {3.551552114077403*^9, 3.551552118709668*^9}, {
+   3.551552260078754*^9, 3.551552292454606*^9}, 3.551558134878773*^9, {
+   3.5515584576292334`*^9, 3.551558512246358*^9}, {3.551559879078536*^9, 
+   3.5515598818056917`*^9}}]
 }, Open  ]],
 
 Cell[CellGroupData[{
 
-Cell["Context Free Languages", "Subsubsection",
+Cell["\<\
+Context Free Languages - canceled\
+\>", "Subsubsection",
  CellChangeTimes->{{3.5515457794760847`*^9, 3.5515458142850757`*^9}, 
-   3.551545888226305*^9, {3.551548324756666*^9, 3.551548329084914*^9}}],
+   3.551545888226305*^9, {3.551548324756666*^9, 3.551548329084914*^9}, {
+   3.5517822918484945`*^9, 3.5517822963107495`*^9}}],
 
 Cell[TextData[{
  Cell[BoxData[
@@ -461,32 +498,43 @@ Cell[TextData[{
     3.5515479373255067`*^9}, {3.551552114077403*^9, 3.551552118709668*^9}, {
     3.551552260078754*^9, 3.551552292454606*^9}, 3.551558134878773*^9, {
     3.5515584576292334`*^9, 3.551558512246358*^9}}],
- "\ncontext-free grammars -- cannot be tested for ambiguity or converted to \
-unambiguous form\nclosure properties\nsemantic validity test via \
-symbolicmethod"
+ "\n",
+ Cell[BoxData["CFL2GF"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}, {3.5515479302621026`*^9, 
+    3.5515479373255067`*^9}, {3.551552114077403*^9, 3.551552118709668*^9}, {
+    3.551552260078754*^9, 3.551552292454606*^9}, 3.551558134878773*^9, {
+    3.5515584576292334`*^9, 3.551558512246358*^9}}],
+ "\n\tuses ",
+ Cell[BoxData["CFL2Spec"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}}],
+ "\n\ncontext-free grammars -- cannot be tested for ambiguity or converted to \
+unambiguous form\nclosure properties\nbasic issue: preserving \
+tags/unambiguity in operations\nsemantic validity test via symbolicmethod\n",
+ StyleBox["Canceled:",
+  FontWeight->"Bold"],
+ " it\[CloseCurlyQuote]s impossible to preserve lack-of-ambiguity in unions \
+or test for it, so there\[CloseCurlyQuote]s almost no value in addition to \
+the symbolic method"
 }], "Text",
  CellChangeTimes->{{3.5515457794760847`*^9, 3.5515458142850757`*^9}, {
   3.551545888226305*^9, 3.551545891236477*^9}, {3.551558519685783*^9, 
-  3.5515585294083395`*^9}}],
-
-Cell[BoxData[
- RowBox[{"2", "Spec"}]], "Code",
- CellChangeTimes->{
-  3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
-   3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
-   3.5515475726696496`*^9}, {3.5515479302621026`*^9, 
-   3.5515479373255067`*^9}, {3.551552114077403*^9, 3.551552118709668*^9}, {
-   3.551552260078754*^9, 3.551552292454606*^9}, 3.551558134878773*^9, {
-   3.5515584576292334`*^9, 3.551558512246358*^9}, {3.551559879078536*^9, 
-   3.5515598818056917`*^9}}]
-}, Open  ]]
+  3.5515585294083395`*^9}, {3.5516124713390207`*^9, 3.55161250822013*^9}, {
+  3.551612565062381*^9, 3.5516125698296537`*^9}, {3.5516129884435973`*^9, 
+  3.551612989139637*^9}, {3.551782305000247*^9, 3.5517823791824894`*^9}, {
+  3.5517824094072185`*^9, 3.551782415784583*^9}}]
+}, Closed]]
 }, Open  ]]
 }, Open  ]]
 }, Open  ]]
 },
 WindowToolbars->"EditBar",
-WindowSize->{1020, 822},
-WindowMargins->{{0, Automatic}, {Automatic, 0}},
+WindowSize->{1051, 822},
+WindowMargins->{{-1067, Automatic}, {40, Automatic}},
 DefaultNewCellStyle->"Text",
 Magnification->1.4000000953674316`,
 FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (February 23, 2011)",
@@ -507,36 +555,36 @@ Cell[CellGroupData[{
 Cell[579, 22, 219, 3, 115, "Title"],
 Cell[CellGroupData[{
 Cell[823, 29, 104, 1, 98, "Section"],
-Cell[930, 32, 1085, 19, 218, "Text"],
-Cell[2018, 53, 1332, 21, 345, "Text"],
-Cell[3353, 76, 1673, 24, 86, "Text"],
-Cell[5029, 102, 1523, 39, 151, "Text"],
-Cell[6555, 143, 1014, 23, 119, "Text"],
-Cell[7572, 168, 1607, 23, 53, "Text"],
-Cell[9182, 193, 134, 1, 53, "Text"],
-Cell[9319, 196, 97, 1, 53, "Text"],
-Cell[9419, 199, 731, 10, 53, "Text"]
+Cell[930, 32, 1085, 19, 305, "Text"],
+Cell[2018, 53, 1332, 21, 483, "Text"],
+Cell[3353, 76, 1673, 24, 120, "Text"],
+Cell[5029, 102, 1523, 39, 211, "Text"],
+Cell[6555, 143, 1014, 23, 166, "Text"],
+Cell[7572, 168, 1607, 23, 74, "Text"],
+Cell[9182, 193, 134, 1, 74, "Text"],
+Cell[9319, 196, 97, 1, 74, "Text"],
+Cell[9419, 199, 731, 10, 74, "Text"]
 }, Closed]],
 Cell[CellGroupData[{
 Cell[10187, 214, 88, 1, 55, "Section"],
 Cell[10278, 217, 1348, 20, 179, "Text"],
 Cell[CellGroupData[{
 Cell[11651, 241, 105, 1, 52, "Subsection"],
-Cell[11759, 244, 489, 13, 63, "Text"],
-Cell[12251, 259, 201, 3, 35, "Subsubsection"],
+Cell[11759, 244, 563, 15, 63, "Text"],
+Cell[12325, 261, 201, 3, 35, "Subsubsection"],
 Cell[CellGroupData[{
-Cell[12477, 266, 210, 3, 25, "Subsubsection"],
-Cell[12690, 271, 318, 6, 109, "Text"]
+Cell[12551, 268, 210, 3, 25, "Subsubsection"],
+Cell[12764, 273, 359, 7, 109, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[13045, 282, 184, 2, 35, "Subsubsection"],
-Cell[13232, 286, 6910, 154, 612, "Text"]
+Cell[13160, 285, 184, 2, 35, "Subsubsection"],
+Cell[13347, 289, 7808, 174, 636, "Text"],
+Cell[21158, 465, 527, 9, 63, "Code"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[20179, 445, 189, 2, 49, "Subsubsection"],
-Cell[20371, 449, 955, 20, 152, "Text"],
-Cell[21329, 471, 527, 9, 88, "Code"]
-}, Open  ]]
+Cell[21722, 479, 262, 5, 35, "Subsubsection"],
+Cell[21987, 486, 2167, 42, 246, "Text"]
+}, Closed]]
 }, Open  ]]
 }, Open  ]]
 }, Open  ]]

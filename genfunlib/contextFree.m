@@ -1,4 +1,4 @@
-(* Mathematica Package *)
+(* TODO: delete this file (after all useful code has been gleaned) *)
 
 BeginPackage["genfunlib`contextFree`"]
 
