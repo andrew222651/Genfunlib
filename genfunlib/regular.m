@@ -119,6 +119,8 @@ taggedRegex2GF[regex_, indet_] := regex //. {
 http://en.wikipedia.org/wiki/Finite-state_machine # State \
 .2FEvent_table, with one extra col at the end for e-moves *)
 
+(* possible bug: states that are within e-moves from end states must be considered end states, too; e.g. (start) --e--> (end) *)
+
 nfa2dfa[{numStates_Integer, alphabetSize_Integer, transitionMatrix_, 
     acceptStates_?VectorQ, initialState_}] := Module[
    {
