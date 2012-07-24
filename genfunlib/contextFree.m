@@ -3,17 +3,18 @@
 BeginPackage["genfunlib`contextFree`"]
 
 Begin["`Private`"] (* Begin Private Context *) 
-Protect[EmptyString];
+EmptyWord = {};
+Protect[EmptyWord];
 
 grammar = {
    a -> a1 ** b | a2 ** c,
-   b -> a2 ** b ** a2 | EmptyString,
-   c -> a3 | EmptyString};
+   b -> a2 ** b ** a2 | EmptyWord,
+   c -> a3 | EmptyWord};
 
 grammar2 = {
    a -> a1 ** a | a2 ** c,
-   b -> a2 ** b ** a2 | EmptyString,
-   c -> a3 | EmptyString};
+   b -> a2 ** b ** a2 | EmptyWord,
+   c -> a3 | EmptyWord};
 
 (* name conflict with alas.nb: *)
 nonTerminals[grammar_] := (grammar /. Rule -> List)[[All, 1]];
@@ -26,7 +27,7 @@ grammar2GF[grammar_, indet_Symbol] := Module[
    ret = Replace[ret, 
      sym_Symbol /; ! (sym === Equal || 
           sym === NonCommutativeMultiply || sym === Alternatives || 
-          sym === EmptyString || MemberQ[nonTerms, sym]) :> indet, 
+          sym === EmptyWord || MemberQ[nonTerms, sym]) :> indet, 
      Infinity];
    ret = Replace[ret, 
      sym_Symbol /; MemberQ[nonTerms, sym] :> sym[indet], Infinity];
@@ -34,7 +35,7 @@ grammar2GF[grammar_, indet_Symbol] := Module[
      Heads -> True];
    ret = Replace[ret, NonCommutativeMultiply :> Times, Infinity, 
      Heads -> True];
-   ret = Replace[ret, EmptyString :> 1, Infinity];
+   ret = Replace[ret, EmptyWord :> 1, Infinity];
    ret
    ];
 
@@ -46,13 +47,13 @@ grammar2spec[grammar_] := Module[
    ret = Replace[ret, 
      sym_Symbol /; ! (sym === Equal || 
           sym === NonCommutativeMultiply || sym === Alternatives || 
-          sym === EmptyString || MemberQ[nonTerms, sym]) :> zClass, 
+          sym === EmptyWord || MemberQ[nonTerms, sym]) :> zClass, 
      Infinity];
    ret = Replace[ret, Verbatim[Alternatives] :> sum, Infinity, 
      Heads -> True];
    ret = Replace[ret, NonCommutativeMultiply :> prod, Infinity, 
      Heads -> True];
-   ret = Replace[ret, EmptyString :> eClass, Infinity];
+   ret = Replace[ret, EmptyWord :> eClass, Infinity];
    ret
    ];
 
@@ -93,8 +94,8 @@ cflConcat[grammar1_, grammar2_] := Module[
    rules = MapThread[Rule, {commonNonTerms, replacements}];
    initial2 = grammar2[[1, 1]] /. rules;
    {grammar1 /. {Verbatim[Rule][nonTerm_, 
-         EmptyString] :> (nonTerm_ -> initial2), 
-       Verbatim[Alternatives][pre___, EmptyString, post___] :> 
+         EmptyWord] :> (nonTerm_ -> initial2), 
+       Verbatim[Alternatives][pre___, EmptyWord, post___] :> 
         Alternatives[pre, initial2, post]},
      grammar2 /. rules} // Flatten
    ];
@@ -105,9 +106,9 @@ cflStar[grammar1_] := Module[
     },
    Replace[
     grammar1, {Verbatim[Rule][nonTerm_, 
-       EmptyString] :> (nonTerm_ -> initial1 | EmptyString), 
-     Verbatim[Alternatives][pre___, EmptyString, post___] :> 
-      Alternatives[pre, EmptyString, initial1, post]}, Infinity]
+       EmptyWord] :> (nonTerm_ -> initial1 | EmptyWord), 
+     Verbatim[Alternatives][pre___, EmptyWord, post___] :> 
+      Alternatives[pre, EmptyWord, initial1, post]}, Infinity]
    ];
 End[] (* End Private Context *)
 

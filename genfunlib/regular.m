@@ -3,6 +3,104 @@
 BeginPackage["genfunlib`regular`"]
 
 Begin["`Private`"] (* Begin Private Context *) 
+
+(* name conflict with alas.nb: *)
+nonTerminals[grammar_] := (grammar /. Rule -> List)[[All, 1]];
+
+validateNFA[{numStates_, alphabet_, transitionMatrix_, acceptStates_, 
+	initialState_}] := Module[
+	{
+		ok = True
+	},
+	ok = ok && Head[numStates] == Integer && numStates >= 0;
+	ok = ok && MatchQ[alphabet, {__String}] && !MemberQ[alphabet, ""];
+	ok = ok && numStates == 0 || MatrixQ[transitionMatrix, MatchQ[#, {___Integer}] && 
+		(Max[#] <= numStates && Min[#] >= 1) &];
+	ok = ok && numStates == 0 || Dimensions[transitionMatrix, 2] == {numStates, Length[alphabet] + 1};
+	ok = ok && MatchQ[acceptStates, {___Integer}] && (numStates == 0 || 
+		(Max[acceptStates] <= numStates && Min[acceptStates] >= 1));
+	ok = ok && numStates == 0 || (Head[initialState] == Integer && 1 <= initialState <= numStates);
+	ok
+];
+validateNFA[_] := False;
+	
+validateDFA[{numStates_, alphabet_, transitionMatrix_, acceptStates_, 
+	initialState_}] := Module[
+	{
+		ok = True
+	},
+	ok = ok && Head[numStates] == Integer && numStates >= 0;
+	ok = ok && MatchQ[alphabet, {__String}] && !MemberQ[alphabet, ""];
+	ok = ok && numStates == 0 || MatrixQ[transitionMatrix, Head[#] == Integer && 
+		(# <= numStates && # >= 1) &];
+	ok = ok && numStates == 0 || Dimensions[transitionMatrix, 2] == {numStates, Length[alphabet]};
+	ok = ok && MatchQ[acceptStates, {___Integer}] && (numStates == 0 || 
+		(Max[acceptStates] <= numStates && Min[acceptStates] >= 1));
+	ok = ok && numStates == 0 || (Head[initialState] == Integer && 1 <= initialState <= numStates);
+	ok
+];
+validateDFA[_] := False;
+
+validateStringRegex[RegularExpression[regex_] | regex_] := Module[
+	{
+		ok = True
+	},
+	ok = ok && Head[regex] = String;
+	ok = ok && StringMatchQ[regex, (LetterCharacter | DigitCharacter | "\\*" | "(" | 
+    ")" | "|") ...];
+    ok = ok && Check[StringMatchQ["", regex], $Failed] != $Failed;
+    ok
+];   
+
+validateSymbolicRegex[EmptyWord] := True;
+validateSymbolicRegex[str_String /; str != ""] := True;
+validateSymbolicRegex[star[regex_]] := validateSymbolicRegex[regex];
+validateSymbolicRegex[or[regexes__]] := And @@ validateSymbolicRegex /@ {regexes};
+validateSymbolicRegex[concat[regexes__]] := And @@ validateSymbolicRegex /@ {regexes};
+validateSymbolicRegex[_] := False;
+
+validateRRGrammar[grammar: {(_ -> _) ...}] := Module[
+	{
+		ok = True,
+		nonTerms = nonTerminals[grammar],
+		validateTerm
+	},
+	ok = ok && MatchQ[nonTerms, (sym_Symbol | sym_Symbol[n_Integer]) ...];
+	
+	validateTerm[EmptyWord] := True;
+	validateTerm[sym_Symbol /; MemberQ[nonTerms, sym]] := True;
+	validateTerm[sym_Symbol[n_Integer] /; MemberQ[nonTerms, sym[n]]] := True;
+	validateTerm[concat[str_String /; str != "", sym_Symbol /; MemberQ[nonTerms, sym]]] := True;
+	validateTerm[ concat[str_String /; str != "", sym_Symbol[n_Integer] /; MemberQ[nonTerms, sym[n]]] ] := True;
+	validateTerm[_] := False;
+	
+	ok = ok && MatchQ[grammar[[All,2]], ( term_ /; validateTerm[term] | or[ (arg_ /; validateTerm[arg]) .. ]) ...];
+	
+	ok
+];
+validateRRGrammar[_] := False;
+
+validateDigraph[{graph_, startVertices_List, endVertices_List, eAccepted_}] := Module[
+	{
+		ok = True,
+		vertices
+	},
+	(* validate graph *)
+	ok = ok && ((EmptyGraphQ[graph] && VertexCount[graph] == 0) || DirectedGraphQ[graph]);
+	vertices = VertexList[graph];
+	ok = ok && MatchQ[vertices, {___Integer}];
+	ok = ok && And @@ ( (Head[PropertyValue[{graph, #}, VertexLabels]] == String && 
+		PropertyValue[{graph, #}, VertexLabels] != "") & /@ vertices );
+	(* validate vertex lists *)
+	ok = ok && Union[startVertices, endVertices, vertices] == Union[vertices];
+	(* validate eAccedted *)
+	ok = ok && ( (eAccepted == True) || (eAccepted == False) );
+	
+	ok
+];
+validateDigraph[_] := False;
+
+
 (* transitions is a matrix like \
 http://en.wikipedia.org/wiki/Finite-state_machine # State \
 .2FEvent_table *)
@@ -116,8 +214,8 @@ taggedRegex2GF[regex_, indet_] := regex //. {
 (* NFA to DFA *)
 
 (* transitions is transpose of a matrix like \
-http://en.wikipedia.org/wiki/Finite-state_machine # State \
-.2FEvent_table, with one extra col at the end for e-moves *)
+n, 
+with one extra col at the end for e-moves *)
 
 (* possible bug: states that are within e-moves from end states must be considered end states, too; e.g. (start) --e--> (end) *)
 
