@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     30807,        665]
-NotebookOptionsPosition[     29342,        613]
-NotebookOutlinePosition[     29940,        636]
-CellTagsIndexPosition[     29897,        633]
+NotebookDataLength[     30867,        666]
+NotebookOptionsPosition[     29402,        614]
+NotebookOutlinePosition[     30000,        637]
+CellTagsIndexPosition[     29957,        634]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -452,7 +452,7 @@ of states\n\n",
  Cell[BoxData["EmptyWord"], "Code",
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
- ", ",
+ ", a string, ",
  Cell[BoxData["sym_Symbol"], "Code",
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
@@ -605,7 +605,8 @@ with occurrences of patterns\nBonus: accept more regex syntax"
    3.552134076013892*^9}, {3.5521341295319533`*^9, 3.552134151579214*^9}, {
    3.5521366965317774`*^9, 3.5521367392912235`*^9}, {3.5521367825316963`*^9, 
    3.55213680077774*^9}, {3.55213980060532*^9, 3.552139837069406*^9}, {
-   3.5521405984839563`*^9, 3.5521406516909995`*^9}}]
+   3.5521405984839563`*^9, 3.5521406516909995`*^9}, {3.552154643371278*^9, 
+   3.552154644836362*^9}}]
 }, Open  ]]
 }, Open  ]]
 }, Open  ]]
@@ -662,7 +663,7 @@ Cell[13070, 279, 359, 7, 109, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
 Cell[13466, 291, 184, 2, 35, "Subsubsection"],
-Cell[13653, 295, 15637, 312, 1456, "Text"]
+Cell[13653, 295, 15697, 313, 1456, "Text"]
 }, Open  ]]
 }, Open  ]]
 }, Open  ]]

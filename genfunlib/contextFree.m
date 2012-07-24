@@ -16,9 +16,6 @@ grammar2 = {
    b -> a2 ** b ** a2 | EmptyWord,
    c -> a3 | EmptyWord};
 
-(* name conflict with alas.nb: *)
-nonTerminals[grammar_] := (grammar /. Rule -> List)[[All, 1]];
-
 grammar2GF[grammar_, indet_Symbol] := Module[
    {
     nonTerms = nonTerminals[grammar],

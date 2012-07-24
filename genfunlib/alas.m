@@ -26,7 +26,7 @@ expandSpec[spec_] :=
       }
      ];
 
-nonTerminals[spec_] := (spec /. Equal -> List)[[All, 1]];
+(* nonTerminals[spec_] := (spec /. Equal -> List)[[All, 1]]; *)
 
 valuation[spec_] := Module[
    {

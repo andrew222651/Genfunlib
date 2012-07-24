@@ -12,14 +12,14 @@ validateNFA[{numStates_, alphabet_, transitionMatrix_, acceptStates_,
 	{
 		ok = True
 	},
-	ok = ok && Head[numStates] == Integer && numStates >= 0;
+	ok = ok && Head[numStates] === Integer && numStates >= 0;
 	ok = ok && MatchQ[alphabet, {__String}] && !MemberQ[alphabet, ""];
-	ok = ok && numStates == 0 || MatrixQ[transitionMatrix, MatchQ[#, {___Integer}] && 
-		(Max[#] <= numStates && Min[#] >= 1) &];
-	ok = ok && numStates == 0 || Dimensions[transitionMatrix, 2] == {numStates, Length[alphabet] + 1};
+	ok = ok && (numStates == 0 || MatrixQ[transitionMatrix, MatchQ[#, {___Integer}] && 
+		(Max[#] <= numStates && Min[#] >= 1) &]);
+	ok = ok && (numStates == 0 || Dimensions[transitionMatrix, 2] == {numStates, Length[alphabet] + 1});
 	ok = ok && MatchQ[acceptStates, {___Integer}] && (numStates == 0 || 
 		(Max[acceptStates] <= numStates && Min[acceptStates] >= 1));
-	ok = ok && numStates == 0 || (Head[initialState] == Integer && 1 <= initialState <= numStates);
+	ok = ok && (numStates == 0 || (Head[initialState] === Integer && 1 <= initialState <= numStates));
 	ok
 ];
 validateNFA[_] := False;
@@ -29,14 +29,14 @@ validateDFA[{numStates_, alphabet_, transitionMatrix_, acceptStates_,
 	{
 		ok = True
 	},
-	ok = ok && Head[numStates] == Integer && numStates >= 0;
+	ok = ok && Head[numStates] === Integer && numStates >= 0;
 	ok = ok && MatchQ[alphabet, {__String}] && !MemberQ[alphabet, ""];
-	ok = ok && numStates == 0 || MatrixQ[transitionMatrix, Head[#] == Integer && 
-		(# <= numStates && # >= 1) &];
-	ok = ok && numStates == 0 || Dimensions[transitionMatrix, 2] == {numStates, Length[alphabet]};
+	ok = ok && (numStates == 0 || MatrixQ[transitionMatrix, Head[#] === Integer && 
+		(# <= numStates && # >= 1) &]);
+	ok = ok && (numStates == 0 || Dimensions[transitionMatrix, 2] == {numStates, Length[alphabet]});
 	ok = ok && MatchQ[acceptStates, {___Integer}] && (numStates == 0 || 
 		(Max[acceptStates] <= numStates && Min[acceptStates] >= 1));
-	ok = ok && numStates == 0 || (Head[initialState] == Integer && 1 <= initialState <= numStates);
+	ok = ok && (numStates == 0 || (Head[initialState] === Integer && 1 <= initialState <= numStates));
 	ok
 ];
 validateDFA[_] := False;
@@ -45,7 +45,7 @@ validateStringRegex[RegularExpression[regex_] | regex_] := Module[
 	{
 		ok = True
 	},
-	ok = ok && Head[regex] = String;
+	ok = ok && Head[regex] === String;
 	ok = ok && StringMatchQ[regex, (LetterCharacter | DigitCharacter | "\\*" | "(" | 
     ")" | "|") ...];
     ok = ok && Check[StringMatchQ["", regex], $Failed] != $Failed;
@@ -65,16 +65,17 @@ validateRRGrammar[grammar: {(_ -> _) ...}] := Module[
 		nonTerms = nonTerminals[grammar],
 		validateTerm
 	},
-	ok = ok && MatchQ[nonTerms, (sym_Symbol | sym_Symbol[n_Integer]) ...];
+	ok = ok && MatchQ[nonTerms, {(_Symbol | _Symbol[_Integer]) ...}];
 	
 	validateTerm[EmptyWord] := True;
 	validateTerm[sym_Symbol /; MemberQ[nonTerms, sym]] := True;
 	validateTerm[sym_Symbol[n_Integer] /; MemberQ[nonTerms, sym[n]]] := True;
+	validateTerm[str_String /; str != ""] := True;
 	validateTerm[concat[str_String /; str != "", sym_Symbol /; MemberQ[nonTerms, sym]]] := True;
 	validateTerm[ concat[str_String /; str != "", sym_Symbol[n_Integer] /; MemberQ[nonTerms, sym[n]]] ] := True;
 	validateTerm[_] := False;
 	
-	ok = ok && MatchQ[grammar[[All,2]], ( term_ /; validateTerm[term] | or[ (arg_ /; validateTerm[arg]) .. ]) ...];
+	ok = ok && MatchQ[grammar[[All,2]], {( _?validateTerm | or[ _?validateTerm .. ]) ...}];
 	
 	ok
 ];
@@ -86,15 +87,15 @@ validateDigraph[{graph_, startVertices_List, endVertices_List, eAccepted_}] := M
 		vertices
 	},
 	(* validate graph *)
-	ok = ok && ((EmptyGraphQ[graph] && VertexCount[graph] == 0) || DirectedGraphQ[graph]);
+	ok = ok && (EmptyGraphQ[graph] || DirectedGraphQ[graph]);
 	vertices = VertexList[graph];
 	ok = ok && MatchQ[vertices, {___Integer}];
-	ok = ok && And @@ ( (Head[PropertyValue[{graph, #}, VertexLabels]] == String && 
+	ok = ok && And @@ ( (Head[PropertyValue[{graph, #}, VertexLabels]] === String && 
 		PropertyValue[{graph, #}, VertexLabels] != "") & /@ vertices );
 	(* validate vertex lists *)
 	ok = ok && Union[startVertices, endVertices, vertices] == Union[vertices];
-	(* validate eAccedted *)
-	ok = ok && ( (eAccepted == True) || (eAccepted == False) );
+	(* validate eAccepted *)
+	ok = ok && ( (eAccepted === True) || (eAccepted === False) );
 	
 	ok
 ];
