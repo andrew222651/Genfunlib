@@ -2,13 +2,16 @@
 
 BeginPackage["genfunlib`regular`"]
 
+Protect[or, concat, star, NFA, DFA, RRGrammar, Regex, Digraph];
+SetAttributes[concat, Flat];
+SetAttributes[or, Flat];
+
 Begin["`Private`"] (* Begin Private Context *) 
 
-(* name conflict with alas.nb: *)
-nonTerminals[grammar_] := (grammar /. Rule -> List)[[All, 1]];
+nonTerminals[RRGrammar[grammar_]] := (grammar /. Rule -> List)[[All, 1]];
 
-validateNFA[{numStates_, alphabet_, transitionMatrix_, acceptStates_, 
-	initialState_}] := Module[
+validateNFA[NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
+	initialState_]] := Module[
 	{
 		ok = True
 	},
@@ -24,8 +27,8 @@ validateNFA[{numStates_, alphabet_, transitionMatrix_, acceptStates_,
 ];
 validateNFA[_] := False;
 	
-validateDFA[{numStates_, alphabet_, transitionMatrix_, acceptStates_, 
-	initialState_}] := Module[
+validateDFA[DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
+	initialState_]] := Module[
 	{
 		ok = True
 	},
@@ -41,25 +44,25 @@ validateDFA[{numStates_, alphabet_, transitionMatrix_, acceptStates_,
 ];
 validateDFA[_] := False;
 
-validateStringRegex[RegularExpression[regex_] | regex_] := Module[
+validateStringRegex[RegularExpression[regex_String]] := Module[
 	{
 		ok = True
 	},
-	ok = ok && Head[regex] === String;
 	ok = ok && StringMatchQ[regex, (LetterCharacter | DigitCharacter | "\\*" | "(" | 
     ")" | "|") ...];
     ok = ok && Check[StringMatchQ["", regex], $Failed] != $Failed;
     ok
 ];   
+validateStringRegex[_] := False;
 
-validateSymbolicRegex[EmptyWord] := True;
-validateSymbolicRegex[str_String /; str != ""] := True;
-validateSymbolicRegex[star[regex_]] := validateSymbolicRegex[regex];
-validateSymbolicRegex[or[regexes__]] := And @@ validateSymbolicRegex /@ {regexes};
-validateSymbolicRegex[concat[regexes__]] := And @@ validateSymbolicRegex /@ {regexes};
+validateSymbolicRegex[Regex[EmptyWord]] := True;
+validateSymbolicRegex[Regex[str_String /; str != ""]] := True;
+validateSymbolicRegex[Regex[star[regex_]]] := validateSymbolicRegex[Regex[regex]];
+validateSymbolicRegex[Regex[or[regexes__]]] := And @@ validateSymbolicRegex /@ Regex /@ {regexes};
+validateSymbolicRegex[Regex[concat[regexes__]]] := And @@ validateSymbolicRegex /@ Regex /@ {regexes};
 validateSymbolicRegex[_] := False;
 
-validateRRGrammar[grammar: {(_ -> _) ...}] := Module[
+validateRRGrammar[RRGrammar[grammar:{(_ -> _) ...}]] := Module[
 	{
 		ok = True,
 		nonTerms = nonTerminals[grammar],
@@ -81,7 +84,7 @@ validateRRGrammar[grammar: {(_ -> _) ...}] := Module[
 ];
 validateRRGrammar[_] := False;
 
-validateDigraph[{graph_, startVertices_List, endVertices_List, eAccepted_}] := Module[
+validateDigraph[Digraph[graph_, startVertices_List, endVertices_List, eAccepted_]] := Module[
 	{
 		ok = True,
 		vertices
@@ -101,6 +104,125 @@ validateDigraph[{graph_, startVertices_List, endVertices_List, eAccepted_}] := M
 ];
 validateDigraph[_] := False;
 
+(* http://en.wikipedia.org/wiki/DFA_minimization#Hopcroft \
+.27s_algorithm *)
+hopcroft[DFA[0, alphabet_, transitionMatrix_, acceptStates_, 
+    initialState_]] := 
+  DFA[0, alphabet, transitionMatrix, acceptStates, initialState];
+
+hopcroft[DFA[numStates_, alphabet_, transitionMatrix_, {}, 
+    initialState_]] := 
+  DFA[0, alphabet, transitionMatrix, {}, initialState];
+
+hopcroft[DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
+    initialState_]] := Module[
+   {
+    p = {Sort@acceptStates, 
+      Complement[Range[numStates], acceptStates]},
+    w = {Sort@acceptStates}, a, c, x
+    },
+   While[Length[w] > 0,
+    a = First[w]; w = Delete[w, 1];
+    For[c = 1, c <= Length[alphabet], c++,
+     x = Flatten@
+       Position[transitionMatrix[[All, c]], 
+        _?(MemberQ[a, #] &), {1}, Heads -> False];
+     Map[
+      (
+        p = 
+         Union[p /. # :> 
+            Sequence[Intersection[x, #], Complement[#, x]]];
+        If[MemberQ[w, #],
+         w = 
+          Union[w /. # :> 
+             Sequence[Intersection[x, #], Complement[#, x]]],
+         (* else *)
+         If[Length[Intersection[x, #]] <= Length[Complement[#, x]],
+          w = Union[w, {Intersection[x, #]}],
+          (* else *)
+          w = Union[w, {Complement[#, x]}]
+          (* end else *)
+          ]
+         (* end else *)
+         ]
+        ) &,
+      Select[p, Intersection[#, x] != {} &]
+      ];
+     ];
+    ];
+   p = DeleteCases[p, {}];
+   DFA[
+    Length[p],
+    alphabet,
+    Table[
+     First@Flatten@
+       Position[
+        p, _?(MemberQ[#, transitionMatrix[[First@p[[s]], c]]] &), {1},
+         Heads -> False], {s, 1, Length[p]}, {c, 1, Length[alphabet]}],
+    Flatten@
+     Position[p, _?(Intersection[#, acceptStates] != {} &), {1}, 
+      Heads -> False],
+    First@
+     Flatten@Position[p, _?(MemberQ[#, initialState] &), {1}, 
+       Heads -> False]
+    ]
+];
+
+(* http://en.wikipedia.org/wiki/DFA_minimization# Unreachable_states *)
+removeUnreachables[
+   DFA[0, alphabet_, transitionMatrix_, acceptStates_, 
+    initialState_]] := 
+  DFA[0, alphabet, transitionMatrix, {}, initialState];
+
+removeUnreachables[
+   DFA[numStates_, alphabet_, transitionMatrix_, {}, initialState_]] :=
+   DFA[0, alphabet, transitionMatrix, {}, initialState];
+
+(* DFA with some states, some of which are accepting states *)
+removeUnreachables[
+   DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
+    initialState_]] := Module[
+   {
+    reachables = {initialState}, newStates = {initialState},
+    temp, unreachables,
+    unreachable,
+    newTransitionMatrix = transitionMatrix, 
+    newInitialState = initialState, newNumStates = numStates, 
+    newAcceptStates = acceptStates
+    },
+   (* determine unreachables *)
+   While[newStates != {},
+    temp = Union@Flatten@transitionMatrix[[newStates, All]];
+    newStates = Complement[temp, reachables];
+    reachables = Union[reachables, newStates];
+    ];
+   unreachables = Reverse@Complement[Range[numStates], reachables];
+   
+   (* delete unreachables *)
+   While[unreachables != {},
+    (* take the greatest unreachable *)
+    unreachable = First@unreachables; 
+    unreachables = Delete[unreachables, 1];
+    newNumStates -= 1;
+    newTransitionMatrix = Delete[newTransitionMatrix, unreachable];
+    newAcceptStates = DeleteCases[newAcceptStates, unreachable];
+    newTransitionMatrix = 
+     newTransitionMatrix /. 
+      state_Integer /; unreachable + 1 <= state <= newNumStates + 1 :>
+        state - 1;
+    newInitialState = 
+     newInitialState /. 
+      state_Integer /; unreachable + 1 <= state <= newNumStates + 1 :>
+        state - 1;
+    newAcceptStates = 
+     newAcceptStates /. 
+      state_Integer /; unreachable + 1 <= state <= newNumStates + 1 :>
+        state - 1;
+    ];
+   
+   DFA[newNumStates, alphabet, newTransitionMatrix, newAcceptStates, 
+    newInitialState]
+];
 
 (* transitions is a matrix like \
 http://en.wikipedia.org/wiki/Finite-state_machine # State \
@@ -153,7 +275,7 @@ parsedRegex2GF[parsed_, indet_] := (parsed //.
     };
 
 (* crappy: "," not allowed in the regex *)
-Protect[or, concat, star];
+
 pars[regex_] := Module[
    {
     temp
@@ -201,9 +323,7 @@ sym2integers[parsed_] := Module[
 argument which is the indeterminate to tag (occurrences of) that \
 subregex with *)
 
-SetAttributes[concat, Flat]
 
-SetAttributes[or, Flat]
 
 taggedRegex2GF[regex_, indet_] := regex //. {
    string_String :> indet,

@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     30867,        666]
-NotebookOptionsPosition[     29402,        614]
-NotebookOutlinePosition[     30000,        637]
-CellTagsIndexPosition[     29957,        634]
+NotebookDataLength[     40838,        906]
+NotebookOptionsPosition[     39373,        854]
+NotebookOutlinePosition[     39971,        877]
+CellTagsIndexPosition[     39928,        874]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -297,29 +297,262 @@ Cell[TextData[{
  StyleBox["Public (Exported) Downvalues",
   FontWeight->"Bold"],
  "\n",
- Cell[BoxData[
-  RowBox[{
-   RowBox[{"{", 
-    RowBox[{
-    "NFA", ",", "DFA", ",", "Regex", ",", "RRGrammar", ",", "Digraph"}], 
-    "}"}], "2", 
-   RowBox[{"{", 
-    RowBox[{
-    "NFA", ",", "DFA", ",", "Regex", ",", "RRGrammar", ",", "Digraph"}], 
-    "}"}]}]], "Code",
+ Cell[BoxData["NFA2DFA"], "Code",
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
  "\n",
+ Cell[BoxData["NFA2Regex"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\n",
+ Cell[BoxData["NFA2RRGrammar"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\n",
+ Cell[BoxData["NFA2Digraph"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\n",
+ Cell[BoxData["DFA2NFA"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\n",
+ Cell[BoxData["DFA2Regex"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\n",
+ Cell[BoxData["DFA2RRGrammar"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\n",
+ Cell[BoxData["DFA2Digraph"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\n",
+ Cell[BoxData["Regex2NFA"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\n",
+ Cell[BoxData["Regex2DFA"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\n",
+ Cell[BoxData["Regex2RRGrammar"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\n",
+ Cell[BoxData["Regex2Digraph"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\n",
+ Cell[BoxData["RRGrammar2NFA"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\n",
+ Cell[BoxData["RRGrammar2DFA"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\n",
+ Cell[BoxData["RRGrammar2Regex"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\n",
+ Cell[BoxData["RRGrammar2Digraph"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\n",
+ Cell[BoxData["Digraph2NFA"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\n",
+ Cell[BoxData["Digraph2DFA"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\n",
+ Cell[BoxData["Digraph2Regex"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\n",
+ Cell[BoxData["Digraph2RRGrammar"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\n\n",
+ Cell[BoxData["NFAUnion"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["NFAIntersection"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["NFAComplement"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["NFAConcat"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["NFAStar"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["NFAReverse"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["DFAUnion"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["DFAIntersection"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["DFAComplement"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["DFAConcat"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["DFAStar"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["DFAReverse"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["RegexUnion"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["RegexIntersection"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["RegexComplement"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["RegexConcat"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["RegexStar"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["RegexReverse"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["RRGrammarUnion"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["RRGrammarIntersection"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["RRGrammarComplement"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["RRGrammarConcat"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["RRGrammarStar"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["RRGrammarReverse"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["DigraphUnion"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
  Cell[BoxData[
-  RowBox[{
-   RowBox[{"{", 
-    RowBox[{
-    "NFA", ",", "DFA", ",", "Regex", ",", "RRGrammar", ",", "Digraph"}], 
-    "}"}], 
-   RowBox[{"{", 
-    RowBox[{
-    "Union", ",", " ", "Intersection", ",", " ", "Complement", ",", " ", 
-     "Concat", ",", " ", "Star", ",", " ", "Reverse"}], "}"}]}]], "Code",
+  RowBox[{"DigraphIntersection", " "}]], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["DigraphComplement"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["DigraphConcat"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["DigraphStar"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
+    3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
+    3.5515475726696496`*^9}}],
+ "\n",
+ Cell[BoxData["DigraphReverse"], "Code",
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
     3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
@@ -377,13 +610,16 @@ Cell[TextData[{
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
  "\n\tnumber of states: integer >=0, where 0 states means null language\n\t\
-alphabet: nonempty sorted list of distinct strings, not containing \
-\[OpenCurlyDoubleQuote]\[CloseCurlyDoubleQuote]\n\ttransition matrix: \
-numStates by alphabet size+1 matrix where entry i,j is a list of (valid) \
-states accessible from state i and letter j = alphabet[j]. \
-\[OpenCurlyDoubleQuote]Letter\[CloseCurlyDoubleQuote] alphabet size+1 is \
-\[Epsilon]\n\taccept states: list of integers between 1 and number of states\n\
-\tinitial state: integer between 1 and number of states\n\n",
+alphabet: nonempty ",
+ StyleBox["sorted",
+  FontColor->GrayLevel[0.5]],
+ " list of distinct strings, not containing \[OpenCurlyDoubleQuote]\
+\[CloseCurlyDoubleQuote]\n\ttransition matrix: numStates by alphabet size+1 \
+matrix where entry i,j is a list of (valid) states accessible from state i \
+and letter j = alphabet[j]. \[OpenCurlyDoubleQuote]Letter\
+\[CloseCurlyDoubleQuote] alphabet size+1 is \[Epsilon]\n\taccept states: list \
+of integers between 1 and number of states\n\tinitial state: integer between \
+1 and number of states\n\n",
  Cell[BoxData["DFA"], "Code",
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
@@ -398,12 +634,14 @@ states accessible from state i and letter j = alphabet[j]. \
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
  "\n\tnumber of states: integer >=0, where 0 states means null language\n\t\
-alphabet: nonempty sorted list of distinct strings, not containing \
-\[OpenCurlyDoubleQuote]\[CloseCurlyDoubleQuote]\n\ttransition matrix: \
-numStates by alphabet size matrix where entry i,j is the (valid) state \
-accessible from state i and letter j. \n\taccept states: list of integers \
-between 1 and number of states\n\tinitial state: integer between 1 and number \
-of states\n\n",
+alphabet: nonempty ",
+ StyleBox["sorted",
+  FontColor->GrayLevel[0.5]],
+ " list of distinct strings, not containing \[OpenCurlyDoubleQuote]\
+\[CloseCurlyDoubleQuote]\n\ttransition matrix: numStates by alphabet size \
+matrix where entry i,j is the (valid) state accessible from state i and \
+letter j. \n\taccept states: list of integers between 1 and number of states\n\
+\tinitial state: integer between 1 and number of states\n\n",
  Cell[BoxData["StringRegex"], "Code",
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
@@ -606,7 +844,9 @@ with occurrences of patterns\nBonus: accept more regex syntax"
    3.5521366965317774`*^9, 3.5521367392912235`*^9}, {3.5521367825316963`*^9, 
    3.55213680077774*^9}, {3.55213980060532*^9, 3.552139837069406*^9}, {
    3.5521405984839563`*^9, 3.5521406516909995`*^9}, {3.552154643371278*^9, 
-   3.552154644836362*^9}}]
+   3.552154644836362*^9}, {3.552155753877795*^9, 3.5521560877078896`*^9}, {
+   3.5521562350953193`*^9, 3.552156325932515*^9}, {3.5521566000841956`*^9, 
+   3.5521568849344883`*^9}}]
 }, Open  ]]
 }, Open  ]]
 }, Open  ]]
@@ -663,7 +903,7 @@ Cell[13070, 279, 359, 7, 109, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
 Cell[13466, 291, 184, 2, 35, "Subsubsection"],
-Cell[13653, 295, 15697, 313, 1456, "Text"]
+Cell[13653, 295, 25668, 553, 2440, "Text"]
 }, Open  ]]
 }, Open  ]]
 }, Open  ]]
