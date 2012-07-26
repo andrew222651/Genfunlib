@@ -2,7 +2,7 @@
 
 BeginPackage["genfunlib`regular`"]
 
-Protect[or, concat, star, NFA, DFA, RRGrammar, Regex, Digraph];
+(*Protect[or, concat, star, NFA, DFA, RRGrammar, Regex, Digraph];*)
 SetAttributes[concat, Flat];
 SetAttributes[or, Flat];
 
@@ -10,7 +10,7 @@ Begin["`Private`"] (* Begin Private Context *)
 
 nonTerminals[RRGrammar[grammar_]] := (grammar /. Rule -> List)[[All, 1]];
 
-validateNFA[NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
+validate[NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
 	initialState_]] := Module[
 	{
 		ok = True
@@ -25,9 +25,8 @@ validateNFA[NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
 	ok = ok && (numStates == 0 || (Head[initialState] === Integer && 1 <= initialState <= numStates));
 	ok
 ];
-validateNFA[_] := False;
-	
-validateDFA[DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
+
+validate[DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
 	initialState_]] := Module[
 	{
 		ok = True
@@ -42,9 +41,8 @@ validateDFA[DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
 	ok = ok && (numStates == 0 || (Head[initialState] === Integer && 1 <= initialState <= numStates));
 	ok
 ];
-validateDFA[_] := False;
 
-validateStringRegex[RegularExpression[regex_String]] := Module[
+validate[RegularExpression[regex_String]] := Module[
 	{
 		ok = True
 	},
@@ -53,16 +51,14 @@ validateStringRegex[RegularExpression[regex_String]] := Module[
     ok = ok && Check[StringMatchQ["", regex], $Failed] != $Failed;
     ok
 ];   
-validateStringRegex[_] := False;
 
-validateSymbolicRegex[Regex[EmptyWord]] := True;
-validateSymbolicRegex[Regex[str_String /; str != ""]] := True;
-validateSymbolicRegex[Regex[star[regex_]]] := validateSymbolicRegex[Regex[regex]];
-validateSymbolicRegex[Regex[or[regexes__]]] := And @@ validateSymbolicRegex /@ Regex /@ {regexes};
-validateSymbolicRegex[Regex[concat[regexes__]]] := And @@ validateSymbolicRegex /@ Regex /@ {regexes};
-validateSymbolicRegex[_] := False;
+validate[Regex[EmptyWord]] := True;
+validate[Regex[str_String /; str != ""]] := True;
+validate[Regex[star[regex_]]] := validateSymbolicRegex[Regex[regex]];
+validate[Regex[or[regexes__]]] := And @@ validateSymbolicRegex /@ Regex /@ {regexes};
+validate[Regex[concat[regexes__]]] := And @@ validateSymbolicRegex /@ Regex /@ {regexes};
 
-validateRRGrammar[RRGrammar[grammar:{(_ -> _) ...}]] := Module[
+validate[RRGrammar[grammar:{(_ -> _) ...}]] := Module[
 	{
 		ok = True,
 		nonTerms = nonTerminals[grammar],
@@ -75,16 +71,15 @@ validateRRGrammar[RRGrammar[grammar:{(_ -> _) ...}]] := Module[
 	validateTerm[sym_Symbol[n_Integer] /; MemberQ[nonTerms, sym[n]]] := True;
 	validateTerm[str_String /; str != ""] := True;
 	validateTerm[concat[str_String /; str != "", sym_Symbol /; MemberQ[nonTerms, sym]]] := True;
-	validateTerm[ concat[str_String /; str != "", sym_Symbol[n_Integer] /; MemberQ[nonTerms, sym[n]]] ] := True;
+	validateTerm[concat[str_String /; str != "", sym_Symbol[n_Integer] /; MemberQ[nonTerms, sym[n]]]] := True;
 	validateTerm[_] := False;
 	
 	ok = ok && MatchQ[grammar[[All,2]], {( _?validateTerm | or[ _?validateTerm .. ]) ...}];
 	
 	ok
 ];
-validateRRGrammar[_] := False;
 
-validateDigraph[Digraph[graph_, startVertices_List, endVertices_List, eAccepted_]] := Module[
+validate[Digraph[graph_, startVertices_List, endVertices_List, True | False]] := Module[
 	{
 		ok = True,
 		vertices
@@ -97,12 +92,10 @@ validateDigraph[Digraph[graph_, startVertices_List, endVertices_List, eAccepted_
 		PropertyValue[{graph, #}, VertexLabels] != "") & /@ vertices );
 	(* validate vertex lists *)
 	ok = ok && Union[startVertices, endVertices, vertices] == Union[vertices];
-	(* validate eAccepted *)
-	ok = ok && ( (eAccepted === True) || (eAccepted === False) );
 	
 	ok
 ];
-validateDigraph[_] := False;
+validate[__] := False;
 
 (* http://en.wikipedia.org/wiki/DFA_minimization#Hopcroft \
 .27s_algorithm *)
@@ -224,6 +217,108 @@ removeUnreachables[
     newInitialState]
 ];
 
+NFA::invalidDFA = "Invalid DFA.";
+
+NFA[dfa: DFA[0, alphabet_, transitionMatrix_, acceptStates_, 
+    initialState_], 
+    Optional[Pattern[val, Rule[validationRequired, 
+    	Alternatives[True,False]]],	Rule[validationRequired,True]]] /; 
+    If[!val[[2]] || validate[dfa], True, Message[NFA::invalidDFA]; False] :=
+    NFA[0, alphabet, {}, {}, Null];
+
+NFA[dfa: DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
+    initialState_], 
+    Optional[Pattern[val, Rule[validationRequired, 
+    	Alternatives[True,False]]],	Rule[validationRequired,True]]] /; 
+    If[!val[[2]] || validate[dfa], True, Message[NFA::invalidDFA]; False] := 
+    NFA[numStates, alphabet, 
+    	Transpose[Join[Transpose[Map[List, transitionMatrix, {2}]], 
+    		ConstantArray[{}, numStates]]], 
+    	acceptStates, initialState];
+
+(* AC p 735 *)
+letterCount[regex_] := Max@Cases[regex, letter[n_] :> n, Infinity];
+
+regex2nfa[regex_] := regex2nfa[regex, letterCount[regex]];
+
+regex2nfa[letter[n_], alphabetSize_] := {2, 
+   alphabetSize, {ReplacePart[ConstantArray[{}, alphabetSize + 1], 
+     n -> {2}], ConstantArray[{}, alphabetSize + 1]}, {2}, 1};
+
+regex2nfa[or[first_, second_], alphabetSize_] :=
+  nfaUnion[regex2nfa[first, alphabetSize], 
+   regex2nfa[second, alphabetSize]];
+
+regex2nfa[star[regex_], alphabetSize_] := 
+  nfaStar[regex2nfa[regex, alphabetSize]];
+
+regex2nfa[concat[first_, second_], alphabetSize_] := 
+  nfaConcat[regex2nfa[first, alphabetSize], 
+   regex2nfa[second, alphabetSize]];
+
+NFA::invalidDigraph = "Invalid digraph.";
+
+NFA[dg: Digraph[graph_, startVertices_, endVertices_, eAccepted_], 
+	Optional[Pattern[val, Rule[validationRequired, 
+    	Alternatives[True,False]]],	Rule[validationRequired,True]]] /; 
+    If[!val[[2]] || validate[dg], True, Message[NFA::invalidDigraph]; False] :=
+    Module[
+    	{
+    		edges = EdgeList[graph], 
+    		alphabet = 
+    			Union[PropertyValue[{graph, #}, VertexLabels] & /@ 
+      				VertexList[graph]], 
+      		numStates, initialState, acceptState, 
+   			transitionMatrix, vertex2LetterPos, edge2StatePos
+   		}, 
+  vertex2LetterPos[vertex_] := 
+   First@Flatten@
+     Position[alphabet, 
+      PropertyValue[{graph, vertex}, VertexLabels], {1}, 
+      Heads -> False];
+  edge2StatePos[edge_] := 
+   First@Flatten@Position[edges, edge, {1}, Heads -> False];
+  {initialState, acceptState, numStates} = Length[edges] + {1, 2, 2};
+  transitionMatrix = 
+   ConstantArray[{}, {numStates, Length[alphabet] + 1}];
+  If[eAccepted, 
+   transitionMatrix[[initialState, 
+      Length[alphabet] + 1]] = {acceptState}];
+  Map[Function[vertex, 
+    transitionMatrix[[initialState, vertex2LetterPos[vertex]]] = 
+      Union[transitionMatrix[[initialState, 
+         vertex2LetterPos[vertex]]], {acceptState}];], 
+   Intersection[endVertices, startVertices]];
+  Map[Function[edge, 
+    transitionMatrix[[initialState, vertex2LetterPos[edge[[1]]]]] = 
+      Union[
+       transitionMatrix[[initialState, 
+         vertex2LetterPos[edge[[1]]]]], {edge[[1]]}];], 
+   Union@EdgeList[graph, 
+     Alternatives @@ (DirectedEdge[#, _] & /@ startVertices)]];
+  Map[Function[edge, 
+    transitionMatrix[[edge2StatePos[edge], 
+        vertex2LetterPos[edge[[2]]]]] = 
+      Union[transitionMatrix[[edge2StatePos[edge], 
+         vertex2LetterPos[edge[[2]]]]], {acceptState}];], 
+   Union@EdgeList[graph, 
+     Alternatives @@ (DirectedEdge[_, #] & /@ endVertices)]];
+  Map[Function[edgePair, 
+    transitionMatrix[[edge2StatePos[edgePair[[1]]], 
+        vertex2LetterPos[edgePair[[1, 2]]]]] = 
+      Union[transitionMatrix[[edge2StatePos[edgePair[[1]]], 
+         vertex2LetterPos[edgePair[[1, 2]]]]], {edge2StatePos[
+         edgePair[[2]]]}];], 
+   Union@Flatten[
+     Outer[List, EdgeList[graph, DirectedEdge[_, #]], 
+        EdgeList[graph, DirectedEdge[#, _]]] & /@ VertexList[graph], 
+     2]];
+  NFA[numStates, alphabet, transitionMatrix, {acceptState}, 
+   initialState]
+];
+    
+
+
 (* transitions is a matrix like \
 http://en.wikipedia.org/wiki/Finite-state_machine # State \
 .2FEvent_table *)
@@ -242,7 +337,7 @@ dfa2gf[{numStates_Integer, alphabetSize_, transitions_,
       marker_} :> (Part[t, j, k] += -1 + marker);
    (Inverse[IdentityMatrix[numStates] - indet*t].(v\[Transpose]))[[
     initialState, 1]]
-   ];
+];
 
 (* transfer-matrix *)
 
@@ -399,26 +494,7 @@ floydWarshall[m_] := Module[
      ];
    ];
 
-(* p 735 *)
 
-letterCount[regex_] := Max@Cases[regex, letter[n_] :> n, Infinity];
-
-regex2nfa[regex_] := regex2nfa[regex, letterCount[regex]];
-
-regex2nfa[letter[n_], alphabetSize_] := {2, 
-   alphabetSize, {ReplacePart[ConstantArray[{}, alphabetSize + 1], 
-     n -> {2}], ConstantArray[{}, alphabetSize + 1]}, {2}, 1};
-
-regex2nfa[or[first_, second_], alphabetSize_] :=
-  nfaUnion[regex2nfa[first, alphabetSize], 
-   regex2nfa[second, alphabetSize]];
-
-regex2nfa[star[regex_], alphabetSize_] := 
-  nfaStar[regex2nfa[regex, alphabetSize]];
-
-regex2nfa[concat[first_, second_], alphabetSize_] := 
-  nfaConcat[regex2nfa[first, alphabetSize], 
-   regex2nfa[second, alphabetSize]];
 
 (* closure properties: union, intersection, complement, \
 concatenation, star, reverse *)
