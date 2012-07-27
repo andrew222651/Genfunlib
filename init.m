@@ -5,7 +5,7 @@ BeginPackage["genfunlib`", {
 	"genfunlib`alas`", 
 	"genfunlib`GFeqn2coefs`", 
 	"genfunlib`GFeqn2rec`", 
-	"genfunlib`reg2GFeqn`", 
+	"genfunlib`rec2GFeqn`", 
 	"genfunlib`regular`",
 	"genfunlib`util`"
 	}]

@@ -1,1 +1,11 @@
+genfunlib: A Mathematica package for working with generating functions 
+https://github.com/amacfie/genfunlib
+
 See the file named "LICENSE" in this directory for license information.
+
+How to install and run:
+Place this directory in the directory given by
+FileNameJoin[{$InstallationDirectory, "AddOns", "ExtraPackages"}].
+Then genfunlib may be loaded with Get["genfunlib`"].
+
+For documentation, see the docs directory in this directory.
