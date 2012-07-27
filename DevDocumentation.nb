@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     65272,       1277]
-NotebookOptionsPosition[     63479,       1215]
-NotebookOutlinePosition[     64077,       1238]
-CellTagsIndexPosition[     64034,       1235]
+NotebookDataLength[     67668,       1341]
+NotebookOptionsPosition[     65763,       1276]
+NotebookOutlinePosition[     66361,       1299]
+CellTagsIndexPosition[     66318,       1296]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -52,7 +52,7 @@ between formulas in first paper and ",
   3.5425468049930305`*^9, 3.542546931889289*^9}}],
 
 Cell["\<\
-symmath requirements:
+possible components:
  code in .m files
  data in .m files (if small enough)
  user documentation: tutorial, guide, help pages - only a pointer to \
@@ -64,24 +64,18 @@ mathematical background
  what about description of new math involved and connection to \
 Notes/publishing?\
 \>", "Text",
- CellChangeTimes->{{3.5422938026427193`*^9, 3.5422938057158957`*^9}, {
-  3.542301082813122*^9, 3.542301100517134*^9}, {3.5423011434365892`*^9, 
-  3.5423011655408535`*^9}, {3.5423012649245377`*^9, 3.5423012922370996`*^9}, {
-  3.5423015568612356`*^9, 3.542301579444527*^9}, {3.542301815622036*^9, 
-  3.542301825908624*^9}, {3.5423018569654007`*^9, 3.5423018926524415`*^9}, {
-  3.5423021149491563`*^9, 3.5423021186933703`*^9}, {3.5423035152142467`*^9, 
-  3.5423035248767996`*^9}, {3.5423039568445067`*^9, 3.54230396004469*^9}, {
-  3.5423067391016426`*^9, 3.5423067476611323`*^9}, {3.542306897260689*^9, 
-  3.542306902412984*^9}, {3.5423090969105015`*^9, 3.542309139860958*^9}, {
-  3.5423097540940905`*^9, 3.5423097551091485`*^9}, {3.542310175493193*^9, 
-  3.542310190933076*^9}, {3.5423102706616364`*^9, 3.542310271629692*^9}, {
-  3.542377134900719*^9, 3.5423771376358757`*^9}, {3.5522221859790716`*^9, 
-  3.5522221863630934`*^9}}],
+ CellChangeTimes->CompressedData["
+1:eJxTTMoPSmViYGAQBmIQrTExZGlyyivHeS+2gWkJ1ijjdCAd2zPBFER3/Xhr
+BaLX+G20BdEXpsp6geigae2+INquf3YeiJ5omVcIonc8/9wHoouFbSeA6AlP
+5KaA6LMPpswA0bXxcVtAtLjBNTAtczstOQNI7+ObkwKijdlmzwLRUnmMs0H0
+Cofkb5lA+r966XcQPSFcgysLSGuZnwXTV5RkZbOB9I+eaiUQfYrJOR9Eq9Yl
+g2nbE+8Xg+hDt+8uBdEKOlfXg+gCtS9geuOlO6E9IH9HmoSB6L4Q+9rg8leO
+ZfO8wbR+AteWbiBdd60UTAMAoo+VDQ==
+  "]],
 
 Cell["\<\
 The User Documentation doesn\[CloseCurlyQuote]t talk about how the \
-implementations compute; Developer Documentation or Enumerative Combinatorics \
-Algorithms does\
+implementations compute; Developer Documentation or code-docs do\
 \>", "Text",
  CellChangeTimes->{{3.525883067152609*^9, 3.525883081991458*^9}, {
    3.525883152920515*^9, 3.52588315389157*^9}, {3.525883227455778*^9, 
@@ -102,7 +96,8 @@ Algorithms does\
    3.5363472004838867`*^9}, {3.536347361269083*^9, 3.5363473784680667`*^9}, {
    3.536347665324474*^9, 3.536347754011546*^9}, {3.5363479282115097`*^9, 
    3.5363479287965436`*^9}, {3.5364350649718914`*^9, 3.536435069540153*^9}, {
-   3.5423026400091877`*^9, 3.5423026465085597`*^9}}],
+   3.5423026400091877`*^9, 3.5423026465085597`*^9}, {3.5523368527629557`*^9, 
+   3.5523368642106104`*^9}}],
 
 Cell[TextData[{
  ButtonBox["Programmatic formatting for Mathematica code - possible?",
@@ -311,6 +306,31 @@ Cell["Regular Languages", "Subsubsection",
    3.5515458660810385`*^9, {3.551547962348938*^9, 3.551547966300164*^9}}],
 
 Cell[TextData[{
+ "The authors of ",
+ StyleBox["Combinatorica",
+  FontSlant->"Italic"],
+ " say, \[OpenCurlyDoubleQuote]Our aim in introducting permutation groups \
+into Combinatorica is primarily for solving combinatorial enumeration \
+problems. We make no attempt to efficiently represent permutation groups or \
+to solve many of the standard computational problems in group theory.\
+\[CloseCurlyDoubleQuote]  The situation for this package and automata/grammar \
+algorithm performance is similar."
+}], "Text",
+ CellChangeTimes->{{3.5523846670140123`*^9, 3.5523846833989496`*^9}, {
+  3.5523892337672157`*^9, 3.5523892721594114`*^9}}],
+
+Cell[TextData[{
+ "private symbols can\[CloseCurlyQuote]t interfere with previously defined \
+symbols in the ",
+ StyleBox["Mathematica",
+  FontSlant->"Italic"],
+ " session (in \[OpenCurlyDoubleQuote]Global`\[CloseCurlyDoubleQuote])."
+}], "Text",
+ CellChangeTimes->{{3.5523873452151966`*^9, 3.5523873718387194`*^9}, {
+  3.5523874135351043`*^9, 3.552387416135253*^9}, {3.552389314318823*^9, 
+  3.5523893200471506`*^9}}],
+
+Cell[TextData[{
  "Letters are represented by nonempty ",
  Cell[BoxData["String"], "Code",
   CellChangeTimes->{
@@ -324,9 +344,30 @@ Cell[TextData[{
  CellChangeTimes->{{3.5522215561380463`*^9, 3.5522216118582335`*^9}, 
    3.552221877634435*^9}],
 
+Cell[TextData[{
+ "Options can be used with the input validation scheme.  validationRequired \
+just has to be passed ",
+ StyleBox["before",
+  FontSlant->"Italic"],
+ " any options"
+}], "Text",
+ CellChangeTimes->{{3.552326575354066*^9, 3.552326637626627*^9}, {
+  3.5523870613189583`*^9, 3.5523870826301775`*^9}, {3.5523877003745103`*^9, 
+  3.5523877105510926`*^9}}],
+
+Cell["\<\
+Writing user documention (docs folder) last is OK as long as in-code \
+documentation and this file are written diligently\
+\>", "Text",
+ CellChangeTimes->{{3.5523333601271887`*^9, 3.5523333992584267`*^9}, {
+  3.552333539794465*^9, 3.5523335432346616`*^9}, {3.5523894756870527`*^9, 
+  3.5523894768941216`*^9}}],
+
 Cell[CellGroupData[{
 
-Cell["Public (Exported) Downvalues", "Subsubsubsection",
+Cell["\<\
+Public (Exported) Symbols with Downvalues\
+\>", "Subsubsubsection",
  CellChangeTimes->{{3.5515457794760847`*^9, 3.551545811340907*^9}, {
    3.5515458660810385`*^9, 3.5515458775886965`*^9}, {3.551546993428519*^9, 
    3.551546993871544*^9}, {3.551547416117695*^9, 3.5515474289494295`*^9}, {
@@ -417,15 +458,8 @@ Cell["Public (Exported) Downvalues", "Subsubsubsection",
    3.552222865929962*^9}, {3.5522231909305515`*^9, 3.5522232038182883`*^9}, {
    3.5522244621182594`*^9, 3.5522244633863316`*^9}, {3.552224914203117*^9, 
    3.552224922386585*^9}, {3.552224976547683*^9, 3.5522249768326993`*^9}, {
-   3.5522250425394573`*^9, 3.5522250508419323`*^9}, 3.5522251003747654`*^9}],
-
-Cell[TextData[{
- Cell[BoxData["/;"], "Code",
-  CellChangeTimes->{
-   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
- " check for validity, message on failure"
-}], "Text",
- CellChangeTimes->{3.5522384621710167`*^9}],
+   3.5522250425394573`*^9, 3.5522250508419323`*^9}, 3.5522251003747654`*^9, {
+   3.5523270178113728`*^9, 3.5523270219866114`*^9}}],
 
 Cell[TextData[{
  Cell[BoxData["NFA"], "Code",
@@ -722,7 +756,7 @@ function\n\t\tuses nfa *, concat, union\n\tfrom ",
     3.5515475726696496`*^9}, {3.5515479302621026`*^9, 
     3.5515479373255067`*^9}}],
  "\n\tallow the user to provide a function mapping each letter to a \
-symbol/\"weight\"\t\n\t\n",
+symbol/\"weight\"\n\t\n",
  Cell[BoxData[
   RowBox[{"Disambiguate", 
    RowBox[{"{", 
@@ -847,7 +881,8 @@ symbol/\"weight\"\t\n\t\n",
    3.552236982711396*^9, 3.5522370029145517`*^9}, {3.55223708348516*^9, 
    3.5522370987950354`*^9}, {3.552237227632405*^9, 3.552237231506626*^9}, {
    3.5522373626531277`*^9, 3.552237363971203*^9}, {3.552237742702865*^9, 
-   3.552237767243269*^9}, {3.552238441326824*^9, 3.552238447931202*^9}}]
+   3.552237767243269*^9}, {3.552238441326824*^9, 3.552238447931202*^9}, 
+   3.552328388314761*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -963,12 +998,16 @@ Cell[TextData[{
 alphabet: nonempty ",
  StyleBox["sorted",
   FontColor->GrayLevel[0.5]],
- " list of distinct strings, not containing \"\"\n\ttransition matrix: \
-numStates by alphabet size+1 matrix where entry i,j is a list of (valid) \
-states accessible from state i and letter j = alphabet[j]. \"Letter\" \
-alphabet size+1 is \[Epsilon]\n\taccept states: list of integers between 1 \
-and number of states\n\tinitial state: integer between 1 and number of states\
-\n\n",
+ " list of distinct strings, not containing \"\". A value of ",
+ Cell[BoxData[
+  RowBox[{"{", "Null", "}"}]], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ " implies 0 states.\n\ttransition matrix: numStates by alphabet size+1 \
+matrix where entry i,j is a list of (valid) states accessible from state i \
+and letter j = alphabet[j]. \"Letter\" alphabet size+1 is \[Epsilon]\n\t\
+accept states: list of integers between 1 and number of states\n\tinitial \
+state: integer between 1 and number of states\n\n",
  StyleBox["DFA",
   FontWeight->"Bold"],
  "\n\t",
@@ -985,11 +1024,15 @@ and number of states\n\tinitial state: integer between 1 and number of states\
 alphabet: nonempty ",
  StyleBox["sorted",
   FontColor->GrayLevel[0.5]],
- " list of distinct strings, not containing \"\"\n\ttransition matrix: \
-numStates by alphabet size matrix where entry i,j is the (valid) state \
-accessible from state i and letter j. \n\taccept states: list of integers \
-between 1 and number of states\n\tinitial state: integer between 1 and number \
-of states\n\n",
+ " list of distinct strings, not containing \"\". A value of ",
+ Cell[BoxData[
+  RowBox[{"{", "Null", "}"}]], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ " implies 0 states.\n\ttransition matrix: numStates by alphabet size matrix \
+where entry i,j is the (valid) state accessible from state i and letter j. \n\
+\taccept states: list of integers between 1 and number of states\n\tinitial \
+state: integer between 1 and number of states\n\n",
  StyleBox["String Regular Expression",
   FontWeight->"Bold"],
  "\n\tstring, with wrapping head ",
@@ -1000,7 +1043,12 @@ of states\n\n",
  StyleBox["Mathematica",
   FontSlant->"Italic"],
  " regular expression (POSIX ERE I think)\n\tEmpty string accepts just \
-\[Epsilon]\n\n",
+\[Epsilon]\n\t",
+ Cell[BoxData[
+  RowBox[{"RegularExpression", "[", "Null", "]"}]], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ " for empty language\n\n",
  StyleBox["Symbolic Regular Expression",
   FontWeight->"Bold"],
  "\n\texpression with head ",
@@ -1016,7 +1064,16 @@ of states\n\n",
   RowBox[{"star", ",", "concat", ",", "or"}]], "Code",
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
- "\n\n",
+ "\n\t",
+ Cell[BoxData[
+  RowBox[{"Regex", "[", "Null", "]"}]], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ " for empty language\n\tsee ",
+ Cell[BoxData["simplifyRawRegex"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ " for more info\n\n",
  StyleBox["Right Regular Grammar",
   FontWeight->"Bold"],
  "\n\t",
@@ -1099,14 +1156,12 @@ corresponds to the null language.\n\n",
 startVertices: list of vertices of graph; if empty: null languge (\[Epsilon] \
 may still be accepted)\n\tendVertices: list of vertices of graph; if empty: \
 null language (\[Epsilon] may still be accepted)\n\teAccepted: True if \
-\[Epsilon] is accepted, False otherwise\n\tEmpty graph is null language (\
-\[Epsilon] may still be accepted).\n\tmultiple edges (what the \
-matrix-transfer method is for)?\n\nIn rules that take a regex, either string \
-or symbolic regexes can be used, and the output format matches the input \
-format\n\nambiguity test via NFA test (see Book and Even papers -- is Book \
-necessary, would ordinary construction work?) or recursive test (see Brabrand \
-and Thomsen)\n\"a**\" is not considered ambiguous in Book, niether is \"a* | \
-b*\".  ",
+\[Epsilon] is accepted, False otherwise\n\tGraph with 0 vertices is null \
+language (\[Epsilon] may still be accepted).\n\npublic rule for Regex <-> \
+RegularExpression\n\nambiguity test via NFA test (see Book and Even papers -- \
+is Book necessary, would ordinary construction work?) or recursive test (see \
+Brabrand and Thomsen)\n\"a**\" is not considered ambiguous in Book, niether \
+is \"a* | b*\".  ",
  StyleBox["our",
   FontSlant->"Italic"],
  " definition of ambiguity must include ",
@@ -1206,7 +1261,13 @@ syntax"
    3.5522244621182594`*^9, 3.5522244633863316`*^9}, {3.552224914203117*^9, 
    3.552224922386585*^9}, {3.552224976547683*^9, 3.5522249768326993`*^9}, {
    3.5522250425394573`*^9, 3.5522250508419323`*^9}, {3.5522251003747654`*^9, 
-   3.5522251334356565`*^9}, {3.5522545715224185`*^9, 3.552254587436329*^9}}]
+   3.5522251334356565`*^9}, {3.5522545715224185`*^9, 3.552254587436329*^9}, {
+   3.552306086289158*^9, 3.55230612688448*^9}, {3.5523061708639956`*^9, 
+   3.5523061772573614`*^9}, {3.5523087981462674`*^9, 3.552308798690298*^9}, {
+   3.5523127136802235`*^9, 3.5523127354494686`*^9}, {3.552312771200513*^9, 
+   3.552312780521046*^9}, {3.552318458585813*^9, 3.5523184821941633`*^9}, {
+   3.5523267225084825`*^9, 3.552326726890733*^9}, {3.552389517831463*^9, 
+   3.5523895213106623`*^9}}]
 }, Open  ]]
 }, Open  ]]
 }, Open  ]]
@@ -1242,38 +1303,41 @@ Cell[579, 22, 219, 3, 115, "Title"],
 Cell[CellGroupData[{
 Cell[823, 29, 104, 1, 98, "Section"],
 Cell[930, 32, 1085, 19, 156, "Text"],
-Cell[2018, 53, 1290, 25, 224, "Text"],
-Cell[3311, 80, 1673, 24, 62, "Text"],
-Cell[4987, 106, 1523, 39, 108, "Text"],
-Cell[6513, 147, 1014, 23, 85, "Text"],
-Cell[7530, 172, 1607, 23, 38, "Text"],
-Cell[9140, 197, 134, 1, 38, "Text"],
-Cell[9277, 200, 97, 1, 38, "Text"],
-Cell[9377, 203, 731, 10, 38, "Text"],
-Cell[10111, 215, 153, 3, 38, "Text"]
+Cell[2018, 53, 741, 20, 224, "Text"],
+Cell[2762, 75, 1696, 24, 38, "Text"],
+Cell[4461, 101, 1523, 39, 108, "Text"],
+Cell[5987, 142, 1014, 23, 85, "Text"],
+Cell[7004, 167, 1607, 23, 38, "Text"],
+Cell[8614, 192, 134, 1, 38, "Text"],
+Cell[8751, 195, 97, 1, 38, "Text"],
+Cell[8851, 198, 731, 10, 38, "Text"],
+Cell[9585, 210, 153, 3, 38, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[10301, 223, 88, 1, 98, "Section"],
-Cell[10392, 226, 1506, 25, 179, "Text"],
+Cell[9775, 218, 88, 1, 98, "Section"],
+Cell[9866, 221, 1506, 25, 179, "Text"],
 Cell[CellGroupData[{
-Cell[11923, 255, 105, 1, 52, "Subsection"],
-Cell[12031, 258, 711, 16, 63, "Text"],
-Cell[12745, 276, 201, 3, 35, "Subsubsection"],
+Cell[11397, 250, 105, 1, 52, "Subsection"],
+Cell[11505, 253, 711, 16, 63, "Text"],
+Cell[12219, 271, 201, 3, 35, "Subsubsection"],
 Cell[CellGroupData[{
-Cell[12971, 283, 210, 3, 25, "Subsubsection"],
-Cell[13184, 288, 908, 15, 295, "Text"]
+Cell[12445, 278, 210, 3, 25, "Subsubsection"],
+Cell[12658, 283, 908, 15, 295, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[14129, 308, 184, 2, 35, "Subsubsection"],
-Cell[14316, 312, 478, 12, 39, "Text"],
+Cell[13603, 303, 184, 2, 35, "Subsubsection"],
+Cell[13790, 307, 633, 12, 108, "Text"],
+Cell[14426, 321, 416, 9, 38, "Text"],
+Cell[14845, 332, 478, 12, 39, "Text"],
+Cell[15326, 346, 362, 9, 38, "Text"],
+Cell[15691, 357, 319, 6, 38, "Text"],
 Cell[CellGroupData[{
-Cell[14819, 328, 6857, 91, 36, "Subsubsubsection"],
-Cell[21679, 421, 243, 6, 39, "Text"],
-Cell[21925, 429, 20933, 420, 1574, "Text"]
+Cell[16035, 367, 6932, 94, 36, "Subsubsubsection"],
+Cell[22970, 463, 20957, 421, 1574, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[42895, 854, 6886, 92, 36, "Subsubsubsection"],
-Cell[49784, 948, 13631, 260, 1213, "Text"]
+Cell[43964, 889, 6886, 92, 36, "Subsubsubsection"],
+Cell[50853, 983, 14846, 286, 1265, "Text"]
 }, Open  ]]
 }, Open  ]]
 }, Open  ]]

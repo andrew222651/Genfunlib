@@ -2,13 +2,65 @@
 
 BeginPackage["genfunlib`regular`"]
 
-(*Protect[or, concat, star, NFA, DFA, RRGrammar, Regex, Digraph];*)
-SetAttributes[concat, Flat];
-SetAttributes[or, Flat];
+(* protect global symbols used without any kind 
+	of values *)
+Protect[or, concat, star, EmptyWord];
+
+(* TODO: usages for protected symbols *)
+
+NFA::usage = "NFA[n, alphabet, transitions, acceptStates, initialState] is an NFA " ~~ 
+				"with states [1..n], and transitions given by a matrix\n" ~~
+			 "NFA[DFA[...]] is an NFA defined from a DFA\n" ~~
+			 "NFA[Regex[...]] is an NFA defined from a symbolic regular expression\n" ~~
+			 "NFA[RRGrammar[...]] is an NFA defined from a right regular grammar\n" ~~
+			 "NFA[Digraph[...]] is an NFA defined from a digraph with labeled vertices";
+DFA::usage = "DFA[n, alphabet, transitions, acceptStates, initialState] is an DFA " ~~ 
+				"with states [1..n], and transitions given by a matrix\n" ~~
+			 "DFA[NFA[...]] is a DFA defined from a NFA\n" ~~
+			 "DFA[Regex[...]] is a DFA defined from a symbolic regular expression\n" ~~
+			 "DFA[RRGrammar[...]] is a DFA defined from a right regular grammar\n" ~~
+			 "DFA[Digraph[...]] is a DFA defined from a digraph with labeled vertices";
+Regex::usage = "Regex is a wrapper for expressions built with Strings, or, concat, " ~~
+				"star, and EmptyWord\n" ~~
+			 "Regex[NFA[...]] is a symbolic regular expression defined from a NFA\n" ~~
+			 "Regex[DFA[...]] is a symbolic regular expression defined from a DFA\n" ~~
+			 "Regex[RegularExpression[\"regex\"]] is a symbolic regular expression " ~~
+			    "defined from a restricted Mathematica regular expression\n" ~~
+			 "Regex[RRGrammar[...]] is a symbolic regular expression defined " ~~
+			 	"from a right regular grammar\n" ~~
+			 "Regex[Digraph[...]] is a symbolic regular expression defined from a " ~~
+		 		"digraph with labeled vertices";
+RRGrammar::usage = "RRGrammar[{lhs -> rhs, ...}] is a right regular grammar given " ~~
+				"by a list of productions\n" ~~
+			 "RRGrammar[NFA[...]] is a right regular grammar defined from a NFA\n" ~~
+			 "RRGrammar[DFA[...]] is a right regular grammar defined from a DFA\n" ~~
+			 "DFA[Regex[...]] is a right regular grammar defined from a " ~~
+			 	"symbolic regular expression\n" ~~
+			 "RRGrammar[Digraph[...]] is a right regular grammar defined from a " ~~
+		 		"digraph with labeled vertices";
+Digraph::usage = "Digraph[graph, startVertices, endVertices, \[Epsilon]Accepted] " ~~
+				"is a directed graph with labeled vertices for counting walks " ~~ 
+				"from start vertices to end vertices\n" ~~
+			 "Digraph[NFA[...]] is a directed graph defined from a NFA\n" ~~
+			 "Digraph[DFA[...]] is a directed graph defined from a DFA\n" ~~
+			 "Digraph[Regex[...]] is a directed graph defined from a " ~~
+			 	"symbolic regular expression\n" ~~
+			 "Digraph[RRGrammar[...]] is a directed graph defined " ~~
+			 	"from a right regular grammar\n";				
 
 Begin["`Private`"] (* Begin Private Context *) 
 
+
 nonTerminals[RRGrammar[grammar_]] := (grammar /. Rule -> List)[[All, 1]];
+
+
+NFA::invalid = "Invalid NFA.";
+DFA::invalid = "Invalid DFA.";
+RegularExpression::invalid = "Invalid Mathematica regular expression.";
+Regex::invalid = "Invalid symbolic regular expression.";
+RRGrammar::invalid = "Invalid right regular grammar.";
+Digraph::invalid = "Invalid directed graph.";
+
 
 validate[NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
 	initialState_]] := Module[
@@ -19,12 +71,17 @@ validate[NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
 	ok = ok && MatchQ[alphabet, {__String}] && !MemberQ[alphabet, ""];
 	ok = ok && (numStates == 0 || MatrixQ[transitionMatrix, MatchQ[#, {___Integer}] && 
 		(Max[#] <= numStates && Min[#] >= 1) &]);
-	ok = ok && (numStates == 0 || Dimensions[transitionMatrix, 2] == {numStates, Length[alphabet] + 1});
+	ok = ok && (numStates == 0 || Dimensions[transitionMatrix, 2] == 
+		{numStates, Length[alphabet] + 1});
 	ok = ok && MatchQ[acceptStates, {___Integer}] && (numStates == 0 || 
 		(Max[acceptStates] <= numStates && Min[acceptStates] >= 1));
-	ok = ok && (numStates == 0 || (Head[initialState] === Integer && 1 <= initialState <= numStates));
+	ok = ok && (numStates == 0 || (Head[initialState] === Integer && 
+		1 <= initialState <= numStates));
+	
+	If[!ok, Message[NFA::invalid]];
 	ok
 ];
+validate[NFA[___]] := (Message[NFA::invalid];False);   
 
 validate[DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
 	initialState_]] := Module[
@@ -39,8 +96,11 @@ validate[DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
 	ok = ok && MatchQ[acceptStates, {___Integer}] && (numStates == 0 || 
 		(Max[acceptStates] <= numStates && Min[acceptStates] >= 1));
 	ok = ok && (numStates == 0 || (Head[initialState] === Integer && 1 <= initialState <= numStates));
+	
+	If[!ok, Message[DFA::invalid]];
 	ok
 ];
+validate[DFA[___]] := (Message[DFA::invalid];False);   
 
 validate[RegularExpression[regex_String]] := Module[
 	{
@@ -49,14 +109,31 @@ validate[RegularExpression[regex_String]] := Module[
 	ok = ok && StringMatchQ[regex, (LetterCharacter | DigitCharacter | "\\*" | "(" | 
     ")" | "|") ...];
     ok = ok && Check[StringMatchQ["", regex], $Failed] != $Failed;
+    
+    If[!ok, Message[RegularExpression::invalid]];
     ok
-];   
+];
+validate[RegularExpression[Null]] := True;
+validate[RegularExpression[___]] := (Message[RegularExpression::invalid];False);
 
-validate[Regex[EmptyWord]] := True;
-validate[Regex[str_String /; str != ""]] := True;
-validate[Regex[star[regex_]]] := validateSymbolicRegex[Regex[regex]];
-validate[Regex[or[regexes__]]] := And @@ validateSymbolicRegex /@ Regex /@ {regexes};
-validate[Regex[concat[regexes__]]] := And @@ validateSymbolicRegex /@ Regex /@ {regexes};
+validateRawRegex[Null] := True;
+validateRawRegex[EmptyWord] := True;
+validateRawRegex[str_String /; str != ""] := True;
+validateRawRegex[star[regex_]] := validateRawRegex[regex];
+validateRawRegex[or[regexes__]] := And @@ validateRawRegex /@ {regexes};
+validateRawRegex[concat[regexes__]] := And @@ validateRawRegex /@ {regexes};
+validateRawRegex[___] := False;
+
+validate[Regex[regex_]] := Module[
+	{
+		ok = True
+	},
+	ok = ok && validateRawRegex[regex];
+	
+	If[!ok, Message[Regex::invalid]];
+	ok
+];
+validate[Regex[___]] := (Message[Regex::invalid];False);
 
 validate[RRGrammar[grammar:{(_ -> _) ...}]] := Module[
 	{
@@ -76,8 +153,10 @@ validate[RRGrammar[grammar:{(_ -> _) ...}]] := Module[
 	
 	ok = ok && MatchQ[grammar[[All,2]], {( _?validateTerm | or[ _?validateTerm .. ]) ...}];
 	
+	If[!ok, Message[RRGrammar::invalid]];
 	ok
 ];
+validate[RRGrammar[___]] := (Message[RRGrammar::invalid];False);
 
 validate[Digraph[graph_, startVertices_List, endVertices_List, True | False]] := Module[
 	{
@@ -93,9 +172,179 @@ validate[Digraph[graph_, startVertices_List, endVertices_List, True | False]] :=
 	(* validate vertex lists *)
 	ok = ok && Union[startVertices, endVertices, vertices] == Union[vertices];
 	
+	If[!ok, Message[Digraph::invalid]];
 	ok
 ];
-validate[__] := False;
+validate[Digraph[___]] := (Message[Digraph::invalid];False);
+
+
+validationRule = HoldPattern[Optional[Pattern[val, 
+	Rule[validationRequired, 
+    	Alternatives[True,False]]],	Rule[validationRequired,True]]];
+
+
+viaAlgorithms = {
+   (* {to, from, via} *)
+   {DFA, Regex, NFA},
+   {DFA, RRGrammar, NFA},
+   {DFA, Digraph, NFA},
+   {Regex, NFA, DFA},
+   {Regex, RRGrammar, DFA},
+   {Regex, Digraph, DFA},
+   {RRGrammar, DFA, NFA},
+   {RRGrammar, Regex, NFA},
+   {RRGrammar, Digraph, NFA},
+   {Digraph, NFA, DFA},
+   {Digraph, Regex, DFA},
+   {Digraph, RRGrammar, DFA}
+};
+
+(* define conversion algorithms that go via 
+	another conversion *)
+(# /. {to_, from_, via_} :> 
+      Hold[
+      	to[name : from[___], validationRule] /; 
+      	(! val[[2]] || validate[name]) := 
+         to[via[name, validationRequired -> False]];]) & /@ 
+  viaAlgorithms // ReleaseHold;
+
+
+NFA[dfa: DFA[0, alphabet_, transitionMatrix_, acceptStates_, 
+    initialState_], validationRule] /; 
+    (!val[[2]] || validate[dfa]) :=
+    NFA[0, alphabet, {}, {}, Null];
+
+NFA[dfa: DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
+    initialState_], validationRule] /; 
+    If[!val[[2]] || validate[dfa], True, Message[NFA::invalidDFA]; False] := 
+    NFA[numStates, alphabet, 
+    	Transpose[Join[Transpose[Map[List, transitionMatrix, {2}]], 
+    		ConstantArray[{}, numStates]]], 
+    	acceptStates, initialState];
+
+(* AC p 735 *)
+letterCount[regex_] := Max@Cases[regex, letter[n_] :> n, Infinity];
+
+regex2nfa[regex_] := regex2nfa[regex, letterCount[regex]];
+
+regex2nfa[letter[n_], alphabetSize_] := {2, 
+   alphabetSize, {ReplacePart[ConstantArray[{}, alphabetSize + 1], 
+     n -> {2}], ConstantArray[{}, alphabetSize + 1]}, {2}, 1};
+
+regex2nfa[or[first_, second_], alphabetSize_] :=
+  nfaUnion[regex2nfa[first, alphabetSize], 
+   regex2nfa[second, alphabetSize]];
+
+regex2nfa[star[regex_], alphabetSize_] := 
+  nfaStar[regex2nfa[regex, alphabetSize]];
+
+regex2nfa[concat[first_, second_], alphabetSize_] := 
+  nfaConcat[regex2nfa[first, alphabetSize], 
+   regex2nfa[second, alphabetSize]];
+
+NFA[RRGrammar[{}]] := NFA[0, {Null}, {}, {}, Null];
+
+NFA[g: RRGrammar[grammar_], validationRule] /; 
+    (!val[[2]] || validate[g]) :=
+    Module[
+    	{
+    		(* added for rhs -> string rules *) acceptState = Unique[],
+    		stateSet,
+    		alphabet = Cases[grammar, _String, Infinity]//Union,
+    		(* lookup functions *) stateNumber, alphabetNumber,
+    		expandedGrammar,
+    		transitionMatrix, acceptStates
+    	},
+    	If[alphabet == {}, Return[NFA[0, {Null}, {}, {}, Null]]];
+    	
+    	stateSet = Flatten[{Sort@nonTerminals[grammar], acceptState}];
+    	
+    	stateNumber[state_] := First@Flatten@Position[stateSet, 
+    		state, {1}, Heads -> False];
+    	alphabetNumber[str_] := First@Flatten@Position[alphabet, 
+    		str, {1}, Heads -> False];
+    	
+    	acceptStates = {stateNumber[acceptState]};
+    	
+    	expandedGrammar = grammar /. (rhs_ -> or[args__]) :> 
+    		Sequence@@((rhs -> # &) /@ {args});
+    	transitionMatrix = ConstantArray[{}, {Length[stateSet], Length[alphabet] + 1}];
+    	
+    	Function[rule,
+    		rule /. {
+    					(lhs_ -> EmptyWord) :> (acceptStates = Union[acceptStates, {stateNumber[lhs]}];),
+    					(lhs_ -> st:(_Symbol|_Symbol[n_])) :> (transitionMatrix[[stateNumber[lhs], -1]] = 
+    						Union[transitionMatrix[[stateNumber[lhs], -1]], {stateNumber[st]}];),
+    					(lhs_ -> concat[str_, st:(_Symbol|_Symbol[n_])])
+    						:> (transitionMatrix[[stateNumber[lhs], alphabetNumber[str]]] = 
+    							Union[transitionMatrix[[stateNumber[lhs], alphabetNumber[str]]], {stateNumber[st]}];),
+    					(lhs_ -> str_String) 
+    						:> (transitionMatrix[[stateNumber[lhs], alphabetNumber[str]]] = 
+    							Union[transitionMatrix[[stateNumber[lhs], alphabetNumber[str]]], {stateNumber[acceptState]}];)
+    			}
+    	] /@ expandedGrammar;
+    	
+    	NFA[Length[stateSet], alphabet, transitionMatrix, acceptStates, grammar[[1,1]]//stateNumber]
+];
+    	
+NFA[dg: Digraph[graph_, startVertices_, endVertices_, eAccepted_], 
+	validationRule] /; 
+    (!val[[2]] || validate[dg]) :=
+    Module[
+    	{
+    		edges = EdgeList[graph], 
+    		alphabet = 
+    			Union[PropertyValue[{graph, #}, VertexLabels] & /@ 
+      				VertexList[graph]], 
+      		numStates, initialState, acceptState, 
+   			transitionMatrix, vertex2LetterPos, edge2StatePos
+   		}, 
+  vertex2LetterPos[vertex_] := 
+   First@Flatten@
+     Position[alphabet, 
+      PropertyValue[{graph, vertex}, VertexLabels], {1}, 
+      Heads -> False];
+  edge2StatePos[edge_] := 
+   First@Flatten@Position[edges, edge, {1}, Heads -> False];
+  {initialState, acceptState, numStates} = Length[edges] + {1, 2, 2};
+  transitionMatrix = 
+   ConstantArray[{}, {numStates, Length[alphabet] + 1}];
+  If[eAccepted, 
+   transitionMatrix[[initialState, 
+      Length[alphabet] + 1]] = {acceptState}];
+  Map[Function[vertex, 
+    transitionMatrix[[initialState, vertex2LetterPos[vertex]]] = 
+      Union[transitionMatrix[[initialState, 
+         vertex2LetterPos[vertex]]], {acceptState}];], 
+   Intersection[endVertices, startVertices]];
+  Map[Function[edge, 
+    transitionMatrix[[initialState, vertex2LetterPos[edge[[1]]]]] = 
+      Union[
+       transitionMatrix[[initialState, 
+         vertex2LetterPos[edge[[1]]]]], {edge[[1]]}];], 
+   Union@EdgeList[graph, 
+     Alternatives @@ (DirectedEdge[#, _] & /@ startVertices)]];
+  Map[Function[edge, 
+    transitionMatrix[[edge2StatePos[edge], 
+        vertex2LetterPos[edge[[2]]]]] = 
+      Union[transitionMatrix[[edge2StatePos[edge], 
+         vertex2LetterPos[edge[[2]]]]], {acceptState}];], 
+   Union@EdgeList[graph, 
+     Alternatives @@ (DirectedEdge[_, #] & /@ endVertices)]];
+  Map[Function[edgePair, 
+    transitionMatrix[[edge2StatePos[edgePair[[1]]], 
+        vertex2LetterPos[edgePair[[1, 2]]]]] = 
+      Union[transitionMatrix[[edge2StatePos[edgePair[[1]]], 
+         vertex2LetterPos[edgePair[[1, 2]]]]], {edge2StatePos[
+         edgePair[[2]]]}];], 
+   Union@Flatten[
+     Outer[List, EdgeList[graph, DirectedEdge[_, #]], 
+        EdgeList[graph, DirectedEdge[#, _]]] & /@ VertexList[graph], 
+     2]];
+  NFA[numStates, alphabet, transitionMatrix, {acceptState}, 
+   initialState]
+];
+
 
 (* http://en.wikipedia.org/wiki/DFA_minimization#Hopcroft \
 .27s_algorithm *)
@@ -217,108 +466,197 @@ removeUnreachables[
     newInitialState]
 ];
 
-NFA::invalidDFA = "Invalid DFA.";
+makeTransitionMatrix[alphabetSize_, dfaStateSet_, transitionMatrix_, 
+  ajacency_] := Table[
+   Map[stateSubset \[Function]
+     Position[dfaStateSet,
+        Map[state \[Function]
+            {transitionMatrix[[state, i]], 
+             Map[Position[ajacency[[#]], True] &, 
+              transitionMatrix[[state, i]]]}, stateSubset] // 
+          Flatten // Union] // Flatten // First,
+    dfaStateSet
+    ],
+   {i, 1, alphabetSize}
+   ] // Transpose
 
-NFA[dfa: DFA[0, alphabet_, transitionMatrix_, acceptStates_, 
-    initialState_], 
-    Optional[Pattern[val, Rule[validationRequired, 
-    	Alternatives[True,False]]],	Rule[validationRequired,True]]] /; 
-    If[!val[[2]] || validate[dfa], True, Message[NFA::invalidDFA]; False] :=
-    NFA[0, alphabet, {}, {}, Null];
+SetAttributes[floydWarshall, HoldFirst];
+(* computes transitive closure *)
+(* "pass by reference": assigns to the symbol passed *)
+floydWarshall[m_] := Module[
+   {n = Length[m]},
+   For[k = 1, k <= n, ++k,
+     For[i = 1, i <= n, ++i,
+      For[j = 1, j <= n, ++j,
+       m[[i, j]] = m[[i, j]] || (m[[i, k]] && m[[k, j]]);
+       ]
+      ]
+     ];
+];
 
-NFA[dfa: DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
-    initialState_], 
-    Optional[Pattern[val, Rule[validationRequired, 
-    	Alternatives[True,False]]],	Rule[validationRequired,True]]] /; 
-    If[!val[[2]] || validate[dfa], True, Message[NFA::invalidDFA]; False] := 
-    NFA[numStates, alphabet, 
-    	Transpose[Join[Transpose[Map[List, transitionMatrix, {2}]], 
-    		ConstantArray[{}, numStates]]], 
-    	acceptStates, initialState];
+DFA[NFA[0, _, _, _, _]] := DFA[0, {Null}, {}, {}, Null];
+    
+DFA[nfa: NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
+    initialState_], validationRule] /; 
+    (!val[[2]] || validate[nfa]) := Module[
+   {
+    dfaStateSet = Subsets[Range[numStates]],
+    dfatransitionMatrix,
+    dfaAcceptStates,
+    dfaInitialState,
+    (* ajacency matrix for states as vertices
+    	and emoves as edges *)
+    ajacency = Table[
+      ReplacePart[ConstantArray[False, numStates], 
+       List /@ (transitionMatrix[[k, -1]]) -> True],
+      {k, 1, numStates}
+      ],
+     stateNumber
+    },
+   
+   stateNumber[stateSet_] := Position[dfaStateSet, stateSet, {1}, Heads -> False]
+   	//Flatten //First;
+   
+   floydWarshall[ajacency];
+   (* ajacency is now transitive closure *)
+   
+   dfaInitialState = stateNumber[ 
+       	{initialState, 
+          Position[ajacency[[initialState]], True]} // Flatten // 
+        Union];
+   dfaAcceptStates = 
+    Sort@Map[stateNumber, Select[
+       dfaStateSet, (Intersection[#, acceptStates] != {}) &]];
+   dfatransitionMatrix = 
+    makeTransitionMatrix[Length[alphabet], dfaStateSet, transitionMatrix, 
+     ajacency];
+   {2^numStates, alphabet, dfatransitionMatrix, dfaAcceptStates, 
+    dfaInitialState}//removeUnreachables//hopcroft
+   ];
 
-(* AC p 735 *)
-letterCount[regex_] := Max@Cases[regex, letter[n_] :> n, Infinity];
+    	
+simplifyRawRegex[regex_] := FixedPoint[
+  Replace[#, {
+     star[star[args__]] :> star[args],
+     star[Null] -> EmptyWord,
+     star[EmptyWord] -> EmptyWord,
+     or[x_] :> x,
+     or[i___, Null, f___] :> or[i, f],
+     or[i___, x_, m___, x_, f___] :> or[i, x, m, f],
+     or[i___, or[args__], f___] :> or[i, args, f],
+     concat[i___, concat[args__], f___] :> concat[i, args, f],
+     concat[x_] :> x,
+     concat[___, Null, ___] -> Null,
+     concat[i___, EmptyWord, f___] :> concat[i, f]
+     }, {0, Infinity}] &,
+  regex]
 
-regex2nfa[regex_] := regex2nfa[regex, letterCount[regex]];
+Regex[DFA[0, _, _, _, _]] := Regex[Null];
 
-regex2nfa[letter[n_], alphabetSize_] := {2, 
-   alphabetSize, {ReplacePart[ConstantArray[{}, alphabetSize + 1], 
-     n -> {2}], ConstantArray[{}, alphabetSize + 1]}, {2}, 1};
+Regex[dfa: DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
+    initialState_], validationRule] /; 
+    (!val[[2]] || validate[dfa])  := 
+  Module[{edgeRawRegex, k, i, j}, edgeRawRegex[_, _] = Null;
+ MapIndexed[
+  Function[{endState, pos},(*pos[[1]]=startState,pos[[2]]=letter*)
+   edgeRawRegex[pos[[1]], endState] = 
+     or[edgeRawRegex[pos[[1]], endState], alphabet[[pos[[2]]]]];], 
+  transitionMatrix, {2}];
+ (*setup beginning and end states*)
+ edgeRawRegex[0, initialState] = EmptyWord;
+ edgeRawRegex[x_?(MemberQ[acceptStates, #] &), numStates + 1] = 
+  EmptyWord;
+ For[k = 1, k <= numStates, ++k, 
+  Do[edgeRawRegex[i, j] = 
+     or[edgeRawRegex[i, j], 
+       concat[edgeRawRegex[i, k], star[edgeRawRegex[k, k]], 
+        edgeRawRegex[k, j]]] // simplifyRawRegex, {i, 
+     Append[Range[k + 1, numStates + 1], 0]}, {j, 
+     Append[Range[k + 1, numStates + 1], 0]}];];
+ Regex[edgeRawRegex[0, numStates + 1]]
+];
 
-regex2nfa[or[first_, second_], alphabetSize_] :=
-  nfaUnion[regex2nfa[first, alphabetSize], 
-   regex2nfa[second, alphabetSize]];
 
-regex2nfa[star[regex_], alphabetSize_] := 
-  nfaStar[regex2nfa[regex, alphabetSize]];
+RRGrammar[NFA[0, _, _, _, _]] := {};
 
-regex2nfa[concat[first_, second_], alphabetSize_] := 
-  nfaConcat[regex2nfa[first, alphabetSize], 
-   regex2nfa[second, alphabetSize]];
-
-NFA::invalidDigraph = "Invalid digraph.";
-
-NFA[dg: Digraph[graph_, startVertices_, endVertices_, eAccepted_], 
-	Optional[Pattern[val, Rule[validationRequired, 
-    	Alternatives[True,False]]],	Rule[validationRequired,True]]] /; 
-    If[!val[[2]] || validate[dg], True, Message[NFA::invalidDigraph]; False] :=
+RRGrammar[nfa: NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
+    initialState_], validationRule] /; 
+    (!val[[2]] || validate[nfa]) :=
     Module[
     	{
-    		edges = EdgeList[graph], 
-    		alphabet = 
-    			Union[PropertyValue[{graph, #}, VertexLabels] & /@ 
-      				VertexList[graph]], 
-      		numStates, initialState, acceptState, 
-   			transitionMatrix, vertex2LetterPos, edge2StatePos
-   		}, 
-  vertex2LetterPos[vertex_] := 
-   First@Flatten@
-     Position[alphabet, 
-      PropertyValue[{graph, vertex}, VertexLabels], {1}, 
-      Heads -> False];
-  edge2StatePos[edge_] := 
-   First@Flatten@Position[edges, edge, {1}, Heads -> False];
-  {initialState, acceptState, numStates} = Length[edges] + {1, 2, 2};
-  transitionMatrix = 
-   ConstantArray[{}, {numStates, Length[alphabet] + 1}];
-  If[eAccepted, 
-   transitionMatrix[[initialState, 
-      Length[alphabet] + 1]] = {acceptState}];
-  Map[Function[vertex, 
-    transitionMatrix[[initialState, vertex2LetterPos[vertex]]] = 
-      Union[transitionMatrix[[initialState, 
-         vertex2LetterPos[vertex]]], {acceptState}];], 
-   Intersection[endVertices, startVertices]];
-  Map[Function[edge, 
-    transitionMatrix[[initialState, vertex2LetterPos[edge[[1]]]]] = 
-      Union[
-       transitionMatrix[[initialState, 
-         vertex2LetterPos[edge[[1]]]]], {edge[[1]]}];], 
-   Union@EdgeList[graph, 
-     Alternatives @@ (DirectedEdge[#, _] & /@ startVertices)]];
-  Map[Function[edge, 
-    transitionMatrix[[edge2StatePos[edge], 
-        vertex2LetterPos[edge[[2]]]]] = 
-      Union[transitionMatrix[[edge2StatePos[edge], 
-         vertex2LetterPos[edge[[2]]]]], {acceptState}];], 
-   Union@EdgeList[graph, 
-     Alternatives @@ (DirectedEdge[_, #] & /@ endVertices)]];
-  Map[Function[edgePair, 
-    transitionMatrix[[edge2StatePos[edgePair[[1]]], 
-        vertex2LetterPos[edgePair[[1, 2]]]]] = 
-      Union[transitionMatrix[[edge2StatePos[edgePair[[1]]], 
-         vertex2LetterPos[edgePair[[1, 2]]]]], {edge2StatePos[
-         edgePair[[2]]]}];], 
-   Union@Flatten[
-     Outer[List, EdgeList[graph, DirectedEdge[_, #]], 
-        EdgeList[graph, DirectedEdge[#, _]]] & /@ VertexList[graph], 
-     2]];
-  NFA[numStates, alphabet, transitionMatrix, {acceptState}, 
-   initialState]
-];
+    		nonTermHead = Unique[],
+    		nonTerms,
+    		augmentedAlphabet = {alphabet, EmptyWord}//Flatten,
+    		grammar,
+    		posOfInitial
+    	},
+    	nonTerms = nonTermHead /@ Range[numStates];
+    	grammar = Flatten@MapIndexed[
+    		(* #1 == list of stateNums *)
+    		(* #2[[1]] == stateNum, #2[[2]] == letterNum *)
+    		(nonTermHead[#2[[1]]] -> or @@ (Function[st,
+    			concat[augmentedAlphabet[[#2[[2]]]], st]] /@
+    				#1)) &,
+    		transitionMatrix,
+    		{2}];
+    	grammar = grammar /. concat[EmptyWord, x_] :> x;
+    	grammar = grammar /. (_ -> or[]) :> Sequence[];
+    	grammar = {grammar, (nonTermHead[#] -> EmptyWord) & /@ acceptStates}//Flatten;
+    	
+    	(* if the initial state has no outgoing edges, 
+    		and is not an accepting state, return {} *) 
+    	If[Position[grammar, nonTermHead[initialState]] == {}, Return[{}]];
+    	(* if start state appears, make one of its rules the first one *)
+    	posOfInitial = Position[grammar, nonTermHead[initialState]]//Flatten//First;
+    	
+    	grammar = Permute[grammar, Cycles[{{1, posOfInitial}}]];
+    	
+    	grammar
+    ]; 
+
+cartesian[lists__List] := Flatten[Outer[List, lists], Length[{lists}] - 1];
+
+Digraph[dfa: DFA[0, _, _, _, _], validationRule] /; 
+    (!val[[2]] || validate[dfa]) := Digraph[Graph[{}], {}, {}, False];
     
-
-
+Digraph[dfa: DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
+    initialState_], validationRule] /; 
+    (!val[[2]] || validate[dfa]) := Module[
+    	{
+    		vertexSet = Flatten[MapIndexed[
+    			(* #1 = to, #2[[1]] = from, #2[[2]] = letterNum *)
+    			{#2[[1]], #1, #2[[2]]}&, transitionMatrix, {2}], 1],
+    		vertexNum,
+    		edgeSet,
+    		graph,
+    		startVertices, endVertices, eAccepted
+    	},
+    	(* ranking functon *)
+    	vertexNum[vertex_] :=  Position[vertexSet, vertex, 
+    		{1}, Heads -> False][[1, 1]];
+    		
+    	startVertices = vertexNum /@ Cases[vertexSet, {initialState, _, _}];
+    	endVertices = vertexNum /@ Cases[vertexSet, {_, st_, _} /; 
+    		MemberQ[acceptStates, st]];
+    	eAccepted = MemberQ[acceptStates, initialState];
+    	
+    	(* create the edge set *)
+    	edgeSet = Cases[cartesian[vertexSet, vertexSet],
+    		{{_, c_, _}, {c_, _, _}}];
+    	edgeSet = vertexNum /@ edgeSet;
+    	edgeSet = edgeSet /. {i_, f_} :> DirectedEdge[i, f];
+    	
+    	graph = Graph[Range[Length[vertexSet]], edgeSet];
+    	
+    	(* add String labels to the vertices *)    	
+    	(# /. {from_, to_, letterNum_} :> (PropertyValue[{graph, 
+    		vertexNum[{from, to, letterNum}]}, VertexLabels] = 
+    			alphabet[[letterNum]];))& /@ vertexSet;
+    	
+    	Digraph[graph, startVertices, endVertices, eAccepted]
+];
+    		 
+         
 (* transitions is a matrix like \
 http://en.wikipedia.org/wiki/Finite-state_machine # State \
 .2FEvent_table *)
@@ -426,73 +764,6 @@ taggedRegex2GF[regex_, indet_] := regex //. {
    or[args__] :> Plus[args],
    concat[args__] :> Times[args],
    star[args__] :> 1/(1 - args)}
-
-(* NFA to DFA *)
-
-(* transitions is transpose of a matrix like \
-n, 
-with one extra col at the end for e-moves *)
-
-(* possible bug: states that are within e-moves from end states must be considered end states, too; e.g. (start) --e--> (end) *)
-
-nfa2dfa[{numStates_Integer, alphabetSize_Integer, transitionMatrix_, 
-    acceptStates_?VectorQ, initialState_}] := Module[
-   {
-    dfaStateSet = Subsets[Range[numStates]],
-    dfatransitionMatrix,
-    dfaAcceptStates,
-    dfaInitialState,
-    ajacency = Table[
-      ReplacePart[ConstantArray[False, numStates], 
-       List /@ (transitionMatrix[[k, alphabetSize + 1]]) -> True],
-      {k, 1, numStates}
-      ]
-    },
-   floydWarshall[ajacency];
-   dfaInitialState = 
-    Position[
-       dfaStateSet, {initialState, 
-          Position[ajacency[[initialState]], True]} // Flatten // 
-        Union] // First // First;
-   dfaAcceptStates = 
-    Map[(Position[dfaStateSet, #] // First // First) &, 
-     Sort@Select[
-       dfaStateSet, ((# \[Intersection] acceptStates) != {}) &]];
-   dfatransitionMatrix = 
-    makeTransitionMatrix[alphabetSize, dfaStateSet, transitionMatrix, 
-     ajacency];
-   {2^numStates, alphabetSize, dfatransitionMatrix, dfaAcceptStates, 
-    dfaInitialState}
-   ];
-
-makeTransitionMatrix[alphabetSize_, dfaStateSet_, transitionMatrix_, 
-  ajacency_] := Table[
-   Map[stateSubset \[Function]
-     Position[dfaStateSet,
-        Map[state \[Function]
-            {transitionMatrix[[state, i]], 
-             Map[Position[ajacency[[#]], True] &, 
-              transitionMatrix[[state, i]]]}, stateSubset] // 
-          Flatten // Union] // First // First,
-    dfaStateSet
-    ],
-   {i, 1, alphabetSize}
-   ] // Transpose
-
-SetAttributes[floydWarshall, HoldFirst];
-
-(* computes transitive closure *)
-(* "pass by reference": assigns to the symbol passed *)
-floydWarshall[m_] := Module[
-   {n = Length[m]},
-   For[k = 1, k <= n, ++k,
-     For[i = 1, i <= n, ++i,
-      For[j = 1, j <= n, ++j,
-       m[[i, j]] = m[[i, j]] || (m[[i, k]] && m[[k, j]]);
-       ]
-      ]
-     ];
-   ];
 
 
 

@@ -3,8 +3,6 @@
 BeginPackage["genfunlib`contextFree`"]
 
 Begin["`Private`"] (* Begin Private Context *) 
-EmptyWord = {};
-Protect[EmptyWord];
 
 grammar = {
    a -> a1 ** b | a2 ** c,
