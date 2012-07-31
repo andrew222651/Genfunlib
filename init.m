@@ -1,13 +1,12 @@
-(* this package loads all subpackages 
-	(in a platform-independent way) *)
+(* this package loads all subpackages *)
 
-BeginPackage["genfunlib`", {
-	"genfunlib`alas`", 
-	"genfunlib`GFeqn2coefs`", 
-	"genfunlib`GFeqn2rec`", 
-	"genfunlib`rec2GFeqn`", 
-	"genfunlib`regular`",
-	"genfunlib`util`"
+BeginPackage["Genfunlib`", {
+	"Genfunlib`alas`", 
+	"Genfunlib`GFeqn2coefs`", 
+	"Genfunlib`GFeqn2rec`", 
+	"Genfunlib`rec2GFeqn`", 
+	"Genfunlib`RegularLanguages`",
+	"Genfunlib`Util`"
 	}]
 
 EndPackage[]

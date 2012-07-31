@@ -1,6 +1,6 @@
 (* Mathematica Package *)
 
-BeginPackage["genfunlib`GFeqn2coefs`"]
+BeginPackage["Genfunlib`GFeqn2coefs`"]
 
 Begin["`Private`"] (* Begin Private Context *) 
 

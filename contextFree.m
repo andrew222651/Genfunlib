@@ -1,6 +1,6 @@
 (* TODO: delete this file (after all useful code has been gleaned) *)
 
-BeginPackage["genfunlib`contextFree`"]
+BeginPackage["Genfunlib`contextFree`"]
 
 Begin["`Private`"] (* Begin Private Context *) 
 

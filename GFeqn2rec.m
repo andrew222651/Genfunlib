@@ -1,6 +1,6 @@
 (* Mathematica Package *)
 
-BeginPackage["genfunlib`GFeqn2rec`"]
+BeginPackage["Genfunlib`GFeqn2rec`"]
 
 Begin["`Private`"] (* Begin Private Context *) 
 (* extract coefficients from both sides of an equation (as-is) in \
