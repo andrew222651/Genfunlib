@@ -153,12 +153,12 @@ validateRLR[NFA[numStates_Integer?NonNegative, alphabet:{___String},
         ok = ok && !MemberQ[alphabet, ""];
         
         (* matrix entries are valid lists *)
-        ok = ok && ((numStates == 0 && transitionMatrix = {}) || 
+        ok = ok && ((numStates == 0 && transitionMatrix == {}) || 
         	MatrixQ[transitionMatrix, MatchQ[#, {___Integer}] && 
             (Max[#] <= numStates && Min[#] >= 1) &]);
         
         (* matrix dimensions are correct *)
-        ok = ok && ((numStates == 0 && transitionMatrix = {}) || 
+        ok = ok && ((numStates == 0 && transitionMatrix == {}) || 
         	Dimensions[transitionMatrix, 2] == 
             {numStates, Length[alphabet] + 1});
         
@@ -167,7 +167,7 @@ validateRLR[NFA[numStates_Integer?NonNegative, alphabet:{___String},
             (numStates > 0 && Max[acceptStates] <= numStates && Min[acceptStates] >= 1));
         
         (* initial state is valid *)
-        ok = ok && ((numStates == 0 && initialState = Null) || 
+        ok = ok && ((numStates == 0 && initialState == Null) || 
         	(numStates > 0 && 1 <= initialState <= numStates));
         
         If[ !ok, Message[NFA::invalid]];
@@ -184,12 +184,12 @@ validateRLR[DFA[numStates_Integer?NonNegative, alphabet:{___String},
         ok = ok && !MemberQ[alphabet, ""];
         
         (* matrix entries are valid numbers *)
-        ok = ok && ((numStates == 0 && transitionMatrix = {}) || 
+        ok = ok && ((numStates == 0 && transitionMatrix == {}) || 
         	MatrixQ[transitionMatrix, MatchQ[#, _Integer] && 
             (# <= numStates && # >= 1) &]);
         
         (* matrix dimensions are correct *)
-        ok = ok && ((numStates == 0 && transitionMatrix = {}) || 
+        ok = ok && ((numStates == 0 && transitionMatrix == {}) || 
         	Dimensions[transitionMatrix, 2] == 
             {numStates, Length[alphabet]});
         
@@ -198,7 +198,7 @@ validateRLR[DFA[numStates_Integer?NonNegative, alphabet:{___String},
             (numStates > 0 && Max[acceptStates] <= numStates && Min[acceptStates] >= 1));
         
         (* initial state is valid *)
-        ok = ok && ((numStates == 0 && initialState = Null) || 
+        ok = ok && ((numStates == 0 && initialState == Null) || 
         	(numStates > 0 && 1 <= initialState <= numStates));
         
         If[ !ok, Message[DFA::invalid]];
@@ -240,10 +240,10 @@ validateRLR[Regex[regex_]] := Module[
 ];
 validateRLR[Regex[___]] := (Message[Regex::invalid];False);
 
-validateRLR[RRGrammar[grammar:{(_ -> _) ...}]] := Module[
+validateRLR[g:RRGrammar[grammar:{(_ -> _) ...}]] := Module[
 	{
 		ok = True,
-		nonTerms = nonTerminals[grammar],
+		nonTerms = nonTerminals[g],
 		validateTerm
 	},
 	(* validate left-hand sides *)
@@ -292,9 +292,9 @@ validateRules[rules_, regex_] := Module[
 		ok = True
 	},
 	
-	ok = ok && MatchQ[rules, {_String -> _ ...}];
+	ok = ok && MatchQ[rules, {(_String -> _) ...}];
 	
-	ok = ok && Complement[rules[[All, 1]], strings] = {};
+	ok = ok && Complement[strings, rules[[All, 1]]] == {};
 	
 	If[!ok, Message[GeneratingFunction::invalidRules]];
 	ok
@@ -313,105 +313,6 @@ validateAlphabet[alphabet_] := Module[
 	ok
 ];
 
-
-(* ::Section:: *)
-(* Code generation for repetitive bits and pieces *)
-
-viaAlgorithms = {
-   (* {to, from, via} *)
-   {ToNFA, DFA, ToRegex},
-   {ToDFA, Regex, ToNFA},
-   {ToDFA, RRGrammar, ToNFA},
-   {ToDFA, Digraph, ToNFA},
-   {ToRegex, NFA, ToDFA},
-   {ToRegex, RRGrammar, ToDFA},
-   {ToRegex, Digraph, ToDFA},
-   {ToRRGrammar, DFA, ToNFA},
-   {ToRRGrammar, Regex, ToNFA},
-   {ToRRGrammar, Digraph, ToNFA},
-   {ToDigraph, NFA, ToDFA},
-   {ToDigraph, Regex, ToDFA},
-   {ToDigraph, RRGrammar, ToDFA}
-};
-
-(* define conversion algorithms that go via 
-	another conversion *)
-(# /. {to_, from_, via_} :> 
-      Hold[
-      	to[name : from[___], opts:OptionsPattern[]]  := 
-         to[via[name, opts], validationRequired -> False];
-      ]) & /@ 
-  viaAlgorithms // ReleaseHold;
-
-(* complement *)
-complementVias = {NFA, Regex, RRGrammar, Digraph};
-
-(Hold[
-      	RegComplement[name : #[___], alpha_, opts:OptionsPattern[]]  := 
-         ToExpression["To" <> ToString[#]][
-         	RegComplement[ToDFA[name, alpha, opts], validationRequired -> False]
-         ];
-      ]) & /@ 
-  complementVias // ReleaseHold;
-
-(* star and reverse *)
-starReverseVias = {
-	{RegStar, DFA, ToNFA},
-	{RegStar, Regex, ToNFA},
-	{RegStar, RRGrammar, ToNFA},
-	{RegStar, Digraph, ToNFA},
-	{RegReverse, NFA, ToRegex},
-	{RegReverse, DFA, ToRegex},
-	{RegReverse, RRGrammar, ToRegex},
-	{RegReverse, Digraph, ToRegex}
-};
-
-(# /. {op_, rlr_, via_} :> Hold[
-      	op[name : rlr[___], opts:OptionsPattern[]]  := 
-         ToExpression["To" <> ToString[rlr]][
-         	op[via[name, opts], validationRequired -> False]
-         ];
-      ]) & /@ 
-  starReverseVias // ReleaseHold;
-
-(* union, concat, intersection *)
-uciVias = {
-	{RegUnion, DFA, ToNFA},
-	{RegUnion, Regex, ToNFA},
-	{RegUnion, RRGrammar, ToNFA},
-	{RegUnion, Digraph,  ToNFA},
-	{RegConcat, DFA, ToNFA},
-	{RegConcat, Regex, ToNFA},
-	{RegConcat, RRGrammar, ToNFA},
-	{RegConcat, Digraph,  ToNFA},
-	{RegIntersection, NFA, ToDFA},
-	{RegIntersection, Regex, ToDFA},
-	{RegIntersection, RRGrammar, ToDFA},
-	{RegIntersection, Digraph,  ToDFA}
-};
-
-(# /. {op_, rlr_, via_} :> Hold[
-      	op[name1 : rlr[___], name2 : rlr[___], opts:OptionsPattern[]]  := 
-         ToExpression["To" <> ToString[rlr]][
-         	op[via[name1, opts], via[name2, opts], validationRequired -> False]
-         ];
-      ]) & /@ 
-  uciVias // ReleaseHold;
-		 
-
-(* add options for downvalued symbols except GeneratingFunction *)
-(* also the symbols with catch-all definitions *)
-symbolsWithOptions = {
-	ToNFA, ToDFA, ToRegex, ToRRGrammar, ToDigraph, ToRegularExpression,  
-	RegStar, RegComplement, RegReverse, RegUnion, RegConcat, RegIntersection
-};
-
-(MessageName[#, "invalidArgumentSyntax"] = "Invalid argument syntax.")& /@ symbolsWithOptions;
-
-Hold[#[___] /; (Message[#::invalidArgumentSyntax]; False) := Null;]& /@ 
-	symbolsWithOptions //ReleaseHold;
-
-(Options[#] = {validationRequired -> True})& /@ symbolsWithOptions;
 
 (* ::Section:: *)
 (* Regex2NFA *)
@@ -437,14 +338,18 @@ regex2nfa[EmptyWord] := NFA[
 	{1}, 1
 ];
 
-regex2nfa[RegexOr[first_, second_]] :=
-  RegUnion[regex2nfa[first], regex2nfa[second]];
+regex2nfa[RegexOr[first_, rest__]] :=
+  RegUnion[regex2nfa[first], regex2nfa[RegexOr[rest]]];
+
+regex2nfa[RegexOr[regex_]] := regex2nfa[regex];
 
 regex2nfa[RegexStar[regex_]] := 
   RegStar[regex2nfa[regex]];
 
-regex2nfa[RegexConcat[first_, second_]] := 
-  RegConcat[regex2nfa[first], regex2nfa[second]];
+regex2nfa[RegexConcat[first_, rest__]] := 
+  RegConcat[regex2nfa[first], regex2nfa[RegexConcat[rest]]];
+
+regex2nfa[RegexConcat[regex_]] := regex2nfa[regex];
    
 ToNFA[Regex[regex_], OptionsPattern[]] := Module[
 	{},
@@ -469,7 +374,7 @@ ToNFA[g: RRGrammar[grammar_], OptionsPattern[]] :=
     		transitionMatrix, acceptStates
     	},
     	(
-    	stateSet = Flatten[{nonTerminals[grammar], acceptState}];
+    	stateSet = Flatten[{nonTerminals[g], acceptState}];
     	
     	stateNumber[state_] := Position[stateSet, 
     		state, {1}, Heads -> False][[1,1]];
@@ -791,8 +696,8 @@ ToDFA[nfa: NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
     makeTransitionMatrix[Length[alphabet], dfaStateSet, transitionMatrix, 
      ajacency]
    ];
-   {2^numStates, alphabet, dfaTransitionMatrix, dfaAcceptStates, 
-    dfaInitialState}//removeUnreachables//hopcroft
+   DFA[2^numStates, alphabet, dfaTransitionMatrix, dfaAcceptStates, 
+    dfaInitialState]//removeUnreachables//hopcroft
     ) /; !OptionValue[validationRequired] || validateRLR[nfa]
    ];
 
@@ -849,7 +754,7 @@ ToRegex[dfa: DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
 (* ::Section:: *)
 (* NFA2RRGrammar *)
 
-ToRRGrammar[NFA[0, _, _, _, _]] := {};
+ToRRGrammar[NFA[0, _, _, _, _]] := RRGrammar[{}];
 
 ToRRGrammar[nfa: NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
     initialState_], OptionsPattern[]]  :=
@@ -867,24 +772,27 @@ ToRRGrammar[nfa: NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
     		(* #1 == list of stateNums *)
     		(* #2[[1]] == stateNum, #2[[2]] == letterNum *)
     		(nonTermHead[#2[[1]]] -> RRGrammarOr @@ (Function[st,
-    			RRGrammarConcat[augmentedAlphabet[[#2[[2]]]], st]] /@
+    			RRGrammarConcat[augmentedAlphabet[[#2[[2]]]], nonTermHead[st]]] /@
     				#1)) &,
     		transitionMatrix, {2}
     	];
     	grammar = grammar /. RRGrammarConcat[EmptyWord, x_] :> x;
     	grammar = grammar /. (_ -> RRGrammarOr[]) :> Sequence[];
+    	grammar = grammar /. (lhs_ -> RRGrammarOr[arg_]) :> (lhs -> arg);
     	(* handle acceptStates *)
     	grammar = {grammar, (nonTermHead[#] -> EmptyWord) & /@ acceptStates}//Flatten;
     	
     	(* if the initial state has no outgoing edges, 
     		and is not an accepting state, return {} *) 
-    	If[FreeQ[grammar, nonTermHead[initialState]], Return[{}]];
+    	If[FreeQ[grammar[[All, 1]], nonTermHead[initialState]], Return[{}]];
     	(* if start state appears, make one of its rules the first one *)
     	posOfInitial = Position[grammar, nonTermHead[initialState]][[1, 1]];
     	
-    	grammar = Permute[grammar, Cycles[{{1, posOfInitial}}]];
+    	If[posOfInitial != 1,
+    		grammar = Permute[grammar, Cycles[{{1, posOfInitial}}]]
+    	];
     	
-    	grammar
+    	RRGrammar[grammar]
     	)/; !OptionValue[validationRequired] || validateRLR[nfa]
     ]; 
 
@@ -994,7 +902,8 @@ regex2regularexpression[RegexOr[args__]] := StringJoin[Riffle[regex2regularexpre
 
 ToRegularExpression[r:Regex[regex_], OptionsPattern[]] := Module[
 	{simp = simplifyRawRegex[regex]},
-	regex2regularexpression[simp] /; !OptionValue[validationRequired] || validateRLR[r]
+	RegularExpression[regex2regularexpression[simp]] /; 
+		!OptionValue[validationRequired] || validateRLR[r]
 ];
 
 
@@ -1018,7 +927,7 @@ RegStar[nfa:NFA[numStates_, alphabet_, transitionMatrix_,
     Map[(newT[[#, -1]] =
         newT[[#, -1]] \[Union] {initialState}) &,
      acceptStates];
-    {numStates, alphabet, newT, newAcceptStates, initialState}
+    NFA[numStates, alphabet, newT, newAcceptStates, initialState]
     )/; !OptionValue[validationRequired] || validateRLR[nfa]
 ];
 	
@@ -1106,8 +1015,8 @@ RegUnion[nfa1:NFA[numStates1_, alphabet1_, transitionMatrix1_, acceptStates1_,
     (
     (* these take a position in newAlphabet and return the position in 
     	augmentedAlphabet 1 and 2 *)
-    augmentedAlphabet1Lookup[c_] := Position[augmentedAlphabet1, newAlphabet[c]][[1, 1]];
-    augmentedAlphabet2Lookup[c_] := Position[augmentedAlphabet2, newAlphabet[c]][[1, 1]];
+    augmentedAlphabet1Lookup[c_] := Position[augmentedAlphabet1, newAlphabet[[c]]][[1, 1]];
+    augmentedAlphabet2Lookup[c_] := Position[augmentedAlphabet2, newAlphabet[[c]]][[1, 1]];
     
     newTransitionMatrix1 = Table[
     	If[!MemberQ[augmentedAlphabet1, newAlphabet[[c]]],
@@ -1167,8 +1076,9 @@ RegConcat[nfa1:NFA[numStates1_, alphabet1_, transitionMatrix1_, acceptStates1_,
     (
     (* these take a position in newAlphabet and return the position in 
     	augmentedAlphabet 1 and 2 *)
-    augmentedAlphabet1Lookup[c_] := Position[augmentedAlphabet1, newAlphabet[c]][[1, 1]];
-    augmentedAlphabet2Lookup[c_] := Position[augmentedAlphabet2, newAlphabet[c]][[1, 1]];
+    
+    augmentedAlphabet1Lookup[c_] := Position[augmentedAlphabet1, newAlphabet[[c]]][[1, 1]];
+    augmentedAlphabet2Lookup[c_] := Position[augmentedAlphabet2, newAlphabet[[c]]][[1, 1]];
     
     newTransitionMatrix1 = Table[
     	If[!MemberQ[augmentedAlphabet1, newAlphabet[[c]]],
@@ -1260,13 +1170,17 @@ FixedPoint[Replace[#,
 	regex
 ];
 
-Unprotect[GeneratingFunction];
 
+previousOptions = Options[GeneratingFunction]
+
+Unprotect[GeneratingFunction];
 Options[GeneratingFunction] = Union[
-	Options[GeneratingFunction],
+	previousOptions,
 	{validationRequired -> True}
 ];
+Protect[GeneratingFunction];
 
+Unprotect[GeneratingFunction];
 GeneratingFunction[regex:Regex[_], rules_, OptionsPattern[]] := 
 	Module[
 		{},
@@ -1275,5 +1189,106 @@ GeneratingFunction[regex:Regex[_], rules_, OptionsPattern[]] :=
 		)/; !OptionValue[validationRequired] || validateRules[rules, regex]
 	];
 Protect[GeneratingFunction];
+
+(* ::Section:: *)
+(* Code generation for repetitive bits and pieces *)
+
+viaAlgorithms = {
+   (* {to, from, via} *)
+   {ToNFA, DFA, ToRegex},
+   {ToDFA, Regex, ToNFA},
+   {ToDFA, RRGrammar, ToNFA},
+   {ToDFA, Digraph, ToNFA},
+   {ToRegex, NFA, ToDFA},
+   {ToRegex, RRGrammar, ToDFA},
+   {ToRegex, Digraph, ToDFA},
+   {ToRRGrammar, DFA, ToNFA},
+   {ToRRGrammar, Regex, ToNFA},
+   {ToRRGrammar, Digraph, ToNFA},
+   {ToDigraph, NFA, ToDFA},
+   {ToDigraph, Regex, ToDFA},
+   {ToDigraph, RRGrammar, ToDFA}
+};
+
+(* define conversion algorithms that go via 
+	another conversion *)
+(# /. {to_, from_, via_} :> 
+      Hold[
+      	to[name : from[___], opts:OptionsPattern[]]  := 
+         to[via[name, opts], validationRequired -> False];
+      ]) & /@ 
+  viaAlgorithms // ReleaseHold;
+
+(* complement *)
+complementVias = {NFA, Regex, RRGrammar, Digraph};
+
+(Hold[
+      	RegComplement[name : #[___], alpha_, opts:OptionsPattern[]]  := 
+         ToExpression["To" <> ToString[#]][
+         	RegComplement[ToDFA[name, alpha, opts], validationRequired -> False]
+         ];
+      ]) & /@ 
+  complementVias // ReleaseHold;
+
+(* star and reverse *)
+starReverseVias = {
+	{RegStar, DFA, ToNFA},
+	{RegStar, Regex, ToNFA},
+	{RegStar, RRGrammar, ToNFA},
+	{RegStar, Digraph, ToNFA},
+	{RegReverse, NFA, ToRegex},
+	{RegReverse, DFA, ToRegex},
+	{RegReverse, RRGrammar, ToRegex},
+	{RegReverse, Digraph, ToRegex}
+};
+
+(# /. {op_, rlr_, via_} :> Hold[
+      	op[name : rlr[___], opts:OptionsPattern[]]  := 
+         ToExpression["To" <> ToString[rlr]][
+         	op[via[name, opts], validationRequired -> False]
+         ];
+      ]) & /@ 
+  starReverseVias // ReleaseHold;
+
+(* union, concat, intersection *)
+uciVias = {
+	{RegUnion, DFA, ToNFA},
+	{RegUnion, Regex, ToNFA},
+	{RegUnion, RRGrammar, ToNFA},
+	{RegUnion, Digraph,  ToNFA},
+	{RegConcat, DFA, ToNFA},
+	{RegConcat, Regex, ToNFA},
+	{RegConcat, RRGrammar, ToNFA},
+	{RegConcat, Digraph,  ToNFA},
+	{RegIntersection, NFA, ToDFA},
+	{RegIntersection, Regex, ToDFA},
+	{RegIntersection, RRGrammar, ToDFA},
+	{RegIntersection, Digraph,  ToDFA}
+};
+
+(# /. {op_, rlr_, via_} :> Hold[
+      	op[name1 : rlr[___], name2 : rlr[___], opts:OptionsPattern[]]  := 
+         ToExpression["To" <> ToString[rlr]][
+         	op[via[name1, opts], via[name2, opts], validationRequired -> False]
+         ];
+      ]) & /@ 
+  uciVias // ReleaseHold;
+		 
+
+(* add options for downvalued symbols except GeneratingFunction *)
+(* also the symbols with catch-all definitions *)
+symbolsWithOptions = {
+	ToNFA, ToDFA, ToRegex, ToRRGrammar, ToDigraph, ToRegularExpression,  
+	RegStar, RegComplement, RegReverse, RegUnion, RegConcat, RegIntersection
+};
+
+(MessageName[#, "invalidArgumentSyntax"] = "Invalid argument syntax.")& /@ symbolsWithOptions;
+
+Hold[#[___] /; (Message[#::invalidArgumentSyntax]; False) := Null;]& /@ 
+	symbolsWithOptions //ReleaseHold;
+
+(Options[#] = {validationRequired -> True})& /@ symbolsWithOptions;
+
+End[] (* End Private Context *)
     		 
 EndPackage[]
