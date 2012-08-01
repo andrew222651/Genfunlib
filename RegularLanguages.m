@@ -213,7 +213,7 @@ validateRLR[RegularExpression[regex_String]] := Module[
 	ok = ok && StringMatchQ[regex, (LetterCharacter | DigitCharacter | "\\*" | "(" | 
     ")" | "|") ...];
     (* test validity as a regex according to Mathematica *)
-    ok = ok && Check[StringMatchQ["", regex], $Failed] =!= $Failed;
+    ok = ok && Check[StringMatchQ["", RegularExpression[regex]], $Failed] =!= $Failed;
     
     If[!ok, Message[RegularExpression::invalid]];
     ok
@@ -385,7 +385,7 @@ ToNFA[g: RRGrammar[grammar_], OptionsPattern[]] :=
     	acceptStates = {stateNumber[acceptState]};
     	
     	(* expand or[...]'s into separate rules in extendedGrammar *)
-    	expandedGrammar = grammar /. (rhs_ -> or[args__]) :> 
+    	expandedGrammar = grammar /. (rhs_ -> RRGrammarOr[args__]) :> 
     		Sequence@@((rhs -> # &) /@ {args});
     	transitionMatrix = ConstantArray[{}, {Length[stateSet], Length[alphabet] + 1}];
     	
@@ -406,7 +406,7 @@ ToNFA[g: RRGrammar[grammar_], OptionsPattern[]] :=
     	
     	NFA[Length[stateSet], alphabet, transitionMatrix, acceptStates, grammar[[1,1]]//stateNumber]
     	
-    	) /; OptionValue[validationRequired] || validateRLR[g]
+    	) /; (!OptionValue[validationRequired] || validateRLR[g])
 ];
 
 (* ::Section:: *)
@@ -799,7 +799,7 @@ ToRRGrammar[nfa: NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
 (* ::Section:: *)
 (* DFA2Digraph *)
 
-cartesian[lists___List] := Flatten[Outer[List, lists], Length[{lists}] - 1];
+cartesian[lists___List] := Flatten[Outer[List, lists, 1], Length[{lists}] - 1];
 
 ToDigraph[DFA[0, _, _, _, _]] := Digraph[Graph[{}], {}, {}, False];
     
@@ -832,6 +832,12 @@ ToDigraph[dfa: DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
     	edgeSet = edgeSet /. {i_, f_} :> DirectedEdge[i, f];
     	
     	graph = Graph[Range[Length[vertexSet]], edgeSet];
+    	
+    	(* start vertices are colored green, end vertices have dotted edges *)
+    	(PropertyValue[{graph, #}, VertexStyle] = Green;)& /@ startVertices;
+    	(PropertyValue[{graph, #}, VertexStyle] = EdgeForm[{Thick, Dotted}];)& /@ endVertices;
+    	(PropertyValue[{graph, #}, VertexStyle] = 
+    		Directive[Green, EdgeForm[{Thick, Dotted}]];)& /@ Intersection[startVertices, endVertices];
     	
     	(* add String labels to the vertices *)    	
     	(# /. {from_, to_, letterNum_} :> (PropertyValue[{graph, 
@@ -890,7 +896,7 @@ ToRegex[RegularExpression[Null], OptionsPattern[]] := Regex[Null];
 
 ToRegex[r:RegularExpression[regex_], OptionsPattern[]] := Module[
 	{},
-	Regex@pars[regex] /; !OptionValue[validationRequired] || validateRLR[r]
+	Regex@pars["(" <> regex <> ")"] /; !OptionValue[validationRequired] || validateRLR[r]
 ]; 
 
 regex2regularexpression[Null] := Null;
@@ -898,7 +904,8 @@ regex2regularexpression[str_String] := str;
 regex2regularexpression[EmptyWord] := "()";
 regex2regularexpression[RegexStar[expr_]] := "(" <> regex2regularexpression[expr] <> ")*";
 regex2regularexpression[RegexConcat[args__]] := StringJoin[regex2regularexpression /@ {args}];
-regex2regularexpression[RegexOr[args__]] := StringJoin[Riffle[regex2regularexpression /@ {args},"|"]];
+regex2regularexpression[RegexOr[args__]] := "(" <> 
+	StringJoin[Riffle[regex2regularexpression /@ {args},"|"]] <> ")";
 
 ToRegularExpression[r:Regex[regex_], OptionsPattern[]] := Module[
 	{simp = simplifyRawRegex[regex]},

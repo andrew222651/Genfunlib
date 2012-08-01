@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     70323,       1362]
-NotebookOptionsPosition[     68221,       1292]
-NotebookOutlinePosition[     68819,       1315]
-CellTagsIndexPosition[     68776,       1312]
+NotebookDataLength[     70415,       1364]
+NotebookOptionsPosition[     68313,       1294]
+NotebookOutlinePosition[     68911,       1317]
+CellTagsIndexPosition[     68868,       1314]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -721,7 +721,8 @@ Operations\n\nThe following take one of ",
     3.5515475726696496`*^9}, {3.5515479302621026`*^9, 
     3.5515479373255067`*^9}}],
  "\n\tallow the user to provide a function mapping each letter to a \
-symbol/\"weight\" in the form of Rules\n\nBonus\n\t\n",
+symbol/\"weight\" in the form of Rules\n\tTodo: disambiguation is too slow\n\n\
+Bonus\n\t\n",
  Cell[BoxData["Disambiguate"], "Code",
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
@@ -882,7 +883,8 @@ recursive test (see Brabrand and Thomsen)\n\t\[OpenCurlyDoubleQuote]a**\
    3.552654418441919*^9}, {3.5526821258036895`*^9, 3.552682159111594*^9}, {
    3.552683477533004*^9, 3.5526835017913914`*^9}, {3.5527346906273737`*^9, 
    3.5527347118015847`*^9}, {3.552741706652667*^9, 3.5527417190013733`*^9}, {
-   3.552758286944006*^9, 3.5527582879750648`*^9}}]
+   3.552758286944006*^9, 3.5527582879750648`*^9}, {3.5527745829920864`*^9, 
+   3.5527745902425013`*^9}}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1354,11 +1356,11 @@ Cell[19247, 427, 329, 6, 38, "Text"],
 Cell[CellGroupData[{
 Cell[19601, 437, 6932, 94, 36, "Subsubsubsection"],
 Cell[26536, 533, 95, 1, 38, "Text"],
-Cell[26634, 536, 18631, 348, 1694, "Text"]
+Cell[26634, 536, 18723, 350, 1718, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[45302, 889, 6886, 92, 36, "Subsubsubsection"],
-Cell[52191, 983, 15966, 302, 1311, "Text"]
+Cell[45394, 891, 6886, 92, 36, "Subsubsubsection"],
+Cell[52283, 985, 15966, 302, 1311, "Text"]
 }, Open  ]]
 }, Open  ]]
 }, Open  ]]
