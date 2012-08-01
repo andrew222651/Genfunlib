@@ -569,7 +569,7 @@ removeUnreachables[
    
 removeUnreachables[DFA[numStates_?Positive, {}, transitionMatrix_, 
 	acceptStates_, initialState_]] := 
-	DFA[1, {}, {{}}, Cases[acceptStates, initialState], initialState];    
+	DFA[1, {}, {{}}, If[MemberQ[acceptStates, initialState], {1}, {}], 1];    
 
 (* DFA with a nontrivial alphabet and some states, 
 	some of which are accepting states *)
@@ -591,7 +591,7 @@ removeUnreachables[
     reachables = Union[reachables, newStates];
     ];
    unreachables = Reverse@Complement[Range[numStates], reachables];
-   
+     
    (* delete unreachables *)
    While[unreachables != {},
     (* take the greatest unreachable *)
@@ -692,7 +692,7 @@ ToDFA[nfa: NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
     Sort@Map[stateNumber, Select[
        dfaStateSet, (Intersection[#, acceptStates] != {}) &]];
    dfaTransitionMatrix = If[alphabet == {}, 
-   	ConstantArray[{}, numStates],
+   	ConstantArray[{}, 2^numStates],	
     makeTransitionMatrix[Length[alphabet], dfaStateSet, transitionMatrix, 
      ajacency]
    ];
