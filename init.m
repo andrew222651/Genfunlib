@@ -1,7 +1,7 @@
 (* this package loads all subpackages *)
 
 BeginPackage["Genfunlib`", {
-	"Genfunlib`alas`", 
+	"Genfunlib`SymbolicMethod`", 
 	"Genfunlib`GFeqn2coefs`", 
 	"Genfunlib`GFeqn2rec`", 
 	"Genfunlib`rec2GFeqn`", 

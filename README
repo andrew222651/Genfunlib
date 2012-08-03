@@ -6,6 +6,7 @@ See the file named "LICENSE" in this directory for license information.
 Created with Mathematica 8.
 
 How to install and run:
-Place this directory in the directory given by
+If necessary, rename this directory to "Genfunlib".  Then, place 
+this directory in the directory given by
 FileNameJoin[{$InstallationDirectory, "AddOns", "ExtraPackages"}].
 Then Genfunlib may be loaded with Get["Genfunlib`"].

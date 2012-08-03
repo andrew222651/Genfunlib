@@ -947,8 +947,16 @@ RegComplement[dfa:DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
     	compNotAlphabetRegex
     },
     (
-    compDFA = DFA[numStates, alphabet, transitionMatrix, 
-    	Complement[Range[numStates], acceptStates], initialState];
+    compDFA = If[numStates == 0,
+    	(* no states *)
+    	If[alphabet == {},
+    		ToDFA[Regex[EmptyWord]],
+    		ToDFA[Regex[RegexStar[RegexOr@@alphabet]]]
+    	],
+    	(* states *)
+    	DFA[numStates, alphabet, transitionMatrix, 
+    	Complement[Range[numStates], acceptStates], initialState]
+    ];
 
 	(* union(compDFA \[Intersection] intersectionAlphabet*, 
 		words in compAlphabet* but not in alphabet* *)
@@ -960,10 +968,10 @@ RegComplement[dfa:DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
 	
 	compNotAlphabetRegex = If[compNotAlphabetLetters == {},
 		Regex[Null],
-		RegexConcat[
+		Regex[RegexConcat[
 			RegexStar[RegexOr@@compNotAlphabetLetters],
 			RegexOr@@compNotAlphabetLetters,
-			RegexStar[RegexOr@@compNotAlphabetLetters]
+			RegexStar[RegexOr@@compNotAlphabetLetters]]
 		]
 	];
 		
@@ -1127,12 +1135,12 @@ RegIntersection[dfa1:DFA[numStates1_, alphabet1_, transitionMatrix1_, acceptStat
     },
     (
     If[numStates1 == 0 || numStates2 == 0, 
-    	Return[DFA[0, Intersection[alphabet1, alphabet2], {}, {}, Null]];
+    	Return[DFA[0, newAlphabet, {}, {}, Null]];
     ];
     
-    alphabet1Num[alphabetNum_] := Position[alphabet1, newAlphabet[alphabetNum], 
+    alphabet1Num[alphabetNum_] := Position[alphabet1, newAlphabet[[alphabetNum]], 
     	{1}, Heads -> False][[1, 1]];
-    alphabet2Num[alphabetNum_] := Position[alphabet1, newAlphabet[alphabetNum], 
+    alphabet2Num[alphabetNum_] := Position[alphabet2, newAlphabet[[alphabetNum]], 
     	{1}, Heads -> False][[1, 1]];
     
     stateNum[state_] := Position[stateSet, state, {1}, Heads-> False][[1, 1]];
@@ -1232,7 +1240,7 @@ complementVias = {NFA, Regex, RRGrammar, Digraph};
 (Hold[
       	RegComplement[name : #[___], alpha_, opts:OptionsPattern[]]  := 
          ToExpression["To" <> ToString[#]][
-         	RegComplement[ToDFA[name, alpha, opts], validationRequired -> False]
+         	RegComplement[ToDFA[name, opts], alpha, validationRequired -> False]
          ];
       ]) & /@ 
   complementVias // ReleaseHold;

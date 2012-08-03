@@ -1,6 +1,6 @@
 (* Mathematica Package *)
 
-BeginPackage["Genfunlib`alas`"]
+BeginPackage["Genfunlib`SymbolicMethod`"]
 
 Begin["`Private`"] (* Begin Private Context *) 
 (* TODO: more constructions, restrictions, additional parameters via \
