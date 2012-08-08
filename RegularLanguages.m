@@ -969,9 +969,9 @@ RegComplement[dfa:DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
 	compNotAlphabetRegex = If[compNotAlphabetLetters == {},
 		Regex[Null],
 		Regex[RegexConcat[
-			RegexStar[RegexOr@@compNotAlphabetLetters],
+			RegexStar[RegexOr@@compAlphabet],
 			RegexOr@@compNotAlphabetLetters,
-			RegexStar[RegexOr@@compNotAlphabetLetters]]
+			RegexStar[RegexOr@@compAlphabet]]
 		]
 	];
 		

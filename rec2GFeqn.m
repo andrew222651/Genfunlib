@@ -3,30 +3,9 @@
 BeginPackage["Genfunlib`rec2GFeqn`"]
 
 Begin["`Private`"] (* Begin Private Context *) 
-(* problem solved: just take GeneratingFunction of both sides. \
-GeneratingFunction could be extended to operations corresponding to \
-integration. *)
-
-Clear[toGFeqn, gf, bounds, ratFactor]
-
-(* takes recurrence relation for Subscript[(a[n]), n>=0] which holds \
-for n>=0 *)
-toGFeqn[lhs_ == rhs_] := 
-  gf[sum[lhs*z^n, {n, 0, Infinity}]] == 
-   gf[sum[rhs*z^n, {n, 0, Infinity}]];
 
 (* break things up *)
 gf[sum[expr_, {s__}]] := gf[sum[Expand@Apart@expr, {s}]];
-
-(* sum *)
-gf[sum[a_ + b_, {s__}]] := gf[sum[a, {s}]] + gf[sum[b, {s}]];
-
-(* free *)
-gf[sum[expr_?(FreeQ[#, a] &), {s__}]] := Sum[expr, {s}];
-
-(* scalar multiplication *)
-gf[sum[c_?(FreeQ[#, a] && FreeQ[#, n] &)*expr_, {s__}]] := 
-  c*gf[sum[expr, {s}]];
 
 (* sumless *)
 gf[sum[(fac_: 1)*a[n + j_: 0]*z^n, {n, l_, u_}]] := 

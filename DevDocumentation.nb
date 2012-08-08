@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     79206,       1523]
-NotebookOptionsPosition[     76772,       1443]
-NotebookOutlinePosition[     77370,       1466]
-CellTagsIndexPosition[     77327,       1463]
+NotebookDataLength[     84943,       1689]
+NotebookOptionsPosition[     81943,       1593]
+NotebookOutlinePosition[     82541,       1616]
+CellTagsIndexPosition[     82498,       1613]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -195,7 +195,32 @@ CapitalCase and usage messages for public symbols, lowerCase for private \
 symbols\
 \>", "Text",
  CellChangeTimes->{{3.5522233603142395`*^9, 3.552223382090485*^9}, {
-  3.552511910379794*^9, 3.5525119127719307`*^9}}]
+  3.552511910379794*^9, 3.5525119127719307`*^9}}],
+
+Cell["\<\
+Writing user documention last is OK as long as in-code documentation and this \
+file are written diligently\
+\>", "Text",
+ CellChangeTimes->{{3.5523333601271887`*^9, 3.5523333992584267`*^9}, {
+   3.552333539794465*^9, 3.5523335432346616`*^9}, {3.5523894756870527`*^9, 
+   3.5523894768941216`*^9}, 3.552515782492266*^9}],
+
+Cell["\<\
+private symbols are defined before the first public symbol downvalue they\
+\[CloseCurlyQuote]re used in\
+\>", "Text",
+ CellChangeTimes->{{3.5525168692924275`*^9, 3.5525168909076643`*^9}}],
+
+Cell[TextData[{
+ "private symbols don\[CloseCurlyQuote]t interfere with previously defined \
+symbols in the ",
+ StyleBox["Mathematica",
+  FontSlant->"Italic"],
+ " session (in \[OpenCurlyDoubleQuote]Global`\[CloseCurlyDoubleQuote])."
+}], "Text",
+ CellChangeTimes->{{3.5523873452151966`*^9, 3.5523873718387194`*^9}, {
+  3.5523874135351043`*^9, 3.552387416135253*^9}, {3.552389314318823*^9, 
+  3.5523893200471506`*^9}, {3.552514629837338*^9, 3.552514630660385*^9}}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -228,7 +253,7 @@ Cell[TextData[{
  Cell[BoxData["GeneratingFunction"], "Code",
   CellChangeTimes->{{3.5513660856753883`*^9, 3.5513660885625534`*^9}},
   FontColor->GrayLevel[0]],
- " or cancel?"
+ " "
 }], "Text",
  CellChangeTimes->{{3.5513651493618345`*^9, 3.551365150017872*^9}, {
    3.551365265714489*^9, 3.5513652744419885`*^9}, {3.5513653460980873`*^9, 
@@ -245,7 +270,8 @@ Cell[TextData[{
    3.551533841491681*^9, 3.5515338756736364`*^9}, {3.551545726846074*^9, 
    3.5515457278211303`*^9}, {3.551560086254386*^9, 3.551560086957426*^9}, {
    3.552064233390174*^9, 3.552064245629874*^9}, {3.5528421415224686`*^9, 
-   3.552842183899893*^9}, {3.5529072513756027`*^9, 3.552907253375717*^9}}],
+   3.552842183899893*^9}, {3.5529072513756027`*^9, 3.552907253375717*^9}, {
+   3.552951260001752*^9, 3.552951260857801*^9}, 3.55302978881065*^9}],
 
 Cell["Areas for improvement:", "Text",
  CellChangeTimes->{{3.552912375142665*^9, 3.552912378639865*^9}}],
@@ -269,7 +295,64 @@ Cell[BoxData[
      RowBox[{"{", 
       RowBox[{"i", ",", " ", "0", ",", " ", "k"}], "}"}]}], "]"}], ",", " ", 
    "n", ",", " ", "x"}], "]"}]], "Code",
- CellChangeTimes->{{3.552912361329875*^9, 3.5529123899165106`*^9}}]
+ CellChangeTimes->{{3.552912361329875*^9, 3.5529123899165106`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"GeneratingFunction", "[", 
+  RowBox[{
+   RowBox[{"f", "[", 
+    RowBox[{"n", "+", "i"}], "]"}], ",", "n", ",", "x"}], "]"}]], "Code",
+ CellChangeTimes->{3.553193752094735*^9}],
+
+Cell[BoxData[
+ RowBox[{"GeneratingFunction", "[", 
+  RowBox[{
+   RowBox[{"Sum", "[", 
+    RowBox[{
+     RowBox[{"f", "[", 
+      RowBox[{"n", "+", "i"}], "]"}], ",", " ", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", " ", "0", ",", " ", "k"}], "}"}]}], "]"}], ",", " ", 
+   "n", ",", " ", "x"}], "]"}]], "Code",
+ CellChangeTimes->{3.552951306619418*^9}],
+
+Cell[BoxData[
+ RowBox[{"GeneratingFunction", "[", 
+  RowBox[{
+   RowBox[{
+    FractionBox["1", 
+     RowBox[{"n", "+", "1"}]], 
+    RowBox[{"f", "[", "n", "]"}]}], ",", " ", "n", ",", " ", "x"}], 
+  "]"}]], "Code",
+ CellChangeTimes->{{3.552912361329875*^9, 3.5529123899165106`*^9}, {
+  3.5529495807477045`*^9, 3.552949588180129*^9}}],
+
+Cell[BoxData[
+ RowBox[{"GeneratingFunction", "[", 
+  RowBox[{
+   RowBox[{"Boole", "[", 
+    RowBox[{"Divisible", "[", 
+     RowBox[{"n", ",", "2"}], "]"}], "]"}], ",", "n", ",", "x"}], 
+  "]"}]], "Code",
+ CellChangeTimes->{3.553029776676956*^9}],
+
+Cell[BoxData[
+ RowBox[{"GeneratingFunction", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Boole", "[", 
+     RowBox[{"n", "\[GreaterEqual]", "1"}], "]"}], 
+    RowBox[{"f", "[", "n", "]"}]}], ",", "n", ",", "x"}], "]"}]], "Code",
+ CellChangeTimes->{3.5531936911846514`*^9}],
+
+Cell[BoxData[
+ RowBox[{"GeneratingFunction", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"UnitStep", "[", 
+     RowBox[{"n", "-", "k"}], "]"}], 
+    RowBox[{"f", "[", "n", "]"}]}], ",", "n", ",", "x"}], "]"}]], "Code",
+ CellChangeTimes->{3.5532861612029457`*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -295,9 +378,86 @@ Cell["GFeq2rec", "Section",
 Cell[TextData[{
  StyleBox["\[OpenCurlyDoubleQuote]override\[CloseCurlyDoubleQuote]",
   FontColor->GrayLevel[0]],
- " SeriesCoefficient?"
+ " SeriesCoefficient"
 }], "Text",
- CellChangeTimes->{{3.5529125602092505`*^9, 3.552912579712366*^9}}]
+ CellChangeTimes->{{3.5529125602092505`*^9, 3.552912579712366*^9}, 
+   3.552951250090185*^9}],
+
+Cell[TextData[{
+ "No way to represent ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"known", "(", 
+    RowBox[{"unknown", "(", "z", ")"}], ")"}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " compositions (can\[CloseCurlyQuote]t do \[OpenCurlyDoubleQuote]symbolic \
+lists\[CloseCurlyDoubleQuote])"
+}], "Text",
+ CellChangeTimes->{{3.5529512405686407`*^9, 3.5529512433938017`*^9}, {
+  3.55311254266966*^9, 3.5531125880452557`*^9}}],
+
+Cell[TextData[{
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"unknown", "(", 
+    RowBox[{
+     RowBox[{"known", "(", "z", ")"}], ",", "..."}], ")"}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " compositions can only be done (for the same reason) for fixed expressions \
+like ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"unknown", "(", 
+    RowBox[{"k", " ", "z"}], ")"}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " or ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"unknown", "(", 
+    RowBox[{
+     RowBox[{"k", " ", "z"}], ",", 
+     RowBox[{"j", " ", "z"}]}], ")"}], TraditionalForm]],
+  FormatType->"TraditionalForm"]
+}], "Text",
+ CellChangeTimes->{{3.553119116084638*^9, 3.553119132821595*^9}, {
+  3.5531929924936867`*^9, 3.55319306700879*^9}}],
+
+Cell["\<\
+ref/Series: \[OpenCurlyDoubleQuote]Series by default assumes symbolic \
+functions to be analytic\[CloseCurlyDoubleQuote]\
+\>", "Text",
+ CellChangeTimes->{{3.5532989460031943`*^9, 3.5532989651312885`*^9}}],
+
+Cell["\<\
+For singular functions, SeriesCoefficient can do rational-power expansions.  \
+In that case, the Cauchy product rule for series multiplication doesn\
+\[CloseCurlyQuote]t hold.  To use a simplification rule for products of \
+series, we have to determine whether the factors are analytic.  Doing that \
+automatically would be an interesting challenge, however, for simplicity, we \
+merely allow the user to specify when the factors should simply be assumed to \
+be analytic.  But... built-in functions cannot have new options added.  \
+\>", "Text",
+ CellChangeTimes->{{3.5533420322840633`*^9, 3.553342036938329*^9}, {
+  3.5533420928585277`*^9, 3.553342203374849*^9}, {3.5533702763335304`*^9, 
+  3.5533703713489647`*^9}, {3.553370687438044*^9, 3.5533707133405256`*^9}}],
+
+Cell["\<\
+Also, negative-power expansions can be done, so sometimes that possibility \
+should be ignored.\
+\>", "Text",
+ CellChangeTimes->{{3.553342408394575*^9, 3.553342423194422*^9}, {
+  3.5533424953785505`*^9, 3.553342517690827*^9}, {3.5533712286690006`*^9, 
+  3.553371234708346*^9}}],
+
+Cell[TextData[{
+ "Current system: global variable called ",
+ Cell[BoxData["$FullAnalytic"], "Code",
+  CellChangeTimes->{3.5515469211423845`*^9}],
+ ", which, if true, means that the Cauchy product rule is assumed always \
+applicable."
+}], "Text",
+ CellChangeTimes->{{3.553371238066538*^9, 3.553371248988163*^9}, {
+  3.553371284182176*^9, 3.553371316237009*^9}}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -321,7 +481,7 @@ Cell["GFeq2coefs", "Section",
    3.5528421632177095`*^9}, {3.5528424067606397`*^9, 3.5528424127639832`*^9}}],
 
 Cell["\<\
-differentiate eqn, set var to 0, solve\
+SV: differentiate eqn, set var to 0, solve\
 \>", "Text",
  CellChangeTimes->{{3.5513651493618345`*^9, 3.551365150017872*^9}, {
    3.551365265714489*^9, 3.5513652744419885`*^9}, {3.5513653460980873`*^9, 
@@ -338,7 +498,11 @@ differentiate eqn, set var to 0, solve\
    3.551533841491681*^9, 3.5515338756736364`*^9}, {3.551545726846074*^9, 
    3.5515457278211303`*^9}, {3.551560086254386*^9, 3.551560086957426*^9}, {
    3.552064233390174*^9, 3.552064245629874*^9}, {3.5528421415224686`*^9, 
-   3.5528421632177095`*^9}, 3.5528424067606397`*^9}]
+   3.5528421632177095`*^9}, 3.5528424067606397`*^9, {3.5529510925701756`*^9, 
+   3.552951093978256*^9}}],
+
+Cell["MV: ?", "Text",
+ CellChangeTimes->{{3.5529510957853594`*^9, 3.552951096537402*^9}}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -446,14 +610,14 @@ syntactic input validation.\n-",
   3.552511818419534*^9}, {3.55251304078745*^9, 3.5525130973956876`*^9}}],
 
 Cell[TextData[{
- "How to do efficient and simple validation remains a mystery.  The result of \
-a successful RegUnion command, for example, is going to be valid, but when it\
-\[CloseCurlyQuote]s passed to another function, it\[CloseCurlyQuote]s checked \
-for validity anyway.  One option is for all functions to store the validity \
-of their results right before they return them, by setting a downvalue of the \
-\[OpenCurlyDoubleQuote]validate\[CloseCurlyDoubleQuote] symbol (validate[ret] \
-= True; ret).  This system could be altered by making the validate symbol \
-only remember the last ",
+ "How to do efficient and simple input validation remains a mystery.  The \
+result of a successful RegUnion command, for example, is guaranteed to be \
+valid RLR, but when it\[CloseCurlyQuote]s passed to another function, it\
+\[CloseCurlyQuote]s checked for validity anyway.  One option is for all \
+functions to store the validity of their results right before they return \
+them, by setting a downvalue of the \[OpenCurlyDoubleQuote]validate\
+\[CloseCurlyDoubleQuote] symbol (validate[ret] = True; ret).  This system \
+could be altered by making the validate symbol only remember the last ",
  StyleBox["n ",
   FontSlant->"Italic"],
  "such expressions.  A somewhat-relevant reference is ",
@@ -469,7 +633,8 @@ when-it-returns-unevaluated"],
 }], "Text",
  CellChangeTimes->{{3.552653125045941*^9, 3.5526531957739863`*^9}, {
   3.5526532328461065`*^9, 3.552653383333714*^9}, {3.5526535120700774`*^9, 
-  3.552653513326149*^9}, {3.5526535707894363`*^9, 3.5526535895595093`*^9}}],
+  3.552653513326149*^9}, {3.5526535707894363`*^9, 3.5526535895595093`*^9}, {
+  3.553371332948965*^9, 3.553371350853989*^9}}],
 
 Cell["\<\
 If a public function calls another public function, it always passes valid \
@@ -499,12 +664,6 @@ validation themselves, like RegularExpression and Graph in ",
    3.552578524570137*^9, 3.552578526162228*^9}, {3.5526538626861315`*^9, 
    3.552653891205763*^9}}],
 
-Cell["\<\
-private symbols are defined before the first public symbol downvalue they\
-\[CloseCurlyQuote]re used in\
-\>", "Text",
- CellChangeTimes->{{3.5525168692924275`*^9, 3.5525168909076643`*^9}}],
-
 Cell[TextData[{
  "The authors of ",
  StyleBox["Combinatorica",
@@ -520,17 +679,6 @@ algorithm performance is similar."
   3.5523892337672157`*^9, 3.5523892721594114`*^9}}],
 
 Cell[TextData[{
- "private symbols don\[CloseCurlyQuote]t interfere with previously defined \
-symbols in the ",
- StyleBox["Mathematica",
-  FontSlant->"Italic"],
- " session (in \[OpenCurlyDoubleQuote]Global`\[CloseCurlyDoubleQuote])."
-}], "Text",
- CellChangeTimes->{{3.5523873452151966`*^9, 3.5523873718387194`*^9}, {
-  3.5523874135351043`*^9, 3.552387416135253*^9}, {3.552389314318823*^9, 
-  3.5523893200471506`*^9}, {3.552514629837338*^9, 3.552514630660385*^9}}],
-
-Cell[TextData[{
  "Letters are represented by nonempty ",
  Cell[BoxData["String"], "Code",
   CellChangeTimes->{
@@ -543,14 +691,6 @@ Cell[TextData[{
 }], "Text",
  CellChangeTimes->{{3.5522215561380463`*^9, 3.5522216118582335`*^9}, 
    3.552221877634435*^9}],
-
-Cell["\<\
-Writing user documention last is OK as long as in-code documentation and this \
-file are written diligently\
-\>", "Text",
- CellChangeTimes->{{3.5523333601271887`*^9, 3.5523333992584267`*^9}, {
-   3.552333539794465*^9, 3.5523335432346616`*^9}, {3.5523894756870527`*^9, 
-   3.5523894768941216`*^9}, 3.552515782492266*^9}],
 
 Cell[CellGroupData[{
 
@@ -1302,7 +1442,12 @@ language (\[Epsilon] may still be accepted). empty list means empty language \
 (\[Epsilon] may still be accepted)\n\teAccepted: True if \[Epsilon] is \
 accepted, False otherwise\n\tGraph with 0 vertices means empty language (\
 \[Epsilon] may still be accepted).\n\n\nBonus: words with occurrences of \
-patterns\nBonus: accept more regex syntax"
+patterns\nBonus: accept more regex syntax\nBonus: extended symbolic regexes \
+with symbolic parameters (\[OpenCurlyDoubleQuote]a\[CloseCurlyDoubleQuote] ",
+ Cell[BoxData[
+  FormBox["k", TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " times, etc.)"
 }], "Text",
  CellChangeTimes->{{3.5515457794760847`*^9, 3.551545811340907*^9}, {
    3.5515458660810385`*^9, 3.5515458775886965`*^9}, {3.551546993428519*^9, 
@@ -1413,7 +1558,7 @@ patterns\nBonus: accept more regex syntax"
    3.5526596105538907`*^9, 3.5526596106538963`*^9}, {3.5526727973871346`*^9, 
    3.5526728068866777`*^9}, {3.5526740683748307`*^9, 3.552674074559184*^9}, {
    3.5527576756030393`*^9, 3.552757688489776*^9}, {3.5529151251589575`*^9, 
-   3.5529151645202084`*^9}}]
+   3.5529151645202084`*^9}, {3.553119001024057*^9, 3.5531190222452707`*^9}}]
 }, Open  ]]
 }, Open  ]],
 
@@ -1421,6 +1566,8 @@ Cell["Species", "Section",
  CellChangeTimes->{{3.5515457794760847`*^9, 3.551545811340907*^9}, 
    3.5515458660810385`*^9, 3.5515459652347097`*^9, {3.551547974084609*^9, 
    3.55154797550069*^9}}],
+
+Cell[CellGroupData[{
 
 Cell["GFeq2GF(KernelMethod)", "Section",
  CellChangeTimes->{{3.5513651493618345`*^9, 3.551365150017872*^9}, {
@@ -1438,7 +1585,10 @@ Cell["GFeq2GF(KernelMethod)", "Section",
    3.551533841491681*^9, 3.5515338756736364`*^9}, {3.551545726846074*^9, 
    3.5515457278211303`*^9}, {3.551560086254386*^9, 3.551560086957426*^9}, {
    3.552064233390174*^9, 3.552064245629874*^9}, {3.5528421415224686`*^9, 
-   3.552842159685508*^9}}]
+   3.552842159685508*^9}}],
+
+Cell["http://math.haifa.ac.il/toufik/prog.html", "Text"]
+}, Open  ]]
 }, Open  ]]
 },
 WindowToolbars->"EditBar",
@@ -1477,53 +1627,69 @@ Cell[6127, 149, 1607, 23, 38, "Text"],
 Cell[7737, 174, 134, 1, 38, "Text"],
 Cell[7874, 177, 97, 1, 38, "Text"],
 Cell[7974, 180, 731, 10, 38, "Text"],
-Cell[8708, 192, 225, 5, 38, "Text"]
+Cell[8708, 192, 225, 5, 38, "Text"],
+Cell[8936, 199, 329, 6, 38, "Text"],
+Cell[9268, 207, 197, 4, 38, "Text"],
+Cell[9468, 213, 462, 9, 38, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[8970, 202, 1236, 20, 134, "Section"],
-Cell[10209, 224, 1439, 23, 39, "Text"],
-Cell[11651, 249, 104, 1, 38, "Text"],
-Cell[11758, 252, 220, 6, 68, "Code"],
-Cell[11981, 260, 409, 11, 63, "Code"]
+Cell[9967, 227, 1236, 20, 134, "Section"],
+Cell[11206, 249, 1500, 24, 39, "Text"],
+Cell[12709, 275, 104, 1, 38, "Text"],
+Cell[12816, 278, 220, 6, 68, "Code"],
+Cell[13039, 286, 409, 11, 63, "Code"],
+Cell[13451, 299, 199, 5, 63, "Code"],
+Cell[13653, 306, 351, 10, 63, "Code"],
+Cell[14007, 318, 333, 9, 90, "Code"],
+Cell[14343, 329, 245, 7, 63, "Code"],
+Cell[14591, 338, 270, 7, 63, "Code"],
+Cell[14864, 347, 259, 7, 63, "Code"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[12427, 276, 1179, 16, 98, "Section"],
-Cell[13609, 294, 215, 5, 38, "Text"]
+Cell[15160, 359, 1179, 16, 98, "Section"],
+Cell[16342, 377, 240, 6, 38, "Text"],
+Cell[16585, 385, 433, 11, 38, "Text"],
+Cell[17021, 398, 756, 24, 57, "Text"],
+Cell[17780, 424, 214, 4, 38, "Text"],
+Cell[17997, 430, 776, 11, 108, "Text"],
+Cell[18776, 443, 287, 6, 38, "Text"],
+Cell[19066, 451, 360, 8, 63, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[13861, 304, 1231, 16, 98, "Section"],
-Cell[15095, 322, 1238, 18, 38, "Text"]
+Cell[19463, 464, 1231, 16, 98, "Section"],
+Cell[20697, 482, 1294, 19, 38, "Text"],
+Cell[21994, 503, 89, 1, 38, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[16370, 345, 229, 3, 98, "Section"],
-Cell[16602, 350, 908, 15, 295, "Text"],
-Cell[17513, 367, 711, 16, 63, "Text"]
+Cell[22120, 509, 229, 3, 98, "Section"],
+Cell[22352, 514, 908, 15, 295, "Text"],
+Cell[23263, 531, 711, 16, 63, "Text"]
 }, Open  ]],
-Cell[18239, 386, 1166, 15, 98, "Section"],
+Cell[23989, 550, 1166, 15, 98, "Section"],
 Cell[CellGroupData[{
-Cell[19430, 405, 203, 3, 55, "Section"],
-Cell[19636, 410, 650, 10, 108, "Text"],
-Cell[20289, 422, 1220, 23, 201, "Text"],
-Cell[21512, 447, 1234, 24, 131, "Text"],
-Cell[22749, 473, 431, 8, 62, "Text"],
-Cell[23183, 483, 940, 16, 131, "Text"],
-Cell[24126, 501, 197, 4, 38, "Text"],
-Cell[24326, 507, 633, 12, 108, "Text"],
-Cell[24962, 521, 462, 9, 38, "Text"],
-Cell[25427, 532, 478, 12, 39, "Text"],
-Cell[25908, 546, 329, 6, 38, "Text"],
+Cell[25180, 569, 203, 3, 55, "Section"],
+Cell[25386, 574, 650, 10, 108, "Text"],
+Cell[26039, 586, 1220, 23, 201, "Text"],
+Cell[27262, 611, 1298, 25, 131, "Text"],
+Cell[28563, 638, 431, 8, 62, "Text"],
+Cell[28997, 648, 940, 16, 131, "Text"],
+Cell[29940, 666, 633, 12, 108, "Text"],
+Cell[30576, 680, 478, 12, 39, "Text"],
 Cell[CellGroupData[{
-Cell[26262, 556, 6918, 92, 52, "Subsection"],
-Cell[33183, 650, 95, 1, 38, "Text"],
-Cell[33281, 653, 18887, 351, 1741, "Text"]
+Cell[31079, 696, 6918, 92, 52, "Subsection"],
+Cell[38000, 790, 95, 1, 38, "Text"],
+Cell[38098, 793, 18887, 351, 1741, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[52205, 1009, 6880, 92, 52, "Subsection"],
-Cell[59088, 1103, 16253, 312, 1334, "Text"]
+Cell[57022, 1149, 6880, 92, 52, "Subsection"],
+Cell[63905, 1243, 16514, 317, 1357, "Text"]
 }, Open  ]]
 }, Open  ]],
-Cell[75368, 1419, 195, 3, 98, "Section"],
-Cell[75566, 1424, 1190, 16, 55, "Section"]
+Cell[80446, 1564, 195, 3, 98, "Section"],
+Cell[CellGroupData[{
+Cell[80666, 1571, 1190, 16, 55, "Section"],
+Cell[81859, 1589, 56, 0, 38, "Text"]
+}, Open  ]]
 }, Open  ]]
 }
 ]
