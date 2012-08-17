@@ -37,6 +37,7 @@ SeriesCoefficient[x_^(k: (_Symbol|_Integer) : 1)*expr_, arg2, opts:OptionsPatter
 ];
 
 (* multiplication *)
+(* (fortunately) isn't called for things like E^x*1/(1-x) *)
 SeriesCoefficient[expr1_ * expr2_, arg2, opts:OptionsPattern[]] := With[
    {
    	iterator = Unique[]
@@ -45,6 +46,7 @@ SeriesCoefficient[expr1_ * expr2_, arg2, opts:OptionsPattern[]] := With[
    	newOpts = FilterRules[{opts}, Method] ~ Append ~ (Assumptions -> 
    	OptionValue[Assumptions] && Element[iterator, Integers] && iterator >= 0)
    },
+	   (* Print["Multiplying..."]; *)
 	   Sum[SeriesCoefficient[expr1, {x, 0, iterator}, newOpts] 
 	   	* SeriesCoefficient[expr2, {x, 0, n - iterator}, newOpts], {iterator, 0, n}]
    ] /; !FreeQ[expr1, x] && !FreeQ[expr2, x] && $FullAnalytic
