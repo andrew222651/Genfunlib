@@ -12,7 +12,10 @@ protected = Unprotect[SeriesCoefficient];
 
 $FullAnalytic = False;
 
-arg2 = HoldPattern[{x_Symbol, 0, n_}];
+(* what can usually be used as a variable, according to ref/message/General/ivar *)
+variablePattern = HoldPattern[Except[_String | _?NumberQ | _Plus | _Times | _Sum | _Product | _^_Integer]];
+
+arg2 = HoldPattern[{x:variablePattern, 0, n_}];
 
 (* coefficients of negative or noninteger powers are 0 *)
 SeriesCoefficient[_, arg2, opts:OptionsPattern[]] := Module[

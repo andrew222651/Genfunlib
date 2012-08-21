@@ -22,16 +22,65 @@ Begin["`Private`"] (* Begin Private Context *)
 (* ::Section:: *)
 (* Input validation *)
 
-validateSpec
+nonTerminals[Spec[list_, _]] := list[[All, 1]];
 
-nonTerminals[Spec[list_, _]] := Union[list[[All, 1]]];
+(* need to know if max is Infinity or less than Infinity *)
+(* need to know if 0 is included *)
 
-validateSpecSyntax[spec:Spec[{(_ == _)...}, True|False]] := Module[
+validatePred
+
+validateRHS[sym_Symbol, nonTerms_] /; MemberQ[nonTerms, sym] := True;
+validateRHS[EClass, _] := True;
+validateRHS[ZClass[n_Integer] /; n >= 1, _] := True;
+
+validateRHS[SMPlus[args__]] := And @@ validateRHS /@ {args};
+validateRHS[SMTimes[args__]] := And @@ validateRHS /@ {args};
+
+validateRHS[SMSeq[arg_]] := validateRHS[arg];
+validateRHS[SMSeq[arg_, Cardinality -> pred_]] := validateRHS[arg] && validatePred[pred];
+
+validateRHS[SMCyc[arg_]] := validateRHS[arg];
+validateRHS[SMCyc[arg_, Cardinality -> pred_]] := validateRHS[arg] && validatePred[pred];
+
+validateRHS[SMSet[arg_]] := validateRHS[arg];
+validateRHS[SMSet[arg_, Cardinality -> pred_]] := validateRHS[arg] && validatePred[pred];
+
+validateRHS[SMMultiset[arg_]] := validateRHS[arg];
+validateRHS[SMMultiset[arg_, Cardinality -> pred_]] := validateRHS[arg] && validatePred[pred];
+
+validateRHS[SMSub[first_, second_, paramNumber_Integer?Positive]] := validateRHS[first] && validateRHS[second];
+validateRHS[SMPointing[arg_, paramNumber_Integer?Positive]] := validateRHS[arg];
+
+validateRHS[Restricted[arg_, rules:{(_Integer?Positive -> _)...}]] := Module[
 	{
-		ok = True
+		integers = rules[[All, 1]],
+		preds = rules[[All, 2]]
 	},
-	blah
+	(Length@integers == Length@Union@integers) && And @@ validatePred /@ preds
 ];
+
+validateRHS[___] := False;
+
+validateSpecSyntax[spec:Spec[list:{(_ == _)...}, labeled:True|False]] := Module[
+	{
+		ok = True,
+		lhss = list[[All, 1]],
+		rhss = list[[All, 2]]
+	},
+	ok = ok && MatchQ[lhss, {_Symbol...}];
+	ok = ok && Length@lhss == Length@Union[lhss];
+	If[labeled && MemberQ[list, SMMultiset, {0, Infinity}, Heads -> True], ok = False];  
+	ok = ok && And @@ validateRHS[#, lhss]& /@ rhss;
+	
+	ok
+];
+validateSpecSyntax[___] := False;
+
+(* returns true if... *)
+(* returns conditions under which input is semantically valid *)
+validateSpecSemantics
+
+validateSpec[spec_] := validateSpecSyntax[spec];
 
 specSymbols = {seq, cyc, set, multiset, prod, sum, zClass, eClass};
 
@@ -114,7 +163,6 @@ circularQ[spec_, v_] := ! AcyclicGraphQ[makeGraph[spec, v]];
 
 (* ::Section:: *)
 (* To GF eqns *)
-
 
 (* simplifies Sum[generalTerm*Boole[pred[n]], {n, slb, sub}] *)
 restrictedSum[generalTerm_, Function[GreaterEqual[ub_: Infinity, Slot[1], lb_: 0]], {n_, slb_, sub_}] := 
@@ -277,7 +325,46 @@ GFEqns[spec:Spec[list_List, False], indet_Symbol] := Module[
 			
 	) /; validateSpec[Spec]
 ];
-                     
+
+(* ::Section:: *)
+(* Combstruct grammar to Genfunlib spec *)
+
+(* assumes there are no parenthesis except to group function arguments *)
+(* assumes nonterminals are only one character *)
+(* assumes the grammar is explicit *)
+ToGenfunlibSpec[str_String, labeled:(True|False)] := Module[
+	{
+		ret = str
+	},
+	ret = StringReplace[ret, c_?UpperCaseQ :> ToLowerCase[c] <> ToLowerCase[c]];
+	ret = StringReplace[ret, {
+  		"=" -> "==",
+  		"(" -> "[", ")" -> "]",
+  		"pprod" -> "SMTimes",
+  		"uunion" -> "SMPlus",
+  		"sset" -> "SMSet",
+  		"ppowersset" -> "SMSet",
+  		"ccycle" -> "SMCyc",
+  		"ssubst" -> "SMSub",
+  		"ssequence" -> "SMSeq",
+  		"zz" -> "ZClass[1]",
+  		"aatom" -> "ZClass[1]",
+  		"eepsilon" -> "EClass"
+  	}];
+  	ret = ToExpression[ret, InputForm, Hold];
+  	ret = Replace[ret, 
+ 		SMSub[first_, second_] :> SMSub[second, first], {0, Infinity}];
+ 	ret = Replace[ret, {
+  		(head : (SMSet | SMSeq | SMCyc))[arg_, rel_[card, k_]] :> 
+   			SMSet[arg, Cardinality -> (rel[#, k] &)],
+  		(head : (SMSet | SMSeq | SMCyc))[arg_, rel_[k_, card]] :> 
+   			SMSet[arg, Cardinality -> (rel[k, #] &)]
+  		},
+ 		{0, Infinity}];
+ 	
+ 	Spec[ret//ReleaseHold, labeled]
+];                               
+                                          
 End[] (* End Private Context *)
 
 EndPackage[]
