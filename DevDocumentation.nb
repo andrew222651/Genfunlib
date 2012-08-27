@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[    104919,       2196]
-NotebookOptionsPosition[    100749,       2068]
-NotebookOutlinePosition[    101341,       2091]
-CellTagsIndexPosition[    101298,       2088]
+NotebookDataLength[    107114,       2241]
+NotebookOptionsPosition[    102825,       2110]
+NotebookOutlinePosition[    103417,       2133]
+CellTagsIndexPosition[    103374,       2130]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -32,25 +32,24 @@ Cell[CellGroupData[{
 Cell["Ideas and notes", "Section",
  CellChangeTimes->{{3.5289844249528074`*^9, 3.5289844264168916`*^9}}],
 
-Cell["\<\
-possible components:
- code in .m files
- data in .m files (if small enough)
- user documentation: tutorial, guide, help pages - only pointers to \
-mathematical background, usage messages
-  formal specification?
- tests
- developer documentation: this and code comments
-  proofs of correctness?\
-\>", "Text",
+Cell[TextData[{
+ "possible components:\n code in .m files\n data in .m files (if small \
+enough)\n user documentation: tutorial, guide, help pages - only pointers to \
+mathematical background, usage messages\n  formal ",
+ StyleBox["specific Asian",
+  FontFamily->"Times New Roman",
+  FontVariations->{"StrikeThrough"->True}],
+ " specification?\n tests\n developer documentation: this and code comments\n \
+ proofs of correctness?"
+}], "Text",
  CellChangeTimes->CompressedData["
-1:eJxTTMoPSmViYGAQBWIQrTExZGlyyivHeS+2gWkJ1ijjdCAd2zPBFER3/Xhr
+1:eJxTTMoPSmViYGAQA2IQrTExZGlyyivHeS+2gWkJ1ijjdCAd2zPBFER3/Xhr
 BaLX+G20BdEXpsp6geigae2+INquf3YeiJ5omVcIonc8/9wHoouFbSeA6AlP
 5KaA6LMPpswA0bXxcVtAtLjBNTAtczstOQNI7+ObkwKijdlmzwLRUnmMs0H0
 Cofkb5lA+r966XcQPSFcgysLSGuZnwXTV5RkZbOB9I+eaiUQfYrJOR9Eq9Yl
 g2nbE+8Xg+hDt+8uBdEKOlfXg+gCtS9geuOlO6E9IH9HmoSB6L4Q+9rg8leO
-ZfO8wbR+AteWbiBdd60UTMfxxi64B6Q/OLktAdHsZQt311e/cvTLOwimAVeg
-pe4=
+ZfO8wbR+AteWbiBdd60UTMfxxi64B6Q/OLktAdHsZQt311e/cvTLOwimH61U
+m+1d88ox/vkSMA0AA6mupA==
   "]],
 
 Cell["\<\
@@ -226,10 +225,11 @@ symbols in the ",
 
 Cell["\<\
 The obvious sequel to this project would be adding enumeration functionality \
-for RegularLanguages, SymbolicMethod, and Species.\
+for RegularLanguages and Species.\
 \>", "Text",
  CellChangeTimes->{{3.5545532378870173`*^9, 3.554553306790959*^9}, {
-  3.554553914047692*^9, 3.5545539199350286`*^9}}]
+  3.554553914047692*^9, 3.5545539199350286`*^9}, {3.5550141722101727`*^9, 
+  3.555014174466302*^9}}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -278,10 +278,11 @@ predefined species
 
 Cell["\<\
 weighted species
-\tsingletons may be weighted\
+\tsingletons may be weighted with an expression\
 \>", "Text",
  CellChangeTimes->{{3.5544014334275923`*^9, 3.5544014365807724`*^9}, {
-  3.554553373815792*^9, 3.554553386479517*^9}}],
+  3.554553373815792*^9, 3.554553386479517*^9}, {3.554575630888824*^9, 
+  3.5545756332719603`*^9}}],
 
 Cell["\<\
 restrictions
@@ -294,20 +295,24 @@ Cell["\<\
 operations
 \tproduct
 \tsum
-\t(partitional) composition
+\tpartitional composition
 \t\tsubstitution into the first slot only (p. 85)
 \tderivative
 \t\tw.r.t. first slot only
 \tpointing
-\t\tw.r.t. first slot only\
+\t\tw.r.t. first slot only
+\tfunctorial composition\
 \>", "Text",
  CellChangeTimes->{{3.554400983115836*^9, 3.55440098405289*^9}, {
-  3.5544950972977114`*^9, 3.55449509954484*^9}, {3.5544953505291953`*^9, 
-  3.5544953541774035`*^9}, {3.5544953898894463`*^9, 3.5544953918005557`*^9}, {
-  3.5544957502810593`*^9, 3.5544957522971745`*^9}, {3.5544958595373087`*^9, 
-  3.554495861497421*^9}, {3.554496160785539*^9, 3.5544961671449027`*^9}, {
-  3.554551753632123*^9, 3.5545517819747443`*^9}, {3.5545519440320134`*^9, 
-  3.5545519524314938`*^9}, {3.5545522171276336`*^9, 3.5545522328635335`*^9}}],
+   3.5544950972977114`*^9, 3.55449509954484*^9}, {3.5544953505291953`*^9, 
+   3.5544953541774035`*^9}, {3.5544953898894463`*^9, 
+   3.5544953918005557`*^9}, {3.5544957502810593`*^9, 
+   3.5544957522971745`*^9}, {3.5544958595373087`*^9, 3.554495861497421*^9}, {
+   3.554496160785539*^9, 3.5544961671449027`*^9}, {3.554551753632123*^9, 
+   3.5545517819747443`*^9}, {3.5545519440320134`*^9, 
+   3.5545519524314938`*^9}, {3.5545522171276336`*^9, 
+   3.5545522328635335`*^9}, {3.554575563928994*^9, 3.5545755772887583`*^9}, 
+   3.5548278885288*^9}],
 
 Cell["\<\
 toGF(eqn)s
@@ -320,7 +325,12 @@ toGF(eqn)s
   3.554494863921363*^9}, {3.5544948991613784`*^9, 3.554494902568573*^9}}],
 
 Cell["Bonus: implicit species", "Text",
- CellChangeTimes->{{3.554401440083973*^9, 3.554401445596288*^9}}]
+ CellChangeTimes->{{3.554401440083973*^9, 3.554401445596288*^9}}],
+
+Cell["\<\
+Semantic input validation: see SymbolicMethod\
+\>", "Text",
+ CellChangeTimes->{{3.554575506102687*^9, 3.5545755147521815`*^9}}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -383,9 +393,7 @@ Cell["MV: ? repeated SV?", "Text",
  CellChangeTimes->{{3.5529510957853594`*^9, 3.552951096537402*^9}, {
   3.5545531942235203`*^9, 3.5545531999428473`*^9}}],
 
-Cell["\<\
-Idea: use Series to compute derivatives\
-\>", "Text",
+Cell["Idea: use Series to compute derivatives", "Text",
  CellChangeTimes->{{3.554198745302394*^9, 3.554198798082467*^9}, {
   3.554198941367665*^9, 3.554198949067675*^9}, {3.5543255814277816`*^9, 
   3.554325586883094*^9}}],
@@ -408,7 +416,12 @@ Cell[TextData[{
     3.5515474012058425`*^9, 3.5515474106853848`*^9}}],
  " expressions"
 }], "Text",
- CellChangeTimes->{{3.5544612328307743`*^9, 3.5544612951783404`*^9}}]
+ CellChangeTimes->{{3.5544612328307743`*^9, 3.5544612951783404`*^9}}],
+
+Cell["\<\
+input validation would be analogous to that for SymbolicMethod\
+\>", "Text",
+ CellChangeTimes->{{3.5545630506552763`*^9, 3.5545630700313845`*^9}}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -456,6 +469,15 @@ Cell["SymbolicMethod", "Section",
  CellChangeTimes->{{3.551545974884261*^9, 3.551545979548528*^9}, {
    3.5515468982610755`*^9, 3.5515469009402285`*^9}, {3.5515479708454237`*^9, 
    3.551547971284449*^9}, 3.5528423423479557`*^9}],
+
+Cell[TextData[{
+ "Todo: move code to Species subpackage, write SM",
+ Cell[BoxData[
+  FormBox["\[Rule]", TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ "Species converter in some subpackage"
+}], "Text",
+ CellChangeTimes->{{3.5550104967459483`*^9, 3.555010549729979*^9}}],
 
 Cell[TextData[{
  "Specification: ",
@@ -636,13 +658,19 @@ labeled and returns spec\n\tfor use with ",
   3.5542223458206606`*^9}, {3.554222380955709*^9, 3.5542223979257326`*^9}, {
   3.554222430125777*^9, 3.5542224421957936`*^9}}],
 
-Cell["\<\
-Bonus: implicit specs
-Bonus: attribute grammars
-\t\tref:[Mishna]
-Bonus: semantic spec validity testing, a.k.a. checking for well definedness \
-of a spec\
-\>", "Text",
+Cell[TextData[{
+ "Bonus: implicit specs\nBonus: attribute grammars\n\t\tref:[Mishna]\nBonus: \
+semantic spec validity testing, a.k.a. checking for well definedness of a \
+spec\n\tPartial alg: ",
+ ButtonBox["[Bruno]",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://arxiv.org/abs/1109.2688"], None},
+  ButtonNote->"http://arxiv.org/abs/1109.2688"],
+ "; for MV: valuation computed for each param; two levels of iteration, one \
+for each param, one for each nonterminal; for substitutions, a similar \
+polynomial-checking step is needed"
+}], "Text",
  CellChangeTimes->{{3.5515457794760847`*^9, 3.5515458571565275`*^9}, {
    3.551546902852338*^9, 3.5515469252686205`*^9}, {3.5516131787254806`*^9, 
    3.551613179397519*^9}, {3.552224559778845*^9, 3.552224637826309*^9}, {
@@ -675,7 +703,9 @@ of a spec\
    3.5542038788138204`*^9, 3.5542038889888344`*^9}, {3.554210607836749*^9, 
    3.554210618736764*^9}, 3.554210800622015*^9, {3.554210955762229*^9, 
    3.554210957862232*^9}, {3.5542111755535326`*^9, 3.554211178953537*^9}, {
-   3.554292095368885*^9, 3.5542921159839134`*^9}}],
+   3.554292095368885*^9, 3.5542921159839134`*^9}, {3.554562072800346*^9, 
+   3.554562098645824*^9}, {3.554562257607916*^9, 3.554562357087606*^9}, {
+   3.5545624293437386`*^9, 3.5545624935444107`*^9}}],
 
 Cell[TextData[{
  "Areas for ",
@@ -1153,7 +1183,12 @@ versions from contextFree.m, then delete contextFree.m\n\nGFs\n\n",
     3.5515479373255067`*^9}}],
  "\n\tallow the user to provide a function mapping each letter to a \
 symbol/\"weight\" in the form of Rules\n\tTodo: SE: Can disambiguation be \
-done in subexponential time?\n\nBonus\n\t\n",
+done in subexponential time?\n\tTodo: add overload that allows more easily \
+specifying that just, for example, ",
+ Cell[BoxData[
+  FormBox["z", TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " should be used for all letters\n\nBonus\n\t\n",
  Cell[BoxData["Disambiguate"], "Code",
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
@@ -1323,7 +1358,7 @@ recursive test (see Brabrand and Thomsen)\n\t\[OpenCurlyDoubleQuote]a**\
    3.5540444902905393`*^9, 3.5540444917696238`*^9}, {3.554071120901723*^9, 
    3.5540711438740373`*^9}, {3.5540711766819134`*^9, 3.554071227241805*^9}, {
    3.5541132897469597`*^9, 3.5541133362246184`*^9}, {3.554142365145862*^9, 
-   3.554142396080905*^9}}]
+   3.554142396080905*^9}, {3.554827389283111*^9, 3.554827425313161*^9}}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1756,12 +1791,19 @@ Cell[CellGroupData[{
 Cell["Util", "Section",
  CellChangeTimes->{{3.5542045444913244`*^9, 3.554204544916325*^9}}],
 
-Cell["\<\
-egf2ogf, ogf2egf
-\tmethod: Laplace transform
-\tcould also try manual method\
-\>", "Text",
- CellChangeTimes->{{3.5542045534413366`*^9, 3.5542046014514027`*^9}}]
+Cell[TextData[{
+ "egf2ogf, ogf2egf\n\tmethod: Laplace transform\n\tcould also try manual \
+method with ",
+ Cell[BoxData["SeriesCoefficient"], "Code",
+  CellChangeTimes->{{3.5513660856753883`*^9, 3.5513660885625534`*^9}},
+  FontColor->GrayLevel[0]],
+ " and ",
+ Cell[BoxData["GeneratingFunction"], "Code",
+  CellChangeTimes->{{3.5513660856753883`*^9, 3.5513660885625534`*^9}},
+  FontColor->GrayLevel[0]]
+}], "Text",
+ CellChangeTimes->{{3.5542045534413366`*^9, 3.5542046014514027`*^9}, {
+  3.555014250274638*^9, 3.5550142677496376`*^9}}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -2094,108 +2136,111 @@ Cell[CellGroupData[{
 Cell[579, 22, 251, 5, 115, "Title"],
 Cell[CellGroupData[{
 Cell[855, 31, 104, 1, 98, "Section"],
-Cell[962, 34, 727, 19, 201, "Text"],
-Cell[1692, 55, 1905, 27, 62, "Text"],
-Cell[3600, 84, 1523, 39, 108, "Text"],
-Cell[5126, 125, 1014, 23, 85, "Text"],
-Cell[6143, 150, 1607, 23, 38, "Text"],
-Cell[7753, 175, 134, 1, 38, "Text"],
-Cell[7890, 178, 153, 2, 38, "Text"],
-Cell[8046, 182, 731, 10, 38, "Text"],
-Cell[8780, 194, 225, 5, 38, "Text"],
-Cell[9008, 201, 329, 6, 38, "Text"],
-Cell[9340, 209, 197, 4, 38, "Text"],
-Cell[9540, 215, 462, 9, 38, "Text"],
-Cell[10005, 226, 272, 5, 38, "Text"]
+Cell[962, 34, 876, 18, 201, "Text"],
+Cell[1841, 54, 1905, 27, 62, "Text"],
+Cell[3749, 83, 1523, 39, 108, "Text"],
+Cell[5275, 124, 1014, 23, 85, "Text"],
+Cell[6292, 149, 1607, 23, 38, "Text"],
+Cell[7902, 174, 134, 1, 38, "Text"],
+Cell[8039, 177, 153, 2, 38, "Text"],
+Cell[8195, 181, 731, 10, 38, "Text"],
+Cell[8929, 193, 225, 5, 38, "Text"],
+Cell[9157, 200, 329, 6, 38, "Text"],
+Cell[9489, 208, 197, 4, 38, "Text"],
+Cell[9689, 214, 462, 9, 38, "Text"],
+Cell[10154, 225, 306, 6, 38, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[10314, 236, 195, 3, 98, "Section"],
-Cell[10512, 241, 589, 15, 38, "Text"],
-Cell[11104, 258, 209, 4, 38, "Text"],
-Cell[11316, 264, 252, 12, 224, "Text"],
-Cell[11571, 278, 188, 5, 62, "Text"],
-Cell[11762, 285, 197, 5, 62, "Text"],
-Cell[11962, 292, 730, 17, 224, "Text"],
-Cell[12695, 311, 332, 8, 108, "Text"],
-Cell[13030, 321, 105, 1, 38, "Text"]
+Cell[10497, 236, 195, 3, 98, "Section"],
+Cell[10695, 241, 589, 15, 38, "Text"],
+Cell[11287, 258, 209, 4, 38, "Text"],
+Cell[11499, 264, 252, 12, 224, "Text"],
+Cell[11754, 278, 258, 6, 62, "Text"],
+Cell[12015, 286, 197, 5, 62, "Text"],
+Cell[12215, 293, 839, 21, 247, "Text"],
+Cell[13057, 316, 332, 8, 108, "Text"],
+Cell[13392, 326, 105, 1, 38, "Text"],
+Cell[13500, 329, 137, 3, 38, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[13172, 327, 1231, 16, 98, "Section"],
-Cell[14406, 345, 1286, 17, 38, "Text"],
-Cell[15695, 364, 484, 10, 85, "Text"],
-Cell[16182, 376, 167, 3, 38, "Text"],
-Cell[16352, 381, 155, 2, 38, "Text"],
-Cell[16510, 385, 229, 5, 38, "Text"],
-Cell[16742, 392, 739, 18, 39, "Text"]
+Cell[13674, 337, 1231, 16, 98, "Section"],
+Cell[14908, 355, 1286, 17, 38, "Text"],
+Cell[16197, 374, 484, 10, 85, "Text"],
+Cell[16684, 386, 167, 3, 38, "Text"],
+Cell[16854, 391, 155, 2, 38, "Text"],
+Cell[17012, 395, 221, 3, 38, "Text"],
+Cell[17236, 400, 739, 18, 39, "Text"],
+Cell[17978, 420, 156, 3, 38, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[17518, 415, 1306, 21, 98, "Section"],
-Cell[18827, 438, 253, 5, 38, "Text"],
-Cell[19083, 445, 186, 4, 38, "Text"]
+Cell[18171, 428, 1306, 21, 98, "Section"],
+Cell[19480, 451, 253, 5, 38, "Text"],
+Cell[19736, 458, 186, 4, 38, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[19306, 454, 229, 3, 98, "Section"],
-Cell[19538, 459, 7527, 155, 677, "Text"],
-Cell[27068, 616, 99, 1, 38, "Text"],
-Cell[27170, 619, 852, 17, 109, "Text"],
-Cell[28025, 638, 2585, 39, 108, "Text"],
-Cell[30613, 679, 321, 8, 39, "Text"],
-Cell[30937, 689, 210, 5, 63, "Code"]
+Cell[19959, 467, 229, 3, 98, "Section"],
+Cell[20191, 472, 276, 7, 38, "Text"],
+Cell[20470, 481, 7527, 155, 677, "Text"],
+Cell[28000, 638, 99, 1, 38, "Text"],
+Cell[28102, 641, 852, 17, 109, "Text"],
+Cell[28957, 660, 3115, 47, 155, "Text"],
+Cell[32075, 709, 321, 8, 39, "Text"],
+Cell[32399, 719, 210, 5, 63, "Code"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[31184, 699, 203, 3, 98, "Section"],
-Cell[31390, 704, 650, 10, 108, "Text"],
-Cell[32043, 716, 1220, 23, 201, "Text"],
-Cell[33266, 741, 1298, 25, 131, "Text"],
-Cell[34567, 768, 431, 8, 62, "Text"],
-Cell[35001, 778, 940, 16, 131, "Text"],
-Cell[35944, 796, 256, 5, 62, "Text"],
-Cell[36203, 803, 676, 19, 164, "Code"],
-Cell[36882, 824, 633, 12, 108, "Text"],
-Cell[37518, 838, 478, 12, 39, "Text"],
-Cell[37999, 852, 411, 13, 38, "Text"],
+Cell[32646, 729, 203, 3, 98, "Section"],
+Cell[32852, 734, 650, 10, 108, "Text"],
+Cell[33505, 746, 1220, 23, 201, "Text"],
+Cell[34728, 771, 1298, 25, 131, "Text"],
+Cell[36029, 798, 431, 8, 62, "Text"],
+Cell[36463, 808, 940, 16, 131, "Text"],
+Cell[37406, 826, 256, 5, 62, "Text"],
+Cell[37665, 833, 676, 19, 164, "Code"],
+Cell[38344, 854, 633, 12, 108, "Text"],
+Cell[38980, 868, 478, 12, 39, "Text"],
+Cell[39461, 882, 411, 13, 38, "Text"],
 Cell[CellGroupData[{
-Cell[38435, 869, 6918, 92, 52, "Subsection"],
-Cell[45356, 963, 95, 1, 38, "Text"],
-Cell[45454, 966, 19554, 359, 1880, "Text"]
+Cell[39897, 899, 6918, 92, 52, "Subsection"],
+Cell[46818, 993, 95, 1, 38, "Text"],
+Cell[46916, 996, 19803, 364, 1903, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[65045, 1330, 6880, 92, 52, "Subsection"],
-Cell[71928, 1424, 16832, 325, 1381, "Text"]
+Cell[66756, 1365, 6880, 92, 52, "Subsection"],
+Cell[73639, 1459, 16832, 325, 1381, "Text"]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[88809, 1755, 91, 1, 98, "Section"],
-Cell[88903, 1758, 169, 5, 85, "Text"]
+Cell[90520, 1790, 91, 1, 98, "Section"],
+Cell[90614, 1793, 534, 12, 86, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[89109, 1768, 1247, 17, 98, "Section"],
-Cell[90359, 1787, 387, 11, 38, "Text"],
-Cell[90749, 1800, 1500, 24, 39, "Text"],
-Cell[92252, 1826, 104, 1, 38, "Text"],
-Cell[92359, 1829, 220, 6, 68, "Code"],
-Cell[92582, 1837, 409, 11, 63, "Code"],
-Cell[92994, 1850, 199, 5, 63, "Code"],
-Cell[93196, 1857, 351, 10, 63, "Code"],
-Cell[93550, 1869, 333, 9, 90, "Code"],
-Cell[93886, 1880, 245, 7, 63, "Code"],
-Cell[94134, 1889, 325, 9, 63, "Code"],
-Cell[94462, 1900, 270, 7, 63, "Code"],
-Cell[94735, 1909, 259, 7, 63, "Code"]
+Cell[91185, 1810, 1247, 17, 98, "Section"],
+Cell[92435, 1829, 387, 11, 38, "Text"],
+Cell[92825, 1842, 1500, 24, 39, "Text"],
+Cell[94328, 1868, 104, 1, 38, "Text"],
+Cell[94435, 1871, 220, 6, 68, "Code"],
+Cell[94658, 1879, 409, 11, 63, "Code"],
+Cell[95070, 1892, 199, 5, 63, "Code"],
+Cell[95272, 1899, 351, 10, 63, "Code"],
+Cell[95626, 1911, 333, 9, 90, "Code"],
+Cell[95962, 1922, 245, 7, 63, "Code"],
+Cell[96210, 1931, 325, 9, 63, "Code"],
+Cell[96538, 1942, 270, 7, 63, "Code"],
+Cell[96811, 1951, 259, 7, 63, "Code"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[95031, 1921, 1179, 16, 98, "Section"],
-Cell[96213, 1939, 865, 23, 63, "Text"],
-Cell[97081, 1964, 240, 6, 38, "Text"],
-Cell[97324, 1972, 400, 10, 38, "Text"],
-Cell[97727, 1984, 657, 21, 57, "Text"],
-Cell[98387, 2007, 214, 4, 38, "Text"],
-Cell[98604, 2013, 776, 11, 108, "Text"],
-Cell[99383, 2026, 287, 6, 38, "Text"],
-Cell[99673, 2034, 360, 8, 63, "Text"],
-Cell[100036, 2044, 142, 3, 38, "Text"],
-Cell[100181, 2049, 108, 1, 38, "Text"],
-Cell[100292, 2052, 429, 12, 63, "Code"]
+Cell[97107, 1963, 1179, 16, 98, "Section"],
+Cell[98289, 1981, 865, 23, 63, "Text"],
+Cell[99157, 2006, 240, 6, 38, "Text"],
+Cell[99400, 2014, 400, 10, 38, "Text"],
+Cell[99803, 2026, 657, 21, 57, "Text"],
+Cell[100463, 2049, 214, 4, 38, "Text"],
+Cell[100680, 2055, 776, 11, 108, "Text"],
+Cell[101459, 2068, 287, 6, 38, "Text"],
+Cell[101749, 2076, 360, 8, 63, "Text"],
+Cell[102112, 2086, 142, 3, 38, "Text"],
+Cell[102257, 2091, 108, 1, 38, "Text"],
+Cell[102368, 2094, 429, 12, 63, "Code"]
 }, Open  ]]
 }, Open  ]]
 }
