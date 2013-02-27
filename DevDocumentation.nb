@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[    105794,       2207]
-NotebookOptionsPosition[    101308,       2068]
-NotebookOutlinePosition[    102065,       2098]
-CellTagsIndexPosition[    101996,       2093]
+NotebookDataLength[     98325,       2048]
+NotebookOptionsPosition[     94436,       1926]
+NotebookOutlinePosition[     95194,       1956]
+CellTagsIndexPosition[     95126,       1951]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -29,7 +29,7 @@ Cell["factorial moments!", "Text",
  CellChangeTimes->{{3.559966595144164*^9, 3.559966597546302*^9}}],
 
 Cell[TextData[{
- "Genfunlib: More counting frameworks that might be convertible to species: ",
+ "More counting frameworks that might be convertible to species: ",
  ButtonBox["ECO",
   BaseStyle->"Hyperlink",
   ButtonData->{
@@ -51,7 +51,7 @@ Cell[TextData[{
  CellChangeTimes->{{3.5550003906426935`*^9, 3.5550004145927267`*^9}, {
    3.5550004487577734`*^9, 3.5550005205028725`*^9}, {3.563873405976618*^9, 
    3.5638734097017326`*^9}, 3.5638734599732065`*^9, {3.563873562086211*^9, 
-   3.563873563806261*^9}},
+   3.563873563806261*^9}, 3.5709361960658565`*^9},
  CellTags->"idea"],
 
 Cell[CellGroupData[{
@@ -60,33 +60,33 @@ Cell["Ideas and notes", "Section",
  CellChangeTimes->{{3.5289844249528074`*^9, 3.5289844264168916`*^9}}],
 
 Cell[TextData[{
- "Master\[CloseCurlyQuote]s version: a selection of ",
+ "a selection of ",
  StyleBox["Mathematica",
   FontSlant->"Italic"],
  " implementations of generating function-related symbolic methods"
 }], "Text",
  CellChangeTimes->{{3.559965539624792*^9, 3.5599655642422004`*^9}, {
-  3.55996597737083*^9, 3.559965984378231*^9}}],
+   3.55996597737083*^9, 3.559965984378231*^9}, 3.570936104053139*^9}],
 
-Cell[TextData[{
- "possible components:\n\tcode in .m files\n\tuser documentation: tutorial, \
-guide, help pages - only pointers to mathematical background, usage messages\n\
-\t\tformal ",
- StyleBox["specific Asian",
-  FontFamily->"Times New Roman",
-  FontVariations->{"StrikeThrough"->True}],
- " specification?\n \ttests\n\t developer documentation: this file and code \
-comments\n\t\tproofs of correctness?"
-}], "Text",
+Cell["\<\
+possible components:
+\tcode in .m files
+\tuser documentation: tutorial, guide, help pages - only pointers to \
+mathematical background, usage messages
+\t\tformal specification?
+ \ttests
+\t developer documentation: this file and code comments
+\t\tproofs of correctness?\
+\>", "Text",
  CellChangeTimes->CompressedData["
-1:eJxTTMoPSmViYGCQBGIQrTExZGlyyivHeS+2gWkJ1ijjdCAd2zPBFER3/Xhr
+1:eJxTTMoPSmViYGCQAmIQrTExZGlyyivHeS+2gWkJ1ijjdCAd2zPBFER3/Xhr
 BaLX+G20BdEXpsp6geigae2+INquf3YeiJ5omVcIonc8/9wHoouFbSeA6AlP
 5KaA6LMPpswA0bXxcVtAtLjBNTAtczstOQNI7+ObkwKijdlmzwLRUnmMs0H0
 Cofkb5lA+r966XcQPSFcgysLSGuZnwXTV5RkZbOB9I+eaiUQfYrJOR9Eq9Yl
 g2nbE+8Xg+hDt+8uBdEKOlfXg+gCtS9geuOlO6E9IH9HmoSB6L4Q+9rg8leO
 ZfO8wbR+AteWbiBdd60UTMfxxi64B6Q/OLktAdHsZQt311e/cvTLOwimH61U
 m+1d88ox/vkSMP3FO1/vZe0rxyrzWjB9gCPOV6INGB4sGWD61uYjISDaYX55
-OIgGAAPdxXA=
+OIh+845HhHX2K8eWn9ZgGgCemMzN
   "]],
 
 Cell["\<\
@@ -142,10 +142,7 @@ shouldn't write about that if it isn't necessary\
    3.536347665324474*^9, 3.536347754011546*^9}, {3.5363479282115097`*^9, 
    3.5363479287965436`*^9}, {3.5364350649718914`*^9, 3.536435069540153*^9}, {
    3.5423026400091877`*^9, 3.542302647260603*^9}, {3.5556745247580786`*^9, 
-   3.5556745290780845`*^9}, {3.5599653363631663`*^9, 3.5599653367701893`*^9}}],
-
-Cell["Put Web links to the project on relevant Web pages", "Text",
- CellChangeTimes->{{3.531669983282363*^9, 3.5316700698673153`*^9}}]
+   3.5556745290780845`*^9}, {3.5599653363631663`*^9, 3.5599653367701893`*^9}}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -285,145 +282,6 @@ Cell["Bonus: implicit species", "Text",
 
 Cell["Semantic input validation: see SymbolicMethod", "Text",
  CellChangeTimes->{{3.554575506102687*^9, 3.5545755147521815`*^9}}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell["GFeq2coefs", "Section",
- CellChangeTimes->{{3.5513651493618345`*^9, 3.551365150017872*^9}, {
-   3.551365265714489*^9, 3.5513652744419885`*^9}, {3.5513653460980873`*^9, 
-   3.5513654380903482`*^9}, 3.551365629522298*^9, {3.551366071699589*^9, 
-   3.551366099466177*^9}, {3.5513751086796083`*^9, 3.5513751995348053`*^9}, {
-   3.551377237640378*^9, 3.551377270974285*^9}, {3.551378360486601*^9, 
-   3.551378373167327*^9}, {3.5513786144471273`*^9, 3.551378614911154*^9}, {
-   3.5513914777417297`*^9, 3.5513914933806243`*^9}, {3.551392339870041*^9, 
-   3.5513923838365555`*^9}, {3.5514444953390074`*^9, 3.551444498383181*^9}, {
-   3.551444823257763*^9, 3.551444823977804*^9}, {3.551444941322516*^9, 
-   3.5514449448797197`*^9}, {3.5514451046598587`*^9, 3.551445107472019*^9}, {
-   3.5514452094268503`*^9, 3.551445214824159*^9}, {3.551446403842167*^9, 
-   3.551446411375598*^9}, {3.551527605234988*^9, 3.5515276097922487`*^9}, {
-   3.551533841491681*^9, 3.5515338756736364`*^9}, {3.551545726846074*^9, 
-   3.5515457278211303`*^9}, {3.551560086254386*^9, 3.551560086957426*^9}, {
-   3.552064233390174*^9, 3.552064245629874*^9}, {3.5528421415224686`*^9, 
-   3.5528421632177095`*^9}, {3.5528424067606397`*^9, 3.5528424127639832`*^9}}],
-
-Cell["SV: differentiate eqn, set var to 0, solve", "Text",
- CellChangeTimes->{{3.5513651493618345`*^9, 3.551365150017872*^9}, {
-   3.551365265714489*^9, 3.5513652744419885`*^9}, {3.5513653460980873`*^9, 
-   3.5513654380903482`*^9}, 3.551365629522298*^9, {3.551366071699589*^9, 
-   3.551366099466177*^9}, {3.5513751086796083`*^9, 3.5513751995348053`*^9}, {
-   3.551377237640378*^9, 3.551377270974285*^9}, {3.551378360486601*^9, 
-   3.551378373167327*^9}, {3.5513786144471273`*^9, 3.551378614911154*^9}, {
-   3.5513914777417297`*^9, 3.5513914933806243`*^9}, {3.551392339870041*^9, 
-   3.5513923838365555`*^9}, {3.5514444953390074`*^9, 3.551444498383181*^9}, {
-   3.551444823257763*^9, 3.551444823977804*^9}, {3.551444941322516*^9, 
-   3.5514449448797197`*^9}, {3.5514451046598587`*^9, 3.551445107472019*^9}, {
-   3.5514452094268503`*^9, 3.551445214824159*^9}, {3.551446403842167*^9, 
-   3.551446411375598*^9}, {3.551527605234988*^9, 3.5515276097922487`*^9}, {
-   3.551533841491681*^9, 3.5515338756736364`*^9}, {3.551545726846074*^9, 
-   3.5515457278211303`*^9}, {3.551560086254386*^9, 3.551560086957426*^9}, {
-   3.552064233390174*^9, 3.552064245629874*^9}, {3.5528421415224686`*^9, 
-   3.5528421632177095`*^9}, 3.5528424067606397`*^9, {3.5529510925701756`*^9, 
-   3.552951093978256*^9}}],
-
-Cell[TextData[{
- "Note: for some ansatzes, there will be faster methods\n\te.g. repeatedly \
-differentiating will take at least time exponential in ",
- Cell[BoxData[
-  FormBox[
-   RowBox[{"log", "(", "n", ")"}], TraditionalForm]]],
- ", but linear algorithms exist for rational series according to Jason"
-}], "Text",
- CellChangeTimes->{{3.55353611138669*^9, 3.5535361284746675`*^9}, {
-  3.5541988004424706`*^9, 3.554198906242616*^9}, {3.554199022192776*^9, 
-  3.5541990231377773`*^9}}],
-
-Cell["\<\
-If derivatives are handled, initial values might also need to be handled.\
-\>", "Text",
- CellChangeTimes->{{3.5540322652223053`*^9, 3.5540322797911386`*^9}}],
-
-Cell["MV: ? repeated SV?", "Text",
- CellChangeTimes->{{3.5529510957853594`*^9, 3.552951096537402*^9}, {
-  3.5545531942235203`*^9, 3.5545531999428473`*^9}}],
-
-Cell["Idea: use Series to compute derivatives", "Text",
- CellChangeTimes->{{3.554198745302394*^9, 3.554198798082467*^9}, {
-  3.554198941367665*^9, 3.554198949067675*^9}, {3.5543255814277816`*^9, 
-  3.554325586883094*^9}}],
-
-Cell[TextData[{
- "Note: ",
- Cell[BoxData["SeriesCoefficient"], "Code",
-  CellChangeTimes->{
-   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
-    3.5515474012058425`*^9, 3.5515474106853848`*^9}}],
- " can be used for ",
- Cell[BoxData["Root"], "Code",
-  CellChangeTimes->{
-   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
-    3.5515474012058425`*^9, 3.5515474106853848`*^9}}],
- " and ",
- Cell[BoxData["DifferentialRoot"], "Code",
-  CellChangeTimes->{
-   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
-    3.5515474012058425`*^9, 3.5515474106853848`*^9}}],
- " expressions"
-}], "Text",
- CellChangeTimes->{{3.5544612328307743`*^9, 3.5544612951783404`*^9}}],
-
-Cell["\<\
-input validation would be analogous to that for SymbolicMethod\
-\>", "Text",
- CellChangeTimes->{{3.5545630506552763`*^9, 3.5545630700313845`*^9}}],
-
-Cell[TextData[{
- "By the way, AlgebraicNumbers can be manipulated like numbers, at least in ",
- StyleBox["Mathematica",
-  FontSlant->"Italic"],
- ", for doing things like repeated-squaring exponentiation for fast rational \
-function coefficient extraction."
-}], "Text",
- CellChangeTimes->{{3.554199747826131*^9, 3.5541998161062255`*^9}}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[TextData[{
- "GFeq2asymptoticCoef(gdev\[CloseCurlyQuote]s ",
- StyleBox["equivalent",
-  FontSlant->"Italic"],
- ")"
-}], "Section",
- CellChangeTimes->{{3.5513651493618345`*^9, 3.551365150017872*^9}, {
-   3.551365265714489*^9, 3.5513652744419885`*^9}, {3.5513653460980873`*^9, 
-   3.5513654380903482`*^9}, 3.551365629522298*^9, {3.551366071699589*^9, 
-   3.551366099466177*^9}, {3.5513751086796083`*^9, 3.5513751995348053`*^9}, {
-   3.551377237640378*^9, 3.551377270974285*^9}, {3.551378360486601*^9, 
-   3.551378373167327*^9}, {3.5513786144471273`*^9, 3.551378614911154*^9}, {
-   3.5513914777417297`*^9, 3.5513914933806243`*^9}, {3.551392339870041*^9, 
-   3.5513923838365555`*^9}, {3.5514444953390074`*^9, 3.551444498383181*^9}, {
-   3.551444823257763*^9, 3.551444823977804*^9}, {3.551444941322516*^9, 
-   3.5514449448797197`*^9}, {3.5514451046598587`*^9, 3.551445107472019*^9}, {
-   3.5514452094268503`*^9, 3.551445214824159*^9}, {3.551446403842167*^9, 
-   3.551446411375598*^9}, {3.551527605234988*^9, 3.5515276097922487`*^9}, {
-   3.551533841491681*^9, 3.5515338756736364`*^9}, {3.551545726846074*^9, 
-   3.5515457278211303`*^9}, {3.551560086254386*^9, 3.551560086957426*^9}, {
-   3.552064233390174*^9, 3.552064245629874*^9}, 3.5528421415224686`*^9, {
-   3.553425730916511*^9, 3.5534257326756115`*^9}}],
-
-Cell["\<\
-Active research area: Bruno and \
-http://www.cs.auckland.ac.nz/~mcw/Research/mvGF/asymultseq/index.html#software\
-\>", "Text",
- CellChangeTimes->{{3.5542115372990313`*^9, 3.554211540499036*^9}, {
-  3.554211575189084*^9, 3.554211581059092*^9}}],
-
-Cell["\<\
-Until research is done, just handle systems of equations that can be Solve\
-\[CloseCurlyQuote]d.\
-\>", "Text",
- CellChangeTimes->{{3.554217438940009*^9, 3.554217492685083*^9}}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -2068,7 +1926,7 @@ Cell[BoxData[
 },
 WindowToolbars->"EditBar",
 WindowSize->{784, 861},
-WindowMargins->{{285, Automatic}, {0, Automatic}},
+WindowMargins->{{-1359, Automatic}, {0, Automatic}},
 PrintingCopies->1,
 PrintingPageRange->{32000, 32000},
 PrintingOptions->{"Magnification"->1.,
@@ -2086,13 +1944,13 @@ StyleDefinitions->FrontEnd`FileName[{"Article"}, "Preprint.nb",
 (*CellTagsOutline
 CellTagsIndex->{
  "idea"->{
-  Cell[928, 30, 1004, 24, 59, "Text",
+  Cell[928, 30, 1017, 24, 59, "Text",
    CellTags->"idea"]}
  }
 *)
 (*CellTagsIndex
 CellTagsIndex->{
- {"idea", 101912, 2087}
+ {"idea", 95042, 1945}
  }
 *)
 (*NotebookFileOutline
@@ -2100,113 +1958,96 @@ Notebook[{
 Cell[CellGroupData[{
 Cell[579, 22, 243, 3, 181, "Title"],
 Cell[825, 27, 100, 1, 35, "Text"],
-Cell[928, 30, 1004, 24, 59, "Text",
+Cell[928, 30, 1017, 24, 59, "Text",
  CellTags->"idea"],
 Cell[CellGroupData[{
-Cell[1957, 58, 104, 1, 85, "Section"],
-Cell[2064, 61, 315, 7, 59, "Text"],
-Cell[2382, 70, 903, 19, 199, "Text"],
-Cell[3288, 91, 1905, 27, 82, "Text"],
-Cell[5196, 120, 1737, 24, 59, "Text"],
-Cell[6936, 146, 134, 1, 35, "Text"]
+Cell[1970, 58, 104, 1, 85, "Section"],
+Cell[2077, 61, 303, 7, 59, "Text"],
+Cell[2383, 70, 791, 19, 199, "Text"],
+Cell[3177, 91, 1905, 27, 82, "Text"],
+Cell[5085, 120, 1737, 24, 59, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[7107, 152, 195, 3, 85, "Section"],
-Cell[7305, 157, 589, 15, 35, "Text"],
-Cell[7897, 174, 187, 2, 35, "Text"],
-Cell[8087, 178, 524, 10, 60, "Text"],
-Cell[8614, 190, 252, 12, 229, "Text"],
-Cell[8869, 204, 258, 6, 67, "Text"],
-Cell[9130, 212, 871, 21, 259, "Text"],
-Cell[10004, 235, 215, 7, 122, "Text"],
-Cell[10222, 244, 399, 10, 149, "Text"],
-Cell[10624, 256, 144, 1, 39, "Text"],
-Cell[10771, 259, 110, 1, 39, "Text"],
-Cell[10884, 262, 218, 3, 39, "Text"],
-Cell[11105, 267, 206, 5, 67, "Text"],
-Cell[11314, 274, 283, 6, 67, "Text"],
-Cell[11600, 282, 105, 1, 39, "Text"],
-Cell[11708, 285, 129, 1, 39, "Text"]
+Cell[6859, 149, 195, 3, 85, "Section"],
+Cell[7057, 154, 589, 15, 35, "Text"],
+Cell[7649, 171, 187, 2, 35, "Text"],
+Cell[7839, 175, 524, 10, 60, "Text"],
+Cell[8366, 187, 252, 12, 222, "Text"],
+Cell[8621, 201, 258, 6, 59, "Text"],
+Cell[8882, 209, 871, 21, 222, "Text"],
+Cell[9756, 232, 215, 7, 105, "Text"],
+Cell[9974, 241, 399, 10, 129, "Text"],
+Cell[10376, 253, 144, 1, 35, "Text"],
+Cell[10523, 256, 110, 1, 35, "Text"],
+Cell[10636, 259, 218, 3, 35, "Text"],
+Cell[10857, 264, 206, 5, 59, "Text"],
+Cell[11066, 271, 283, 6, 59, "Text"],
+Cell[11352, 279, 105, 1, 35, "Text"],
+Cell[11460, 282, 129, 1, 35, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[11874, 291, 1231, 16, 97, "Section"],
-Cell[13108, 309, 1286, 17, 39, "Text"],
-Cell[14397, 328, 484, 10, 94, "Text"],
-Cell[14884, 340, 167, 3, 39, "Text"],
-Cell[15054, 345, 155, 2, 39, "Text"],
-Cell[15212, 349, 221, 3, 39, "Text"],
-Cell[15436, 354, 739, 18, 69, "Text"],
-Cell[16178, 374, 156, 3, 39, "Text"],
-Cell[16337, 379, 336, 7, 95, "Text"]
+Cell[11626, 288, 229, 3, 85, "Section"],
+Cell[11858, 293, 363, 8, 59, "Text"],
+Cell[12224, 303, 7527, 155, 718, "Text"],
+Cell[19754, 460, 852, 17, 106, "Text"],
+Cell[20609, 479, 3115, 47, 175, "Text"],
+Cell[23727, 528, 321, 8, 36, "Text"],
+Cell[24051, 538, 210, 5, 60, "Code"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[16710, 391, 1306, 21, 99, "Section"],
-Cell[18019, 414, 253, 5, 94, "Text"],
-Cell[18275, 421, 186, 4, 39, "Text"]
+Cell[24298, 548, 203, 3, 85, "Section"],
+Cell[24504, 553, 650, 10, 152, "Text"],
+Cell[25157, 565, 1220, 23, 269, "Text"],
+Cell[26380, 590, 1298, 25, 175, "Text"],
+Cell[27681, 617, 431, 8, 82, "Text"],
+Cell[28115, 627, 940, 16, 152, "Text"],
+Cell[29058, 645, 256, 5, 59, "Text"],
+Cell[29317, 652, 676, 19, 169, "Code"],
+Cell[29996, 673, 633, 12, 129, "Text"],
+Cell[30632, 687, 478, 12, 36, "Text"],
+Cell[31113, 701, 411, 13, 59, "Text"],
+Cell[CellGroupData[{
+Cell[31549, 718, 6918, 92, 46, "Subsection"],
+Cell[38470, 812, 95, 1, 35, "Text"],
+Cell[38568, 815, 19770, 363, 2033, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[18498, 430, 229, 3, 97, "Section"],
-Cell[18730, 435, 363, 8, 67, "Text"],
-Cell[19096, 445, 7527, 155, 959, "Text"],
-Cell[26626, 602, 852, 17, 170, "Text"],
-Cell[27481, 621, 3115, 47, 248, "Text"],
-Cell[30599, 670, 321, 8, 40, "Text"],
-Cell[30923, 680, 210, 5, 59, "Code"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[31170, 690, 203, 3, 97, "Section"],
-Cell[31376, 695, 650, 10, 222, "Text"],
-Cell[32029, 707, 1220, 23, 356, "Text"],
-Cell[33252, 732, 1298, 25, 249, "Text"],
-Cell[34553, 759, 431, 8, 117, "Text"],
-Cell[34987, 769, 940, 16, 223, "Text"],
-Cell[35930, 787, 256, 5, 91, "Text"],
-Cell[36189, 794, 676, 19, 163, "Code"],
-Cell[36868, 815, 633, 12, 196, "Text"],
-Cell[37504, 829, 478, 12, 68, "Text"],
-Cell[37985, 843, 411, 13, 65, "Text"],
-Cell[CellGroupData[{
-Cell[38421, 860, 6918, 92, 54, "Subsection"],
-Cell[45342, 954, 95, 1, 38, "Text"],
-Cell[45440, 957, 19770, 363, 2420, "Text"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[65247, 1325, 6880, 92, 132, "Subsection"],
-Cell[72130, 1419, 16832, 325, 4049, "Text"]
+Cell[58375, 1183, 6880, 92, 46, "Subsection"],
+Cell[65258, 1277, 16832, 325, 1594, "Text"]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[89011, 1750, 91, 1, 251, "Section"],
-Cell[89105, 1753, 534, 12, 272, "Text"]
+Cell[82139, 1608, 91, 1, 85, "Section"],
+Cell[82233, 1611, 534, 12, 104, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[89676, 1770, 1247, 17, 251, "Section"],
-Cell[90926, 1789, 387, 11, 96, "Text"],
-Cell[91316, 1802, 1500, 24, 99, "Text"],
-Cell[92819, 1828, 104, 1, 96, "Text"],
-Cell[92926, 1831, 220, 6, 174, "Code"],
-Cell[93149, 1839, 409, 11, 161, "Code"],
-Cell[93561, 1852, 199, 5, 161, "Code"],
-Cell[93763, 1859, 351, 10, 161, "Code"],
-Cell[94117, 1871, 333, 9, 232, "Code"],
-Cell[94453, 1882, 245, 7, 161, "Code"],
-Cell[94701, 1891, 325, 9, 161, "Code"],
-Cell[95029, 1902, 270, 7, 161, "Code"],
-Cell[95302, 1911, 259, 7, 161, "Code"]
+Cell[82804, 1628, 1247, 17, 85, "Section"],
+Cell[84054, 1647, 387, 11, 35, "Text"],
+Cell[84444, 1660, 1500, 24, 36, "Text"],
+Cell[85947, 1686, 104, 1, 35, "Text"],
+Cell[86054, 1689, 220, 6, 63, "Code"],
+Cell[86277, 1697, 409, 11, 60, "Code"],
+Cell[86689, 1710, 199, 5, 60, "Code"],
+Cell[86891, 1717, 351, 10, 60, "Code"],
+Cell[87245, 1729, 333, 9, 85, "Code"],
+Cell[87581, 1740, 245, 7, 60, "Code"],
+Cell[87829, 1749, 325, 9, 60, "Code"],
+Cell[88157, 1760, 270, 7, 60, "Code"],
+Cell[88430, 1769, 259, 7, 60, "Code"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[95598, 1923, 1179, 16, 251, "Section"],
-Cell[96780, 1941, 865, 23, 162, "Text"],
-Cell[97648, 1966, 240, 6, 96, "Text"],
-Cell[97891, 1974, 400, 10, 96, "Text"],
-Cell[98294, 1986, 657, 21, 158, "Text"],
-Cell[98954, 2009, 214, 4, 96, "Text"],
-Cell[99171, 2015, 776, 11, 399, "Text"],
-Cell[99950, 2028, 287, 6, 158, "Text"],
-Cell[100240, 2036, 360, 8, 161, "Text"],
-Cell[100603, 2046, 134, 1, 96, "Text"],
-Cell[100740, 2049, 108, 1, 96, "Text"],
-Cell[100851, 2052, 429, 12, 161, "Code"]
+Cell[88726, 1781, 1179, 16, 85, "Section"],
+Cell[89908, 1799, 865, 23, 61, "Text"],
+Cell[90776, 1824, 240, 6, 35, "Text"],
+Cell[91019, 1832, 400, 10, 35, "Text"],
+Cell[91422, 1844, 657, 21, 59, "Text"],
+Cell[92082, 1867, 214, 4, 35, "Text"],
+Cell[92299, 1873, 776, 11, 152, "Text"],
+Cell[93078, 1886, 287, 6, 59, "Text"],
+Cell[93368, 1894, 360, 8, 60, "Text"],
+Cell[93731, 1904, 134, 1, 35, "Text"],
+Cell[93868, 1907, 108, 1, 35, "Text"],
+Cell[93979, 1910, 429, 12, 60, "Code"]
 }, Open  ]]
 }, Open  ]]
 }
