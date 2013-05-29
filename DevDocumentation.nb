@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[    117372,       2304]
-NotebookOptionsPosition[    113264,       2173]
-NotebookOutlinePosition[    114079,       2204]
-CellTagsIndexPosition[    114010,       2199]
+NotebookDataLength[    118174,       2324]
+NotebookOptionsPosition[    114026,       2192]
+NotebookOutlinePosition[    114841,       2223]
+CellTagsIndexPosition[    114772,       2218]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -1932,7 +1932,11 @@ Cell["GFeqn \[Rule] coefs", "Section",
  CellChangeTimes->{{3.576529299046446*^9, 3.5765293087450457`*^9}}],
 
 Cell[TextData[{
- "Derivatives method\[LineSeparator]\tuse ",
+ "Derivatives method: ",
+ Cell[BoxData["CoefsByDerivs"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\[LineSeparator]\tuse ",
  Cell[BoxData["Series"], "Code",
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
@@ -1941,18 +1945,32 @@ Todo: implement"
 }], "Text",
  CellChangeTimes->{{3.5765293687049913`*^9, 3.576529375524489*^9}, {
   3.576529423908575*^9, 3.576529449149046*^9}, {3.576529524740856*^9, 
-  3.576529582116835*^9}, {3.576530006149337*^9, 3.576530009476227*^9}}],
+  3.576529582116835*^9}, {3.576530006149337*^9, 3.576530009476227*^9}, {
+  3.578839463467002*^9, 3.578839480431958*^9}, {3.5788406474722424`*^9, 
+  3.578840647472575*^9}}],
 
-Cell["\<\
-Newton iteration method\[LineSeparator]\tTodo: finish implementation\
-\>", "Text",
+Cell[TextData[{
+ "Newton iteration method: ",
+ Cell[BoxData["CoefsByNewton"], "Code",
+  CellChangeTimes->{
+   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
+ "\[LineSeparator]\tTodo: finish implementation"
+}], "Text",
  CellChangeTimes->{{3.576529380531776*^9, 3.576529384307577*^9}, {
-  3.576530011012493*^9, 3.576530017668908*^9}}]
+  3.576530011012493*^9, 3.576530017668908*^9}, {3.578839466714319*^9, 
+  3.5788394869898033`*^9}, {3.5788406515435877`*^9, 3.578840651543909*^9}}],
+
+Cell[TextData[{
+ StyleBox["Mathematica",
+  FontSlant->"Italic"],
+ " is not well set up for working with equations as objects"
+}], "Text",
+ CellChangeTimes->{{3.57883939015534*^9, 3.578839439198938*^9}}]
 }, Open  ]],
 
 Cell[CellGroupData[{
 
-Cell[TextData[StyleBox["rec2GFeq",
+Cell[TextData[StyleBox["rec2GFeq (done)",
  FontColor->GrayLevel[0]]], "Section",
  CellChangeTimes->{{3.5513651493618345`*^9, 3.551365150017872*^9}, {
    3.551365265714489*^9, 3.5513652744419885`*^9}, {3.5513653460980873`*^9, 
@@ -1969,7 +1987,8 @@ Cell[TextData[StyleBox["rec2GFeq",
    3.551533841491681*^9, 3.5515338756736364`*^9}, {3.551545726846074*^9, 
    3.5515457278211303`*^9}, {3.551560086254386*^9, 3.551560086957426*^9}, {
    3.552064233390174*^9, 3.552064245629874*^9}, {3.5528421415224686`*^9, 
-   3.552842177300515*^9}, 3.5535361830677905`*^9}],
+   3.552842177300515*^9}, 3.5535361830677905`*^9, {3.578839994708767*^9, 
+   3.578839996322723*^9}}],
 
 Cell[TextData[{
  "see also ",
@@ -2198,7 +2217,7 @@ CellTagsIndex->{
 *)
 (*CellTagsIndex
 CellTagsIndex->{
- {"idea", 113923, 2193}
+ {"idea", 114685, 2212}
  }
 *)
 (*NotebookFileOutline
@@ -2282,28 +2301,29 @@ Cell[102363, 1911, 633, 14, 97, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
 Cell[103033, 1930, 106, 1, 81, "Section"],
-Cell[103142, 1933, 514, 10, 76, "Text"],
-Cell[103659, 1945, 207, 4, 55, "Text"]
+Cell[103142, 1933, 761, 16, 76, "Text"],
+Cell[103906, 1951, 460, 9, 55, "Text"],
+Cell[104369, 1962, 202, 5, 33, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[103903, 1954, 1247, 17, 81, "Section"],
-Cell[105153, 1973, 387, 11, 33, "Text"],
-Cell[105543, 1986, 1527, 25, 33, "Text"],
-Cell[107073, 2013, 306, 6, 33, "Text"],
-Cell[107382, 2021, 161, 2, 33, "Text"],
-Cell[107546, 2025, 245, 7, 56, "Code"],
-Cell[107794, 2034, 325, 9, 56, "Code"]
+Cell[104608, 1972, 1304, 18, 81, "Section"],
+Cell[105915, 1992, 387, 11, 33, "Text"],
+Cell[106305, 2005, 1527, 25, 33, "Text"],
+Cell[107835, 2032, 306, 6, 33, "Text"],
+Cell[108144, 2040, 161, 2, 33, "Text"],
+Cell[108308, 2044, 245, 7, 56, "Code"],
+Cell[108556, 2053, 325, 9, 56, "Code"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[108156, 2048, 1234, 16, 81, "Section"],
-Cell[109393, 2066, 865, 23, 55, "Text"],
-Cell[110261, 2091, 263, 6, 33, "Text"],
-Cell[110527, 2099, 400, 10, 33, "Text"],
-Cell[110930, 2111, 657, 21, 55, "Text"],
-Cell[111590, 2134, 214, 4, 33, "Text"],
-Cell[111807, 2140, 776, 11, 119, "Text"],
-Cell[112586, 2153, 287, 6, 33, "Text"],
-Cell[112876, 2161, 360, 8, 55, "Text"]
+Cell[108918, 2067, 1234, 16, 81, "Section"],
+Cell[110155, 2085, 865, 23, 55, "Text"],
+Cell[111023, 2110, 263, 6, 33, "Text"],
+Cell[111289, 2118, 400, 10, 33, "Text"],
+Cell[111692, 2130, 657, 21, 55, "Text"],
+Cell[112352, 2153, 214, 4, 33, "Text"],
+Cell[112569, 2159, 776, 11, 119, "Text"],
+Cell[113348, 2172, 287, 6, 33, "Text"],
+Cell[113638, 2180, 360, 8, 55, "Text"]
 }, Open  ]]
 }, Open  ]]
 }
