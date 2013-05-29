@@ -4,28 +4,47 @@ BeginPackage["Genfunlib`rec2GFeqn`"]
 
 Begin["`Private`"] (* Begin Private Context *) 
 
-(* break things up *)
-gf[sum[expr_, {s__}]] := gf[sum[Expand@Apart@expr, {s}]];
+protected = Unprotect[GeneratingFunction];
 
-(* sumless *)
-gf[sum[(fac_: 1)*a[n + j_: 0]*z^n, {n, l_, u_}]] := 
-  z^-j*bounds[sum[(fac /. n -> n - j)*a[n] z^n, {n, l + j, u + j}]];
+GeneratingFunction[n_^(k_) * f_[args__], n_, x_] /; !FreeQ[{args}, n] :=
+	With[ {var = Unique[]},
+		Sum[StirlingS2[k, var]*x^var*D[GeneratingFunction[
+			f[args], n, x], {x, var}], {var, 1, k}]
+];
 
-bounds[sum[expr_, {n, l_, u_}]] := 
-  ratFactor[sum[expr, {n, 0, u}]] - Sum[expr, {n, 0, l - 1}];
+GeneratingFunction[Sum[expr_, {i_, lb_, ub_}], n_, x_] :=
+	Sum[GeneratingFunction[expr, n, x], {i, lb, ub}];
 
-ratFactor[sum[n^(k_: 1)*fac_*a[n]*z^n, {n, 0, u_}]] /; k >= 1 := 
-  x*D[ratFactor[sum[n^(k - 1)*fac*a[n]*z^n, {n, 0, u}]], z];
+GeneratingFunction[expr_ / (n_ + 1), n_, x_] := x^(-1) * Integrate[
+	GeneratingFunction[expr, n, x] /. x -> t, {t, 0, x}];
 
-ratFactor[sum[(n + j_)^k_*fac_*a[n]*z^n, {s__}]] /; k <= -1 := 
-  z^-j Integrate[
-    ratFactor[
-     sum[(n + j)^(k + 1)*fac*a[n]*t^(n + k - 1), {n, 0, u_}]], {t, 0, 
-     z}];
+GeneratingFunction[f_[n_ + i_?Positive], n_, x_] := With[
+	{var = Unique[]},
+	( GeneratingFunction[f[n], n, x] - Sum[f[var]*x^var, {var, 0, i-1}]) *
+		x^(-i)
+];
 
-ratFactor[sum[a[n]*z^n, {s__}]] := aa[z];
+GeneratingFunction[f_[n_ - i_?Positive], n_, x_] := 
+	x^i * GeneratingFunction[f[n], n, x] + Sum[f[-j] * x^(i-j), {j, 1, i}];
 
-(* TODO: GF multiplication and composition *)
+GeneratingFunction[Boole[expr_] * fac_, n_, x_] :=
+	GeneratingFunction[Piecewise[{{fac, expr}}], n, x];
+
+GeneratingFunction[UnitStep[expr_] * fac_, n_, x_] :=
+	GeneratingFunction[Piecewise[{{fac, expr >= 0}}], n, x];
+
+GeneratingFunction[Piecewise[{{expr_, Divisible[n_, k_]}}], n_, x_] :=
+	GeneratingFunction[Piecewise[{{expr, Mod[n, k] == 0}}], n, x];
+
+(* "multisection formula" *)
+GeneratingFunction[Piecewise[{{expr_, Mod[n_, k_] == j_}}], n_, x_] :=
+	With[{var = Unique[]},
+		k^(-1) * Sum[Exp[-var*j*2*Pi*I/k] * GeneratingFunction[
+			expr, n, x],  /. x -> Exp[var * 2 * Pi *I /k*x]
+			{var, 0, k-1}]
+	];
+
+Protect[Evaluate[protected]];
+
 End[] (* End Private Context *)
-
 EndPackage[]
