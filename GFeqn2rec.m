@@ -74,26 +74,28 @@ opts:OptionsPattern[]]  :=
 SeriesCoefficient[Derivative[0, k2_][a_Symbol][j_ * x_, expr_], arg2, 
 opts:OptionsPattern[]] :=
 	j^n SeriesCoefficient[Derivative[0, k2][a][x, expr], {x, 0, n}, opts] /;
-	Simplify[Implies[OptionValue[Assumptions], k2 > 0]] && FreeQ[expr, x]; 
+	Simplify[Implies[OptionValue[Assumptions], k2 > 0]] && FreeQ[expr, x] &&
+	FreeQ[j, x]; 
 
 SeriesCoefficient[Derivative[k1_, 0][a_Symbol][expr_, j_ * x_], arg2, 
 opts:OptionsPattern[]] :=
-	j^n SeriesCoefficient[Derivative[k1, 0][a][x, expr], {x, 0, n}, opts] /;
-	Simplify[Implies[OptionValue[Assumptions], k1 > 0]] && FreeQ[expr, x]; 
+	j^n SeriesCoefficient[Derivative[k1, 0][a][expr, x], {x, 0, n}, opts] /;
+	Simplify[Implies[OptionValue[Assumptions], k1 > 0]] && FreeQ[expr, x] &&
+	FreeQ[j, x]; 
 
 SeriesCoefficient[Derivative[k1_, k2_][a_Symbol][(j_:1) * x_, expr_], arg2, 
 opts:OptionsPattern[]] := 
 	Pochhammer[n + 1, k1] * j^n * SeriesCoefficient[
 		Derivative[0, k2][a][x, expr], {x, 0, n + k1}, opts] /;
 	Simplify[Implies[OptionValue[Assumptions], k1 > 0 && k2 >= 0]] && 
-		FreeQ[expr, x]; 
+		FreeQ[expr, x] && FreeQ[j, x]; 
 
 SeriesCoefficient[Derivative[k2_, k1_][a_Symbol][expr_, (j_:1) * x_], arg2, 
 opts:OptionsPattern[]] := 
 	Pochhammer[n + 1, k1] * j^n * SeriesCoefficient[
 		Derivative[k2, 0][a][expr, x], {x, 0, n + k1}, opts] /;
 	Simplify[Implies[OptionValue[Assumptions], k1 > 0 && k2 >= 0]] && 
-		FreeQ[expr, x]; 
+		FreeQ[expr, x] && FreeQ[j, x]; 
 
 SeriesCoefficient[Derivative[k1_, k2_][a_Symbol][(j_:1) * x_, (k_:1) * x_], 
 arg2, opts:OptionsPattern[]] :=
@@ -106,7 +108,7 @@ arg2, opts:OptionsPattern[]] :=
 			{second, 0, n - iterator + k2}, opts], {iterator, 0, n}]
 	) /; $FullAnalytic &&
 	Simplify[Implies[OptionValue[Assumptions], k1 >= 0 && k2 >= 0]] && 
-		FreeQ[expr, x]; 
+		FreeQ[expr, x] && FreeQ[j, x] && FreeQ[k, x]; 
 ];
 
 SeriesCoefficient[Integrate[expr_, 

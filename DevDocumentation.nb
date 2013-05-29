@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[    117268,       2302]
-NotebookOptionsPosition[    113160,       2171]
-NotebookOutlinePosition[    113975,       2202]
-CellTagsIndexPosition[    113906,       2197]
+NotebookDataLength[    117372,       2304]
+NotebookOptionsPosition[    113264,       2173]
+NotebookOutlinePosition[    114079,       2204]
+CellTagsIndexPosition[    114010,       2199]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -2011,11 +2011,13 @@ Cell[TextData[{
    3.552951260001752*^9, 3.552951260857801*^9}, 3.55302978881065*^9, 
    3.578778211948064*^9}],
 
-Cell["\<\
-\[OpenCurlyDoubleQuote]Piecewise\[CloseCurlyDoubleQuote] should be used when \
-undefined expressions are present\
-\>", "Text",
- CellChangeTimes->{{3.578776430199691*^9, 3.578776458107229*^9}}],
+Cell[TextData[{
+ Cell[BoxData["Piecewise"], "Code",
+  CellChangeTimes->{{3.578836568702228*^9, 3.578836572243382*^9}}],
+ " should be used when undefined expressions are present"
+}], "Text",
+ CellChangeTimes->{{3.578776430199691*^9, 3.578776458107229*^9}, {
+  3.5788365762069693`*^9, 3.578836578969391*^9}}],
 
 Cell["Todo: areas for improvement:", "Text",
  CellChangeTimes->{{3.552912375142665*^9, 3.552912378639865*^9}, {
@@ -2196,7 +2198,7 @@ CellTagsIndex->{
 *)
 (*CellTagsIndex
 CellTagsIndex->{
- {"idea", 113819, 2191}
+ {"idea", 113923, 2193}
  }
 *)
 (*NotebookFileOutline
@@ -2287,21 +2289,21 @@ Cell[CellGroupData[{
 Cell[103903, 1954, 1247, 17, 81, "Section"],
 Cell[105153, 1973, 387, 11, 33, "Text"],
 Cell[105543, 1986, 1527, 25, 33, "Text"],
-Cell[107073, 2013, 202, 4, 33, "Text"],
-Cell[107278, 2019, 161, 2, 33, "Text"],
-Cell[107442, 2023, 245, 7, 56, "Code"],
-Cell[107690, 2032, 325, 9, 56, "Code"]
+Cell[107073, 2013, 306, 6, 33, "Text"],
+Cell[107382, 2021, 161, 2, 33, "Text"],
+Cell[107546, 2025, 245, 7, 56, "Code"],
+Cell[107794, 2034, 325, 9, 56, "Code"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[108052, 2046, 1234, 16, 81, "Section"],
-Cell[109289, 2064, 865, 23, 55, "Text"],
-Cell[110157, 2089, 263, 6, 33, "Text"],
-Cell[110423, 2097, 400, 10, 33, "Text"],
-Cell[110826, 2109, 657, 21, 55, "Text"],
-Cell[111486, 2132, 214, 4, 33, "Text"],
-Cell[111703, 2138, 776, 11, 119, "Text"],
-Cell[112482, 2151, 287, 6, 33, "Text"],
-Cell[112772, 2159, 360, 8, 55, "Text"]
+Cell[108156, 2048, 1234, 16, 81, "Section"],
+Cell[109393, 2066, 865, 23, 55, "Text"],
+Cell[110261, 2091, 263, 6, 33, "Text"],
+Cell[110527, 2099, 400, 10, 33, "Text"],
+Cell[110930, 2111, 657, 21, 55, "Text"],
+Cell[111590, 2134, 214, 4, 33, "Text"],
+Cell[111807, 2140, 776, 11, 119, "Text"],
+Cell[112586, 2153, 287, 6, 33, "Text"],
+Cell[112876, 2161, 360, 8, 55, "Text"]
 }, Open  ]]
 }, Open  ]]
 }
