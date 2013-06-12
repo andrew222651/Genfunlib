@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[    118937,       2329]
-NotebookOptionsPosition[    114864,       2199]
-NotebookOutlinePosition[    115679,       2230]
-CellTagsIndexPosition[    115610,       2225]
+NotebookDataLength[    118955,       2329]
+NotebookOptionsPosition[    114882,       2199]
+NotebookOutlinePosition[    115697,       2230]
+CellTagsIndexPosition[    115628,       2225]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -1034,7 +1034,7 @@ Operations\n\nThe following take one of ",
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
     3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
     3.5515475726696496`*^9}}],
- "\n\tvia DFA\nTodo: delete contextFree.m\n\nGFs\n\n",
+ "\n\tvia DFA\n\nGFs\n\n",
  Cell[BoxData[
   RowBox[{"GeneratingFunction", "[", 
    RowBox[{"regex", ",", " ", "rules"}], "]"}]], "Code",
@@ -1173,7 +1173,7 @@ symbol/\"weight\" in the form of Rules"
    3.554142396080905*^9}, {3.554827389283111*^9, 3.554827425313161*^9}, {
    3.576529701838328*^9, 3.576529708260317*^9}, 3.576595386616667*^9, {
    3.580048915230205*^9, 3.5800489162825527`*^9}, {3.5800509308849297`*^9, 
-   3.580050953149684*^9}}]
+   3.580050953149684*^9}, {3.580052952917398*^9, 3.580052953500084*^9}}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -2224,7 +2224,7 @@ CellTagsIndex->{
 *)
 (*CellTagsIndex
 CellTagsIndex->{
- {"idea", 115523, 2219}
+ {"idea", 115541, 2219}
  }
 *)
 (*NotebookFileOutline
@@ -2290,45 +2290,45 @@ Cell[32970, 745, 411, 13, 33, "Text"],
 Cell[CellGroupData[{
 Cell[33406, 762, 6918, 92, 44, "Subsection"],
 Cell[40327, 856, 95, 1, 33, "Text"],
-Cell[40425, 859, 17464, 316, 1412, "Text"]
+Cell[40425, 859, 17482, 316, 1391, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[57926, 1180, 6880, 92, 44, "Subsection"],
-Cell[64809, 1274, 15894, 297, 1183, "Text"]
+Cell[57944, 1180, 6880, 92, 44, "Subsection"],
+Cell[64827, 1274, 15894, 297, 1183, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[80740, 1576, 91, 1, 44, "Subsection"],
-Cell[80834, 1579, 8993, 128, 56, "Text"],
-Cell[89830, 1709, 11783, 174, 224, "Text"]
+Cell[80758, 1576, 91, 1, 44, "Subsection"],
+Cell[80852, 1579, 8993, 128, 56, "Text"],
+Cell[89848, 1709, 11783, 174, 224, "Text"]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[101662, 1889, 151, 2, 81, "Section"],
-Cell[101816, 1893, 629, 13, 76, "Text"]
+Cell[101680, 1889, 151, 2, 81, "Section"],
+Cell[101834, 1893, 629, 13, 76, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[102482, 1911, 164, 2, 81, "Section"],
-Cell[102649, 1915, 1511, 35, 95, "Text"],
-Cell[104163, 1952, 1650, 34, 114, "Text"],
-Cell[105816, 1988, 202, 5, 33, "Text"],
-Cell[106021, 1995, 128, 3, 33, "Text"]
+Cell[102500, 1911, 164, 2, 81, "Section"],
+Cell[102667, 1915, 1511, 35, 95, "Text"],
+Cell[104181, 1952, 1650, 34, 114, "Text"],
+Cell[105834, 1988, 202, 5, 33, "Text"],
+Cell[106039, 1995, 128, 3, 33, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[106186, 2003, 1304, 18, 89, "Section"],
-Cell[107493, 2023, 387, 11, 36, "Text"],
-Cell[107883, 2036, 1527, 25, 36, "Text"],
-Cell[109413, 2063, 306, 6, 36, "Text"]
+Cell[106204, 2003, 1304, 18, 89, "Section"],
+Cell[107511, 2023, 387, 11, 36, "Text"],
+Cell[107901, 2036, 1527, 25, 36, "Text"],
+Cell[109431, 2063, 306, 6, 36, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[109756, 2074, 1234, 16, 89, "Section"],
-Cell[110993, 2092, 865, 23, 60, "Text"],
-Cell[111861, 2117, 263, 6, 36, "Text"],
-Cell[112127, 2125, 400, 10, 36, "Text"],
-Cell[112530, 2137, 657, 21, 60, "Text"],
-Cell[113190, 2160, 214, 4, 36, "Text"],
-Cell[113407, 2166, 776, 11, 130, "Text"],
-Cell[114186, 2179, 287, 6, 36, "Text"],
-Cell[114476, 2187, 360, 8, 60, "Text"]
+Cell[109774, 2074, 1234, 16, 89, "Section"],
+Cell[111011, 2092, 865, 23, 60, "Text"],
+Cell[111879, 2117, 263, 6, 36, "Text"],
+Cell[112145, 2125, 400, 10, 36, "Text"],
+Cell[112548, 2137, 657, 21, 60, "Text"],
+Cell[113208, 2160, 214, 4, 36, "Text"],
+Cell[113425, 2166, 776, 11, 130, "Text"],
+Cell[114204, 2179, 287, 6, 36, "Text"],
+Cell[114494, 2187, 360, 8, 60, "Text"]
 }, Open  ]]
 }, Open  ]]
 }
