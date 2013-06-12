@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[    119544,       2348]
-NotebookOptionsPosition[    115471,       2218]
-NotebookOutlinePosition[    116286,       2249]
-CellTagsIndexPosition[    116217,       2244]
+NotebookDataLength[    118937,       2329]
+NotebookOptionsPosition[    114864,       2199]
+NotebookOutlinePosition[    115679,       2230]
+CellTagsIndexPosition[    115610,       2225]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -991,7 +991,7 @@ Operations\n\nThe following take one of ",
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
     3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
     3.5515475726696496`*^9}}],
- "\n\tvia NFA\n",
+ "\n\tvia RRGrammar\n",
  Cell[BoxData["RegComplement"], "Code",
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
@@ -1022,20 +1022,19 @@ Operations\n\nThe following take one of ",
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
     3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
     3.5515475726696496`*^9}}],
- "\n\tvia NFA\n",
+ "\n\tvia RRGrammar\n",
  Cell[BoxData["RegConcat"], "Code",
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
     3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
     3.5515475726696496`*^9}}],
- "\n\tvia NFA\n",
+ "\n\tvia RRGrammar\n",
  Cell[BoxData["RegIntersection"], "Code",
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}, {
     3.5515474012058425`*^9, 3.5515474106853848`*^9}, {3.5515475376946487`*^9, 
     3.5515475726696496`*^9}}],
- "\n\tvia DFA\nTodo: replace RegStar, RegUnion, RegConcat with grammar \
-versions from contextFree.m, then delete contextFree.m\n\nGFs\n\n",
+ "\n\tvia DFA\nTodo: delete contextFree.m\n\nGFs\n\n",
  Cell[BoxData[
   RowBox[{"GeneratingFunction", "[", 
    RowBox[{"regex", ",", " ", "rules"}], "]"}]], "Code",
@@ -1045,11 +1044,7 @@ versions from contextFree.m, then delete contextFree.m\n\nGFs\n\n",
     3.5515475726696496`*^9}, {3.5515479302621026`*^9, 
     3.5515479373255067`*^9}}],
  "\n\tallow the user to provide a function mapping each letter to a \
-symbol/\"weight\" in the form of Rules\n\tTodo: add overload that allows more \
-easily specifying that just, for example, ",
- Cell[BoxData[
-  FormBox["z", TraditionalForm]]],
- " should be used for all letters"
+symbol/\"weight\" in the form of Rules"
 }], "Text",
  CellChangeTimes->{{3.5515457794760847`*^9, 3.551545811340907*^9}, {
    3.5515458660810385`*^9, 3.5515458775886965`*^9}, {3.551546993428519*^9, 
@@ -1176,7 +1171,9 @@ easily specifying that just, for example, ",
    3.5540711438740373`*^9}, {3.5540711766819134`*^9, 3.554071227241805*^9}, {
    3.5541132897469597`*^9, 3.5541133362246184`*^9}, {3.554142365145862*^9, 
    3.554142396080905*^9}, {3.554827389283111*^9, 3.554827425313161*^9}, {
-   3.576529701838328*^9, 3.576529708260317*^9}, 3.576595386616667*^9}]
+   3.576529701838328*^9, 3.576529708260317*^9}, 3.576595386616667*^9, {
+   3.580048915230205*^9, 3.5800489162825527`*^9}, {3.5800509308849297`*^9, 
+   3.580050953149684*^9}}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1411,28 +1408,11 @@ initial state: integer between 1 and number of states or Null if numStates = \
  Cell[BoxData["sym_Symbol"], "Code",
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
- ", where ",
- Cell[BoxData["sym"], "Code",
-  CellChangeTimes->{
-   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
- " is ",
- StyleBox["in a LHS",
-  FontWeight->"Bold",
-  FontVariations->{"Underline"->True}],
  ", ",
  Cell[BoxData[
   RowBox[{"sym_Symbol", "[", "n_Integer", "]"}]], "Code",
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
- ", where ",
- Cell[BoxData[
-  RowBox[{"sym", "[", "n", "]"}]], "Code",
-  CellChangeTimes->{
-   3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
- " is ",
- StyleBox["in a LHS",
-  FontWeight->"Bold",
-  FontVariations->{"Underline"->True}],
  ", ",
  Cell[BoxData[
   RowBox[{"RRGrammarConcat", "[", 
@@ -1456,8 +1436,7 @@ initial state: integer between 1 and number of states or Null if numStates = \
   CellChangeTimes->{
    3.5515469211423845`*^9, {3.5515469566214137`*^9, 3.5515469847730236`*^9}}],
  " is a sequence of those things. Strings cannot be empty.\n\tAn empty list \
-corresponds to the null language.\n\tTodo: the phrases underlined and bold \
-are not uniformly ahered to\n\n",
+corresponds to the null language.\n\n",
  StyleBox["Digraph",
   FontWeight->"Bold"],
  "\n\t",
@@ -1588,7 +1567,9 @@ accepted, False otherwise\n\tGraph with 0 vertices means empty language (\
    3.5527576756030393`*^9, 3.552757688489776*^9}, {3.5529151251589575`*^9, 
    3.5529151645202084`*^9}, {3.553119001024057*^9, 3.5531190222452707`*^9}, {
    3.553542869072208*^9, 3.553542894394656*^9}, 3.576351330368643*^9, 
-   3.5763513895382643`*^9, {3.576351455946578*^9, 3.5763514678718348`*^9}}]
+   3.5763513895382643`*^9, {3.576351455946578*^9, 3.5763514678718348`*^9}, 
+   3.580047562094482*^9, 3.580047592560725*^9, {3.580047628829247*^9, 
+   3.580047629150722*^9}}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -2218,7 +2199,7 @@ applicable."
 },
 WindowToolbars->"EditBar",
 WindowSize->{798, 898},
-WindowMargins->{{0, Automatic}, {Automatic, 0}},
+WindowMargins->{{Automatic, 2}, {Automatic, 0}},
 PrintingCopies->1,
 PrintingPageRange->{Automatic, Automatic},
 PrintingOptions->{"Magnification"->1.,
@@ -2237,13 +2218,13 @@ StyleDefinitions->FrontEnd`FileName[{"Article"}, "Preprint.nb",
 (*CellTagsOutline
 CellTagsIndex->{
  "idea"->{
-  Cell[13089, 325, 1089, 25, 55, "Text",
+  Cell[13089, 325, 1089, 25, 33, "Text",
    CellTags->"idea"]}
  }
 *)
 (*CellTagsIndex
 CellTagsIndex->{
- {"idea", 116130, 2238}
+ {"idea", 115523, 2219}
  }
 *)
 (*NotebookFileOutline
@@ -2269,7 +2250,7 @@ Cell[6419, 141, 195, 3, 81, "Section"],
 Cell[6617, 146, 98, 1, 33, "Text"],
 Cell[6718, 149, 589, 15, 33, "Text"],
 Cell[7310, 166, 187, 2, 33, "Text"],
-Cell[7500, 170, 524, 10, 55, "Text"],
+Cell[7500, 170, 524, 10, 33, "Text"],
 Cell[8027, 182, 252, 12, 204, "Text"],
 Cell[8282, 196, 258, 6, 55, "Text"],
 Cell[8543, 204, 871, 21, 204, "Text"],
@@ -2281,17 +2262,17 @@ Cell[11903, 294, 210, 5, 56, "Code"],
 Cell[12116, 301, 852, 17, 96, "Text"],
 Cell[CellGroupData[{
 Cell[12993, 322, 93, 1, 44, "Subsection"],
-Cell[13089, 325, 1089, 25, 55, "Text",
+Cell[13089, 325, 1089, 25, 33, "Text",
  CellTags->"idea"],
 Cell[14181, 352, 452, 8, 55, "Text"],
 Cell[14636, 362, 109, 1, 33, "Text"],
-Cell[14748, 365, 3253, 49, 97, "Text"]
+Cell[14748, 365, 3253, 49, 76, "Text"]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
 Cell[18050, 420, 229, 3, 81, "Section"],
 Cell[18282, 425, 363, 8, 33, "Text"],
-Cell[18648, 435, 7241, 147, 566, "Text"],
+Cell[18648, 435, 7241, 147, 523, "Text"],
 Cell[25892, 584, 226, 3, 33, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
@@ -2309,45 +2290,45 @@ Cell[32970, 745, 411, 13, 33, "Text"],
 Cell[CellGroupData[{
 Cell[33406, 762, 6918, 92, 44, "Subsection"],
 Cell[40327, 856, 95, 1, 33, "Text"],
-Cell[40425, 859, 17598, 319, 1477, "Text"]
+Cell[40425, 859, 17464, 316, 1412, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[58060, 1183, 6880, 92, 44, "Subsection"],
-Cell[64943, 1277, 16367, 313, 1204, "Text"]
+Cell[57926, 1180, 6880, 92, 44, "Subsection"],
+Cell[64809, 1274, 15894, 297, 1183, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[81347, 1595, 91, 1, 44, "Subsection"],
-Cell[81441, 1598, 8993, 128, 56, "Text"],
-Cell[90437, 1728, 11783, 174, 224, "Text"]
+Cell[80740, 1576, 91, 1, 44, "Subsection"],
+Cell[80834, 1579, 8993, 128, 56, "Text"],
+Cell[89830, 1709, 11783, 174, 224, "Text"]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[102269, 1908, 151, 2, 81, "Section"],
-Cell[102423, 1912, 629, 13, 76, "Text"]
+Cell[101662, 1889, 151, 2, 81, "Section"],
+Cell[101816, 1893, 629, 13, 76, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[103089, 1930, 164, 2, 81, "Section"],
-Cell[103256, 1934, 1511, 35, 95, "Text"],
-Cell[104770, 1971, 1650, 34, 114, "Text"],
-Cell[106423, 2007, 202, 5, 33, "Text"],
-Cell[106628, 2014, 128, 3, 33, "Text"]
+Cell[102482, 1911, 164, 2, 81, "Section"],
+Cell[102649, 1915, 1511, 35, 95, "Text"],
+Cell[104163, 1952, 1650, 34, 114, "Text"],
+Cell[105816, 1988, 202, 5, 33, "Text"],
+Cell[106021, 1995, 128, 3, 33, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[106793, 2022, 1304, 18, 81, "Section"],
-Cell[108100, 2042, 387, 11, 33, "Text"],
-Cell[108490, 2055, 1527, 25, 33, "Text"],
-Cell[110020, 2082, 306, 6, 33, "Text"]
+Cell[106186, 2003, 1304, 18, 89, "Section"],
+Cell[107493, 2023, 387, 11, 36, "Text"],
+Cell[107883, 2036, 1527, 25, 36, "Text"],
+Cell[109413, 2063, 306, 6, 36, "Text"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[110363, 2093, 1234, 16, 81, "Section"],
-Cell[111600, 2111, 865, 23, 55, "Text"],
-Cell[112468, 2136, 263, 6, 33, "Text"],
-Cell[112734, 2144, 400, 10, 33, "Text"],
-Cell[113137, 2156, 657, 21, 55, "Text"],
-Cell[113797, 2179, 214, 4, 33, "Text"],
-Cell[114014, 2185, 776, 11, 119, "Text"],
-Cell[114793, 2198, 287, 6, 33, "Text"],
-Cell[115083, 2206, 360, 8, 55, "Text"]
+Cell[109756, 2074, 1234, 16, 89, "Section"],
+Cell[110993, 2092, 865, 23, 60, "Text"],
+Cell[111861, 2117, 263, 6, 36, "Text"],
+Cell[112127, 2125, 400, 10, 36, "Text"],
+Cell[112530, 2137, 657, 21, 60, "Text"],
+Cell[113190, 2160, 214, 4, 36, "Text"],
+Cell[113407, 2166, 776, 11, 130, "Text"],
+Cell[114186, 2179, 287, 6, 36, "Text"],
+Cell[114476, 2187, 360, 8, 60, "Text"]
 }, Open  ]]
 }, Open  ]]
 }

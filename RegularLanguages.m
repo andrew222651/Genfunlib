@@ -251,11 +251,11 @@ validateRLR[g:RRGrammar[grammar:{(_ -> _) ...}]] := Module[
 	
 	(* validate right-hand sides *)
 	validateTerm[EmptyWord] := True;
-	validateTerm[sym_Symbol /; MemberQ[nonTerms, sym]] := True;
-	validateTerm[sym_Symbol[n_Integer] /; MemberQ[nonTerms, sym[n]]] := True;
+	validateTerm[sym_Symbol] := True;
+	validateTerm[sym_Symbol[n_Integer]] := True;
 	validateTerm[str_String /; str != ""] := True;
-	validateTerm[RRGrammarConcat[str_String /; str != "", sym_Symbol /; MemberQ[nonTerms, sym]]] := True;
-	validateTerm[RRGrammarConcat[str_String /; str != "", sym_Symbol[n_Integer] /; MemberQ[nonTerms, sym[n]]]] := True;
+	validateTerm[RRGrammarConcat[str_String /; str != "", sym_Symbol]] := True;
+	validateTerm[RRGrammarConcat[str_String /; str != "", sym_Symbol[n_Integer]]] := True;
 	validateTerm[_] := False;
 	
 	ok = ok && MatchQ[grammar[[All,2]], {( _?validateTerm | RRGrammarOr[ _?validateTerm .. ]) ...}];
@@ -376,9 +376,10 @@ ToNFA[g: RRGrammar[grammar_], OptionsPattern[]] :=
     	(
     	stateSet = Flatten[{nonTerminals[g], acceptState}];
     	
-    	stateNumber[state_] := Position[stateSet, 
+    	stateNumber[state_ /; MemberQ[stateSet, state]] := Position[stateSet, 
     		state, {1}, Heads -> False][[1,1]];
-    	alphabetNumber[str_] := Position[alphabet, 
+	stateNumber[_] := Sequence[];
+	alphabetNumber[str_] := Position[alphabet, 
     		str, {1}, Heads -> False][[1,1]];
     	
     	(* initialize acceptStates *)
@@ -392,15 +393,15 @@ ToNFA[g: RRGrammar[grammar_], OptionsPattern[]] :=
     	(* incorporate each rule into transitionMatrix and acceptStates *)
     	Function[rule,
     		rule /. {
-    				(lhs_ -> EmptyWord) :> (acceptStates = Union[acceptStates, {stateNumber[lhs]}];),
-    				(lhs_ -> st:(_Symbol|_Symbol[_])) :> (transitionMatrix[[stateNumber[lhs], -1]] = 
-    					Union[transitionMatrix[[stateNumber[lhs], -1]], {stateNumber[st]}];),
-    				(lhs_ -> RRGrammarConcat[str_, st:(_Symbol|_Symbol[_])])
-    					:> (transitionMatrix[[stateNumber[lhs], alphabetNumber[str]]] = 
-    						Union[transitionMatrix[[stateNumber[lhs], alphabetNumber[str]]], {stateNumber[st]}];),
-    				(lhs_ -> str_String) 
-    					:> (transitionMatrix[[stateNumber[lhs], alphabetNumber[str]]] = 
-    						Union[transitionMatrix[[stateNumber[lhs], alphabetNumber[str]]], {stateNumber[acceptState]}];)
+   			(lhs_ -> EmptyWord) :> (acceptStates = Union[acceptStates, {stateNumber[lhs]}];),
+    			(lhs_ -> st:(_Symbol|_Symbol[_])) :> (transitionMatrix[[stateNumber[lhs], -1]] = 
+    				Union[transitionMatrix[[stateNumber[lhs], -1]], {stateNumber[st]}];),
+    			(lhs_ -> RRGrammarConcat[str_, st:(_Symbol|_Symbol[_])])
+    				:> (transitionMatrix[[stateNumber[lhs], alphabetNumber[str]]] = 
+    					Union[transitionMatrix[[stateNumber[lhs], alphabetNumber[str]]], {stateNumber[st]}];),
+    			(lhs_ -> str_String) 
+    				:> (transitionMatrix[[stateNumber[lhs], alphabetNumber[str]]] = 
+    					Union[transitionMatrix[[stateNumber[lhs], alphabetNumber[str]]], {stateNumber[acceptState]}];)
     		}
     	] /@ expandedGrammar;
     	
@@ -917,27 +918,25 @@ ToRegularExpression[r:Regex[regex_], OptionsPattern[]] := Module[
 (* ::Section:: *)
 (* Closure properties *)
 
-RegStar[NFA[0, alphabet_, _, _, _], OptionsPattern[]] := Module[
-	{},
+RegStar[RRGrammar[{}]] := RRGrammar[Unique[] -> EmptyWord];
+
+RegStar[grammar : RRGrammar[_], OptionsPattern[]] := Module[
+	{
+		initial1 = grammar[[1, 1, 1]]
+	},
 	(
-	NFA[1, alphabet, ConstantArray[{}, {1, Length[alphabet] + 1}], {1}, 1]
-	)/; !OptionValue[validationRequired] || validateRLR[nfa]
+	Replace[grammar,
+		{
+			Verbatim[Rule][nonTerm_, EmptyWord] :> (nonTerm -> 
+				RRGrammarOr[initial1, EmptyWord]),
+			RRGrammarOr[pre___, EmptyWord, post___] :> 
+				RRGrammarOr[pre, EmptyWord, initial1, post]
+		},
+		Infinity
+	]
+	)/; !OptionValue[validationRequired] || validateRRGrammar[grammar]
 ];
 
-RegStar[nfa:NFA[numStates_, alphabet_, transitionMatrix_,
-    acceptStates_, initialState_], OptionsPattern[]] := Module[
-    {
-    	newT = transitionMatrix,
-    	newAcceptStates = Union[acceptStates, {initialState}]
-    },
-    (
-    Map[(newT[[#, -1]] =
-        newT[[#, -1]] \[Union] {initialState}) &,
-     acceptStates];
-    NFA[numStates, alphabet, newT, newAcceptStates, initialState]
-    )/; !OptionValue[validationRequired] || validateRLR[nfa]
-];
-	
 RegComplement[dfa:DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
     initialState_], compAlphabet_, OptionsPattern[]] := Module[
     {
@@ -1000,127 +999,49 @@ RegReverse[Regex[regex_], OptionsPattern[]] := Module[
 	)/; !OptionValue[validationRequired] || validateRLR[Regex[regex]]
 ];
 
-(* one NFA has no states *)
-RegUnion[nfa1:NFA[0, _, _, _, _], nfa2:NFA[_, _, _, _, _],
-    OptionsPattern[]] := Module[
-    {},
-    nfa2/;!OptionValue[validationRequired] || 
-    	(validateRLR[nfa1] && validateRLR[nfa2]) 
+RegUnion[grammar1 : RRGrammar[_], RRGrammar[{}], OptionsPattern[]] := Module[
+	{},
+	(
+	grammar1
+	)/; !OptionValue[validationRequired] || validateRRGrammar[grammar1]
 ];
-RegUnion[nfa1:NFA[_, _, _, _, _], nfa2:NFA[0, _, _, _, _],
-    OptionsPattern[]] := Module[
-    {},
-    nfa1/;!OptionValue[validationRequired] || 
-    	(validateRLR[nfa1] && validateRLR[nfa2]) 
-];
-(* both NFAs have states *)
-RegUnion[nfa1:NFA[numStates1_, alphabet1_, transitionMatrix1_, acceptStates1_, 
-    initialState1_], 
-    nfa2:NFA[numStates2_, alphabet2_, transitionMatrix2_, acceptStates2_, 
-    initialState2_],
-    OptionsPattern[]] := Module[
-    {
-    	augmentedAlphabet1 = {alphabet1, EmptyWord}//Flatten,
-    	augmentedAlphabet2 = {alphabet2, EmptyWord}//Flatten,
-    	newAlphabet = {Union[alphabet1, alphabet2], EmptyWord}//Flatten,
-    	newTransitionMatrix1, newTransitionMatrix2,
-    	augmentedAlphabet1Lookup, augmentedAlphabet2Lookup,
-    	newTransitionMatrix
-    },
-    (
-    (* these take a position in newAlphabet and return the position in 
-    	augmentedAlphabet 1 and 2 *)
-    augmentedAlphabet1Lookup[c_] := Position[augmentedAlphabet1, newAlphabet[[c]]][[1, 1]];
-    augmentedAlphabet2Lookup[c_] := Position[augmentedAlphabet2, newAlphabet[[c]]][[1, 1]];
-    
-    newTransitionMatrix1 = Table[
-    	If[!MemberQ[augmentedAlphabet1, newAlphabet[[c]]],
-    		{},
-    		transitionMatrix1[[state, augmentedAlphabet1Lookup[c]]]
-    	],
-    	{state, 1, numStates1}, {c, 1, Length[newAlphabet]}
-    ];
-    newTransitionMatrix2 = Table[
-    	If[!MemberQ[augmentedAlphabet2, newAlphabet[[c]]],
-    		{},
-    		transitionMatrix2[[state, augmentedAlphabet2Lookup[c]]]
-    	],
-    	{state, 1, numStates2}, {c, 1, Length[newAlphabet]}
-    ];
-	
-	newTransitionMatrix = Join[
-		newTransitionMatrix1, 
-		newTransitionMatrix2 + numStates1,
-		{ReplacePart[ConstantArray[{}, Length[newAlphabet]],
-      		-1 -> {initialState1, initialState2 + numStates1}]}
-	];
-	
-	NFA[numStates1 + numStates2 + 1, Most[newAlphabet], newTransitionMatrix,
-		Union[acceptStates1, numStates1 + acceptStates2], numStates1 + numStates2 + 1]	
-    )/; !OptionValue[validationRequired] || 
-    	(validateRLR[nfa1] && validateRLR[nfa2]) 
+RegUnion[RRGrammar[{}], grammar2 : RRGrammar[_], OptionsPattern[]] := Module[
+	{},
+	(
+	grammar2
+	)/; !OptionValue[validationRequired] || validateRRGrammar[grammar2]
 ];
 
-(* one NFA has no states *)
-RegConcat[nfa1:NFA[0, _, _, _, _], nfa2:NFA[_, _, _, _, _],
-    OptionsPattern[]] := Module[
-    {},
-    nfa1/;!OptionValue[validationRequired] || 
-    	(validateRLR[nfa1] && validateRLR[nfa2]) 
+RegUnion[grammar1 : RRGrammar[_], grammar2 : RRGrammar[_], OptionsPattern[]] :=
+Module[
+	{
+    		nonTerms1 = nonTerminals[grammar1],
+		nonTerms2 = nonTerminals[grammar2],
+		initial1, initial2,
+		commonNonTerms,
+		replacements, rules
+    	},
+	(
+	commonNonTerms = Intersection[nonTerms1, nonTerms2];
+	replacements = Unique /@ commonNonTerms;
+	rules = MapThread[Rule, {commonNonTerms, replacements}];
+	initial1 = grammar1[[1, 1, 1]]; 
+	initial2 = grammar2[[1, 1, 1]] /. rules;
+
+	RRGrammar[{Unique[] -> RRGrammarOr[initial1, initial2],
+		grammar1//First, grammar2 /. rules //First}//Flatten]
+
+	)/; !OptionValue[validationRequired] || 
+	(validateRRGrammar[grammar1] && validateRRGrammar[grammar2])
 ];
-RegConcat[nfa1:NFA[_, _, _, _, _], nfa2:NFA[0, _, _, _, _],
-    OptionsPattern[]] := Module[
-    {},
-    nfa2/;!OptionValue[validationRequired] || 
-    	(validateRLR[nfa1] && validateRLR[nfa2]) 
-];
-(* both NFAs have states *)
-RegConcat[nfa1:NFA[numStates1_, alphabet1_, transitionMatrix1_, acceptStates1_, 
-    initialState1_], 
-    nfa2:NFA[numStates2_, alphabet2_, transitionMatrix2_, acceptStates2_, 
-    initialState2_],
-    OptionsPattern[]] := Module[
-    {
-    	augmentedAlphabet1 = {alphabet1, EmptyWord}//Flatten,
-    	augmentedAlphabet2 = {alphabet2, EmptyWord}//Flatten,
-    	newAlphabet = {Union[alphabet1, alphabet2], EmptyWord}//Flatten,
-    	newTransitionMatrix1, newTransitionMatrix2,
-    	augmentedAlphabet1Lookup, augmentedAlphabet2Lookup,
-    	newTransitionMatrix
-    },
-    (
-    (* these take a position in newAlphabet and return the position in 
-    	augmentedAlphabet 1 and 2 *)
-    
-    augmentedAlphabet1Lookup[c_] := Position[augmentedAlphabet1, newAlphabet[[c]]][[1, 1]];
-    augmentedAlphabet2Lookup[c_] := Position[augmentedAlphabet2, newAlphabet[[c]]][[1, 1]];
-    
-    newTransitionMatrix1 = Table[
-    	If[!MemberQ[augmentedAlphabet1, newAlphabet[[c]]],
-    		{},
-    		transitionMatrix1[[state, augmentedAlphabet1Lookup[c]]]
-    	],
-    	{state, 1, numStates1}, {c, 1, Length[newAlphabet]}
-    ];
-    newTransitionMatrix2 = Table[
-    	If[!MemberQ[augmentedAlphabet2, newAlphabet[[c]]],
-    		{},
-    		transitionMatrix2[[state, augmentedAlphabet2Lookup[c]]]
-    	],
-    	{state, 1, numStates2}, {c, 1, Length[newAlphabet]}
-    ];
-	
-	Map[(newTransitionMatrix1[[#, -1]] =
-       newTransitionMatrix1[[#, -1]] 
-       	\[Union] {initialState2 + numStates1}) &,
-     acceptStates1];
-	
-	newTransitionMatrix = Join[newTransitionMatrix1, newTransitionMatrix2 + numStates1];
-	
-	NFA[numStates1 + numStates2, Most[newAlphabet], newTransitionMatrix,
-		acceptStates2 + numStates1, initialState1]	
-    )/; !OptionValue[validationRequired] || 
-    	(validateRLR[nfa1] && validateRLR[nfa2]) 
+
+RegConcat[grammar1 : RRGrammar[_], grammar2 : RRGrammar[_], OptionsPattern[]] :=
+Module[
+	{},
+	(
+
+	)/; !OptionValue[validationRequired] || 
+	(validateRRGrammar[grammar1] && validateRRGrammar[grammar2])
 ];
 
 RegIntersection[dfa1:DFA[numStates1_, alphabet1_, transitionMatrix1_, acceptStates1_, 
@@ -1247,10 +1168,10 @@ complementVias = {NFA, Regex, RRGrammar, Digraph};
 
 (* star and reverse *)
 starReverseVias = {
-	{RegStar, DFA, ToNFA},
-	{RegStar, Regex, ToNFA},
-	{RegStar, RRGrammar, ToNFA},
-	{RegStar, Digraph, ToNFA},
+	{RegStar, DFA, ToRRGrammar},
+	{RegStar, Regex, ToRRGrammar},
+	{RegStar, NFA, ToRRGrammar},
+	{RegStar, Digraph, ToRRGrammar},
 	{RegReverse, NFA, ToRegex},
 	{RegReverse, DFA, ToRegex},
 	{RegReverse, RRGrammar, ToRegex},
@@ -1267,14 +1188,14 @@ starReverseVias = {
 
 (* union, concat, intersection *)
 uciVias = {
-	{RegUnion, DFA, ToNFA},
-	{RegUnion, Regex, ToNFA},
-	{RegUnion, RRGrammar, ToNFA},
-	{RegUnion, Digraph,  ToNFA},
-	{RegConcat, DFA, ToNFA},
-	{RegConcat, Regex, ToNFA},
-	{RegConcat, RRGrammar, ToNFA},
-	{RegConcat, Digraph,  ToNFA},
+	{RegUnion, DFA, ToRRGrammar},
+	{RegUnion, Regex, ToRRGrammar},
+	{RegUnion, NFA, ToRRGrammar},
+	{RegUnion, Digraph,  ToRRGrammar},
+	{RegConcat, DFA, ToRRGrammar},
+	{RegConcat, Regex, ToRRGrammar},
+	{RegConcat, NFA, ToRRGrammar},
+	{RegConcat, Digraph, ToRRGrammar},
 	{RegIntersection, NFA, ToDFA},
 	{RegIntersection, Regex, ToDFA},
 	{RegIntersection, RRGrammar, ToDFA},
