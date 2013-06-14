@@ -2,9 +2,9 @@
 
 BeginPackage["Genfunlib`Util`"]
 
-Egf2ogf::usage = "efg2ogf[f, z] gives the OGF form of the EGF f in the " <>
+Egf2ogf::usage = "Efg2ogf[f, z] gives the OGF form of the EGF f in the " <>
 "indeterminate z";
-Ogf2egf::usage = "ofg2egf[f, z] gives the EGF form of the OGF f in the " <>
+Ogf2egf::usage = "Ofg2egf[f, z] gives the EGF form of the OGF f in the " <>
 " indeterminate z";
 
 Begin["`Private`"] 

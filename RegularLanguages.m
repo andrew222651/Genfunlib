@@ -141,6 +141,7 @@ nonTerminals[RRGrammar[grammar_]] := Module[
     expandedGrammar = grammar /. (rhs_ -> RRGrammarOr[args__]) :> 
         Sequence@@((rhs -> # &) /@ {args});
     Union@Flatten[{
+    grammar[[All, 1]],
     Cases[grammar, Verbatim[Rule][lhs_, sym_Symbol /; sym != EmptyWord
         ] -> {lhs, sym}],
     Cases[grammar, Verbatim[Rule][lhs_, sym_Symbol[n_]] -> {lhs, sym[n]}],
@@ -391,8 +392,7 @@ ToNFA[g: RRGrammar[grammar_], OptionsPattern[]] :=
         
         stateNumber[state_ /; MemberQ[stateSet, state]] := Position[stateSet, 
             state, {1}, Heads -> False][[1,1]];
-    stateNumber[_] := Sequence[];
-    alphabetNumber[str_] := Position[alphabet, 
+        alphabetNumber[str_] := Position[alphabet, 
             str, {1}, Heads -> False][[1,1]];
         
         (* initialize acceptStates *)
@@ -571,89 +571,6 @@ hopcroft[DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
     ]
 ];
 
-(* http://en.wikipedia.org/wiki/DFA_minimization# Unreachable_states *)
-removeUnreachables[
-   DFA[0, alphabet_, transitionMatrix_, acceptStates_, 
-    initialState_]] := 
-  DFA[0, alphabet, transitionMatrix, acceptStates, initialState];
-
-removeUnreachables[
-   DFA[numStates_, alphabet_, transitionMatrix_, {}, initialState_]] :=
-   DFA[0, alphabet, {}, {}, Null];
-   
-removeUnreachables[DFA[numStates_?Positive, {}, transitionMatrix_, 
-    acceptStates_, initialState_]] := 
-    DFA[1, {}, {{}}, If[MemberQ[acceptStates, initialState], {1}, {}], 1];    
-
-(* DFA with a nontrivial alphabet and some states, 
-    some of which are accepting states *)
-removeUnreachables[
-   DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
-    initialState_]] := Module[
-   {
-    reachables = {initialState}, newStates = {initialState},
-    temp, unreachables,
-    unreachable,
-    newTransitionMatrix = transitionMatrix, 
-    newInitialState = initialState, newNumStates = numStates, 
-    newAcceptStates = acceptStates
-    },
-   (* determine unreachables *)
-   While[newStates != {},
-    temp = Union@Flatten@transitionMatrix[[newStates, All]];
-    newStates = Complement[temp, reachables];
-    reachables = Union[reachables, newStates];
-    ];
-   unreachables = Reverse@Complement[Range[numStates], reachables];
-     
-   (* delete unreachables *)
-   While[unreachables != {},
-    (* take the greatest unreachable *)
-    unreachable = First@unreachables; 
-    unreachables = Delete[unreachables, 1];
-    newNumStates -= 1;
-    newTransitionMatrix = Delete[newTransitionMatrix, unreachable];
-    newAcceptStates = DeleteCases[newAcceptStates, unreachable];
-    newTransitionMatrix = 
-     newTransitionMatrix /. 
-      state_Integer /; unreachable + 1 <= state <= newNumStates + 1 :>
-        state - 1;
-    newInitialState = 
-     newInitialState /. 
-      state_Integer /; unreachable + 1 <= state <= newNumStates + 1 :>
-        state - 1;
-    newAcceptStates = 
-     newAcceptStates /. 
-      state_Integer /; unreachable + 1 <= state <= newNumStates + 1 :>
-        state - 1;
-    ];
-   
-   DFA[newNumStates, alphabet, newTransitionMatrix, newAcceptStates, 
-    newInitialState]
-];
-
-makeTransitionMatrix[alphabetSize_, dfaStateSet_, transitionMatrix_, 
-  ajacency_] := Table[
-   (* for each letter *)
-   Map[stateSubset \[Function]
-     (* for each stateset *)
-     Position[dfaStateSet,
-        (* the state made from *)
-        Map[state \[Function]
-            (* from each state in the stateset *)
-            {
-                (* all states accessible from it *)
-                transitionMatrix[[state, i]], 
-             (* and all states accessible from emoves from those *)
-             Map[Position[ajacency[[#]], True] &, 
-              transitionMatrix[[state, i]]]
-            }, stateSubset] // 
-          Flatten // Union][[1, 1]],
-    dfaStateSet
-    ],
-   {i, 1, alphabetSize}
-   ] // Transpose
-
 SetAttributes[floydWarshall, HoldFirst];
 (* computes transitive closure *)
 (* "pass by reference": assigns to the symbol passed *)
@@ -668,6 +585,18 @@ floydWarshall[m_] := Module[
      ];
 ];
 
+(* states with no path to an accept state *)
+deadStates[NFA[numStates_, _, transitionMatrix_, acceptStates_, _]] :=
+   Module[
+   {
+    adj = Flatten /@ transitionMatrix,
+    graph = 
+     Graph[MapIndexed[DirectedEdge[First[#2], #1 &], adj, {2}] // 
+       Flatten]
+    },
+   Complement[Range[numStates], VertexComponent[graph, acceptStates]]
+];
+
 ToDFA[nfa:NFA[0, alphabet_, _, _, _], OptionsPattern[]] := Module[
     {},
     (
@@ -675,46 +604,58 @@ ToDFA[nfa:NFA[0, alphabet_, _, _, _], OptionsPattern[]] := Module[
     ) /; !OptionValue[validationRequired] || validateRLR[nfa]
 ];
     
-ToDFA[nfa: NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
-    initialState_], OptionsPattern[]] := Module[
+ToDFA[nfa : 
+    NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
+     initialState_], OptionsPattern[]] := Module[
    {
-    dfaStateSet = Subsets[Range[numStates]],
-    dfaTransitionMatrix,
-    dfaAcceptStates,
-    dfaInitialState,
-    (* ajacency matrix for states as vertices
-        and emoves as edges *)
-    ajacency = Table[
-      ReplacePart[
-        ConstantArray[False, numStates], 
-       List /@ (transitionMatrix[[k, -1]]) -> True],
-      {k, 1, numStates}
-      ],
-     stateNumber
+    states = {}, queue, 
+    adjacency = 
+     Table[ReplacePart[ConstantArray[False, numStates], 
+       List /@ (transitionMatrix[[k, -1]]) -> True], {k, 1, 
+       numStates}],
+    nfaDeadStates = deadStates[nfa],
+    tr, state, neighbor,
+    dfaInitialState, dfaAcceptStates, stateNumber, 
+    dfaTransitionMatrix
     },
    (
-   stateNumber[stateSet_] := Position[dfaStateSet, stateSet, {1}, Heads -> False][[1,1]];
+     If[MemberQ[nfaDeadStates, initialState], 
+      Return[DFA[0, {}, {}, {}, Null]]];
+     floydWarshall[adjacency];
+     queue = {Complement[
+        Flatten[{initialState, 
+          Position[adjacency[[initialState]], True]}], nfaDeadStates]};
+     While[Length[queue] > 0,
+      {state, queue} = {First[queue], Rest[queue]};
+      If[! MemberQ[states, state],
+       For[i = 1, i <= Length[alphabet], ++i,
+        neighbor = 
+         Flatten[Map[
+            Function[
+             st, {transitionMatrix[[st, i]], 
+              Map[Position[adjacency[[#]], True] &, 
+               transitionMatrix[[st, i]]]}], state
+            ], 1]~Complement~nfaDeadStates;
+        tr[state, i] = neighbor;
+        queue = Append[queue, neighbor];
+        ];
+       states = Append[states, state];
+       ];
+      ];
+     tr[_, _] = {};
+     stateNumber[set_] := 
+      Position[states, set, {1}, Heads -> False][[1, 1]];
+     dfaAcceptStates = 
+      stateNumber /@ 
+       Select[states, (Intersection[#, acceptStates] != {}) &];
+     dfaTransitionMatrix = 
+      Table[tr[states[[s]], a], {s, 1, Length[states]}, {a, 1, 
+        Length[alphabet]}];
+     DFA[Length[states], alphabet, dfaTransitionMatrix, 
+       dfaAcceptStates, 1] // hopcroft
+     ) /; ! OptionValue[validationRequired] || validateRLR[nfa]
+];
    
-   floydWarshall[ajacency];
-   (* ajacency is now transitive closure *)
-   
-   dfaInitialState = stateNumber[ 
-        {initialState, 
-          Position[ajacency[[initialState]], True]} // Flatten // 
-        Union];
-   dfaAcceptStates = 
-    Sort@Map[stateNumber, Select[
-       dfaStateSet, (Intersection[#, acceptStates] != {}) &]];
-   dfaTransitionMatrix = If[alphabet == {}, 
-    ConstantArray[{}, 2^numStates], 
-    makeTransitionMatrix[Length[alphabet], dfaStateSet, transitionMatrix, 
-     ajacency]
-   ];
-   DFA[2^numStates, alphabet, dfaTransitionMatrix, dfaAcceptStates, 
-    dfaInitialState]//removeUnreachables//hopcroft
-    ) /; !OptionValue[validationRequired] || validateRLR[nfa]
-   ];
-
 (* ::Section:: *)
 (* DFA2Regex *)
         
@@ -938,7 +879,8 @@ RegStar[grammar : RRGrammar[_], OptionsPattern[]] := Module[
         initial1 = grammar[[1, 1, 1]]
     },
     (
-    Replace[grammar,
+    RRGrammar[Flatten[{ initial1 -> EmptyWord,
+    Replace[First[grammar],
         {
             Verbatim[Rule][nonTerm_, EmptyWord] :> (nonTerm -> 
                 RRGrammarOr[initial1, EmptyWord]),
@@ -946,8 +888,8 @@ RegStar[grammar : RRGrammar[_], OptionsPattern[]] := Module[
                 RRGrammarOr[pre, EmptyWord, initial1, post]
         },
         Infinity
-    ]
-    )/; !OptionValue[validationRequired] || validateRRGrammar[grammar]
+    ]}]]
+    )/; !OptionValue[validationRequired] || validateRLR[grammar]
 ];
 
 RegComplement[dfa:DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
@@ -1016,27 +958,27 @@ RegUnion[grammar1 : RRGrammar[_], RRGrammar[{}], OptionsPattern[]] := Module[
     {},
     (
     grammar1
-    )/; !OptionValue[validationRequired] || validateRRGrammar[grammar1]
+    )/; !OptionValue[validationRequired] || validateRLR[grammar1]
 ];
 RegUnion[RRGrammar[{}], grammar2 : RRGrammar[_], OptionsPattern[]] := Module[
     {},
     (
     grammar2
-    )/; !OptionValue[validationRequired] || validateRRGrammar[grammar2]
+    )/; !OptionValue[validationRequired] || validateRLR[grammar2]
 ];
 
 RegUnion[grammar1 : RRGrammar[_], grammar2 : RRGrammar[_], OptionsPattern[]] :=
 Module[
     {
-            nonTerms1 = nonTerminals[grammar1],
+        nonTerms1 = nonTerminals[grammar1],
         nonTerms2 = nonTerminals[grammar2],
         initial1, initial2,
         commonNonTerms,
         replacements, rules
-        },
+    },
     (
     commonNonTerms = Intersection[nonTerms1, nonTerms2];
-    replacements = Unique /@ commonNonTerms;
+    replacements = Table[Unique[], {Length[commonNonTerms]}];
     rules = MapThread[Rule, {commonNonTerms, replacements}];
     initial1 = grammar1[[1, 1, 1]]; 
     initial2 = grammar2[[1, 1, 1]] /. rules;
@@ -1045,13 +987,13 @@ Module[
         grammar1//First, grammar2 /. rules //First}//Flatten]
 
     )/; !OptionValue[validationRequired] || 
-    (validateRRGrammar[grammar1] && validateRRGrammar[grammar2])
+    (validateRLR[grammar1] && validateRLR[grammar2])
 ];
 
 RegConcat[grammar1 : RRGrammar[_], RRGrammar[{}], OptionsPattern[]] := Module[
     {},
     RRGrammar[{}] /; !OptionValue[validationRequired] || 
-        validateRRGrammar[grammar1]
+        validateRLR[grammar1]
 ];
 
 RegConcat[grammar1 : RRGrammar[_], grammar2 : RRGrammar[_], OptionsPattern[]] :=
@@ -1065,19 +1007,20 @@ Module[
     },
     (
         commonNonTerms = Intersection[nonTerms1, nonTerms2];
-        replacements = Unique /@ commonNonTerms;
+        replacements = Table[Unique[], {Length[commonNonTerms]}];
         rules = MapThread[Rule, {commonNonTerms, replacements}];
         initial2 = grammar2[[1, 1, 1]] /. rules;
 
-        RRGrammar[Flatten[
-            First[grammar1] /. {Verbatim[Rule][nonTerm_, 
-                EmptyWord] :> (nonTerm -> initial2),
+        RRGrammar[Flatten[{
+            First[grammar1] /. {
+                Verbatim[Rule][nonTerm_, EmptyWord] :> 
+                    (nonTerm -> initial2),
                 RRGrammarOr[pre___, EmptyWord, post___] :>
-                RRGrammarOr[pre, initial2, post]
-            }, grammar2 /. rules
-        ]]
+                    RRGrammarOr[pre, initial2, post]
+            }, First[grammar2] /. rules
+        }]]
     )/; !OptionValue[validationRequired] || 
-    (validateRRGrammar[grammar1] && validateRRGrammar[grammar2])
+    (validateRLR[grammar1] && validateRLR[grammar2])
 ];
 
 RegIntersection[dfa1:DFA[numStates1_, alphabet1_, transitionMatrix1_, acceptStates1_, 
@@ -1254,7 +1197,8 @@ symbolsWithOptions = {
     RegStar, RegComplement, RegReverse, RegUnion, RegConcat, RegIntersection
 };
 
-(MessageName[#, "invalidArgumentSyntax"] = "Invalid argument syntax.")& /@ symbolsWithOptions;
+(MessageName[#, "invalidArgumentSyntax"] = "Invalid argument syntax.")& /@ 
+    symbolsWithOptions;
 
 Hold[#[___] /; (Message[#::invalidArgumentSyntax]; False) := Null;]& /@ 
     symbolsWithOptions //ReleaseHold;
