@@ -48,15 +48,14 @@ SeriesCoefficient[x_^(k_) * expr_, arg2,
 ];
 
 (* multiplication *)
-(* (fortunately) isn't called for things like E^x*1/(1-x) *)
+(* doesn't seem to interfere with things like E^x*1/(1-x) *)
 SeriesCoefficient[expr1_ * expr2_, arg2, opts:OptionsPattern[]] := With[
    {
    	iterator = Unique[]
    }, 
    Module[{
-   	newOpts = FilterRules[{opts}, Method] ~ Append ~ (Assumptions -> 
-   	OptionValue[Assumptions] && Element[iterator, Integers] && 
-		iterator >= 0)
+   	newOpts = Sequence@@(FilterRules[{opts}, Method] ~ Append ~ (Assumptions -> 
+   	OptionValue[Assumptions] && Element[iterator, Integers] && iterator >= 0))
    },
 	   Sum[SeriesCoefficient[expr1, {x, 0, iterator}, newOpts] 
 	   	* SeriesCoefficient[expr2, {x, 0, n - iterator}, newOpts], 
@@ -69,7 +68,7 @@ SeriesCoefficient[expr1_ * expr2_, arg2, opts:OptionsPattern[]] := With[
 SeriesCoefficient[Derivative[k_][a_Symbol][(j_:1) * x_], arg2, 
 opts:OptionsPattern[]]  := 
 	Pochhammer[n + 1, k] j^n SeriesCoefficient[a[x], {x, 0, n + k}, opts] /;
-	Simplify[Implies[OptionValue[Assumptions], k > 0]];
+	Simplify[Implies[OptionValue[Assumptions], k > 0]] && FreeQ[j, x];
 
 SeriesCoefficient[Derivative[0, k2_][a_Symbol][j_ * x_, expr_], arg2, 
 opts:OptionsPattern[]] :=
@@ -108,15 +107,18 @@ arg2, opts:OptionsPattern[]] :=
 			{second, 0, n - iterator + k2}, opts], {iterator, 0, n}]
 	) /; $FullAnalytic &&
 	Simplify[Implies[OptionValue[Assumptions], k1 >= 0 && k2 >= 0]] && 
-		FreeQ[expr, x] && FreeQ[j, x] && FreeQ[k, x]; 
+		FreeQ[j, x] && FreeQ[k, x]; 
 ];
 
 SeriesCoefficient[Integrate[expr_, 
 	{t_, 0, x_}], arg2, opts:OptionsPattern[]] := Module[
         {},
 	(
-	Boole[n >= 1] * (1/n) * SeriesCoefficient[expr /. t -> x, 
-		{x, 0, n - 1}, opts]
+	Piecewise[{
+        {n >= 1,
+            (1/n) * SeriesCoefficient[expr /. t -> x, 
+            {x, 0, n - 1}, opts]}
+        }]
 	) /; $FullAnalytic
 ];
 
@@ -151,10 +153,12 @@ SeriesCoefficient[a_Symbol[j_, k_*x_], arg2, opts:OptionsPattern[]] /;
 
 (* misc *)
 
-SeriesCoefficient[Sum[expr_, {i_, lb_, ub_}], arg2, opts:OptionsPattern[]] :=
+SeriesCoefficient[Sum[expr_, {i_, lb_, ub_}], arg2, opts:OptionsPattern[]] /;
+    FreeQ[i, x] && FreeQ[lb, x] && FreeQ[ub, x] :=
 	Sum[SeriesCoefficient[expr, {x, 0, n}, opts], {i, lb, ub}];
 
-SeriesCoefficient[expr_, {x_, 0, n_}, iters__List, opts:OptionsPattern[]] := 
+SeriesCoefficient[expr_, {x:variablePattern, 0, n_}, iters__List, 
+    opts:OptionsPattern[]] := 
 	SeriesCoefficient[SeriesCoefficient[expr, {x, 0, n}, opts], iters, 
 		opts];
 
