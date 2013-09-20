@@ -375,7 +375,7 @@ ToNFA[Regex[regex_], OptionsPattern[]] := Module[
 (* ::Section:: *)
 (* RRGrammar2NFA *)
 
-ToNFA[RRGrammar[{}]] := NFA[0, {}, {}, {}, Null];
+ToNFA[RRGrammar[{}], OptionsPattern[]] := NFA[0, {}, {}, {}, Null];
 
 ToNFA[g: RRGrammar[grammar_], OptionsPattern[]] :=
     Module[
@@ -675,7 +675,7 @@ simplifyRawRegex[regex_] := FixedPoint[
      }, {0, Infinity}] &,
   regex]
 
-ToRegex[DFA[0, _, _, _, _]] := Regex[Null];
+ToRegex[DFA[0, _, _, _, _], OptionsPattern[]] := Regex[Null];
 
 ToRegex[dfa: DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
     initialState_], OptionsPattern[]] := 
@@ -709,7 +709,7 @@ ToRegex[dfa: DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
 (* ::Section:: *)
 (* NFA2RRGrammar *)
 
-ToRRGrammar[NFA[0, _, _, _, _]] := RRGrammar[{}];
+ToRRGrammar[NFA[0, _, _, _, _], OptionsPattern[]] := RRGrammar[{}];
 
 ToRRGrammar[nfa: NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
     initialState_], OptionsPattern[]]  :=
@@ -756,7 +756,7 @@ ToRRGrammar[nfa: NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
 
 cartesian[lists___List] := Flatten[Outer[List, lists, 1], Length[{lists}] - 1];
 
-ToDigraph[DFA[0, _, _, _, _]] := Digraph[Graph[{}], {}, {}, False];
+ToDigraph[DFA[0, _, _, _, _], OptionsPattern[]] := Digraph[Graph[{}], {}, {}, False];
     
 ToDigraph[dfa: DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
     initialState_], OptionsPattern[]] := Module[
@@ -872,7 +872,7 @@ ToRegularExpression[r:Regex[regex_], OptionsPattern[]] := Module[
 (* ::Section:: *)
 (* Closure properties *)
 
-RegStar[RRGrammar[{}]] := RRGrammar[Unique[] -> EmptyWord];
+RegStar[RRGrammar[{}], OptionsPattern[]] := RRGrammar[{Unique[] -> EmptyWord}];
 
 RegStar[grammar : RRGrammar[_], OptionsPattern[]] := Module[
     {
@@ -941,6 +941,8 @@ regexReverse[str_String] := str;
 regexReverse[Null] := Null;
 
 regexReverse[RegexOr[args__]] := RegexOr @@ regexReverse /@ {args};
+
+regexReverse[EmptyWord] := EmptyWord;
 
 regexReverse[RegexConcat[args__]] := 
   RegexConcat @@ regexReverse /@ Reverse[{args}];
