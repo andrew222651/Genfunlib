@@ -2,48 +2,51 @@
 
 BeginPackage["Genfunlib`rec2GFeqn`"]
 
-Begin["`Private`"] (* Begin Private Context *) 
+Begin["`Private`"] 
 
+(* http://mathematica.stackexchange.com/questions/32531/how-to-unprotect-generatingfunction/32533#32533 *)
+GeneratingFunction;
 protected = Unprotect[GeneratingFunction];
 
-GeneratingFunction[n_^(k_) * f_[args__], n_, x_, opts:OptionsPattern[]] :=
-	With[ {var = Unique[]},
-		Sum[StirlingS2[k, var]*x^var*D[GeneratingFunction[
-			f[args], n, x, opts], {x, var}], {var, 1, k}]
-]/; !FreeQ[{args}, n] && FreeQ[k, n] && Simplify@Implies[OptionValue[
-	Assumptions], Element[k, Integers] && k > 0];
+(* what can usually be used as a variable, according to 
+	ref/message/General/ivar *)
+variablePattern = Except[_String | _?NumberQ | _Plus | _Times | 
+	_Sum | _Product | _^_Integer];
 
-GeneratingFunction[Sum[expr_, {i_, lb_, ub_}], n_, x_, opts:OptionsPattern[]] :=
-	Sum[GeneratingFunction[expr, n, x, opts], {i, lb, ub}];
+arg2 = Sequence[n:variablePattern, x:variablePattern];
 
-GeneratingFunction[expr_ / (n_ + 1), n_, x_, opts:OptionsPattern[]] := x^(-1) * 
-Integrate[
-	GeneratingFunction[expr, n, t, opts], {t, 0, x}];
+(* rational function (over syntactic integers) coefficients *)
+(* http://mathematica.stackexchange.com/a/32611/208 *)
+    (* partial fraction expansion *)
+GeneratingFunction[expr_, arg2, 
+    opts:OptionsPattern[]] /; expr =!= Apart[expr, n] :=
+    GeneratingFunction[Apart[expr, n], n, x, opts];
 
-GeneratingFunction[f_[n_ + i_], n_, x_, opts:OptionsPattern[]] := With[
-	{var = Unique[]},
-	( GeneratingFunction[f[n], n, x, opts] - Sum[f[var]*x^var, 
-	{var, 0, i-1}]) * x^(-i)
-] /; Simplify@Implies[OptionValue[Assumptions], i > 0];
+GeneratingFunction[expr_ * (n_ + k_?Positive)^(j_?Negative), arg2, opts:OptionsPattern[]] := With[
+    {t = Unique[]},
+    x^(-k) * Integrate[t^(k-1) * GeneratingFunction[expr * (n + k)^(j + 1),
+        n, t, opts], {t, 0, x}]
+];
 
-GeneratingFunction[f_[n_ - i_], n_, x_, opts:OptionsPattern[]] := 
-	x^i * GeneratingFunction[f[n], n, x, opts] + 
-	Sum[f[-j] * x^(i-j), {j, 1, i}] /; 
-	Simplify@Implies[OptionValue[Assumptions], i > 0];
+(* symbolic sums *)
+GeneratingFunction[Sum[expr_, {i_, lb_, ub_}], arg2, opts:OptionsPattern[]] /;
+    FreeQ[lb, n] && FreeQ[ub, n] := Sum[GeneratingFunction[expr, n, x, opts], 
+        {i, lb, ub}];
 
-GeneratingFunction[Boole[expr_] * fac_, n_, x_, opts:OptionsPattern[]] :=
+(* different ways to set terms to 0 *)
+GeneratingFunction[Boole[expr_] * fac_, arg2, opts:OptionsPattern[]] :=
 	GeneratingFunction[Piecewise[{{fac, expr}}], n, x, opts];
 
-GeneratingFunction[UnitStep[expr_] * fac_, n_, x_, opts:OptionsPattern[]] :=
+GeneratingFunction[UnitStep[expr_] * fac_, arg2, opts:OptionsPattern[]] :=
 	GeneratingFunction[Piecewise[{{fac, expr >= 0}}], n, x, opts];
 
-GeneratingFunction[Piecewise[{{expr_, Divisible[n_, k_]}}], n_, x_, 
+GeneratingFunction[Piecewise[{{expr_, Divisible[n_, k_]}}], arg2, 
 	opts:OptionsPattern[]] :=
 	GeneratingFunction[Piecewise[{{expr, Mod[n, k] == 0}}], n, x, opts];
 
 (* "multisection formula" *)
-GeneratingFunction[Piecewise[{{expr_, Mod[n_, k_] == j_}}], n_, x_, 
-	opts:OptionsPattern[]] :=
+GeneratingFunction[Piecewise[{{expr_, Mod[n_, k_] == j_}}], arg2, 
+	opts:OptionsPattern[]] /; FreeQ[k, n] :=
 	With[{var = Unique[]},
 		k^(-1) * Sum[Exp[-var*j*2*Pi*I/k] * GeneratingFunction[
 			expr, n, Exp[var * 2 * Pi *I /k] * x, opts], 
@@ -52,5 +55,5 @@ GeneratingFunction[Piecewise[{{expr_, Mod[n_, k_] == j_}}], n_, x_,
 
 Protect[Evaluate[protected]];
 
-End[] (* End Private Context *)
+End[] 
 EndPackage[]

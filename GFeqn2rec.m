@@ -5,8 +5,7 @@ BeginPackage["Genfunlib`GFeqn2rec`"]
 $FullAnalytic::usage = "$FullAnalytic is True iff SeriesCoefficient should " <> 
 	"assume that " <>
 	"all subexpressions of the expression to be expanded are " <> 
-	"analytic, when the " <>
-	"expansion is around 0.";
+	"analytic, when the " <> "expansion is around 0.";
 
 Begin["`Private`"] 
 

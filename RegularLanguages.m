@@ -588,13 +588,13 @@ floydWarshall[m_] := Module[
 (* states with no path to an accept state *)
 deadStates[NFA[numStates_, _, transitionMatrix_, acceptStates_, _]] :=
    Module[
-   {
-    adj = Flatten /@ transitionMatrix,
-    graph = 
-     Graph[MapIndexed[DirectedEdge[First[#2], #1 &], adj, {2}] // 
-       Flatten]
-    },
-   Complement[Range[numStates], VertexComponent[graph, acceptStates]]
+   {adj = Flatten /@ transitionMatrix}, 
+   graph = Graph[
+     Range[numStates],
+     MapIndexed[DirectedEdge[First[#2], #1] &, adj, {2}] // Flatten];
+   Complement[Range[numStates], 
+    VertexInComponent[graph, acceptStates]
+   ]
 ];
 
 ToDFA[nfa:NFA[0, alphabet_, _, _, _], OptionsPattern[]] := Module[
@@ -635,7 +635,7 @@ ToDFA[nfa :
              st, {transitionMatrix[[st, i]], 
               Map[Position[adjacency[[#]], True] &, 
                transitionMatrix[[st, i]]]}], state
-            ], 1]~Complement~nfaDeadStates;
+            ]]~Complement~nfaDeadStates;
         tr[state, i] = neighbor;
         queue = Append[queue, neighbor];
         ];
@@ -649,7 +649,7 @@ ToDFA[nfa :
       stateNumber /@ 
        Select[states, (Intersection[#, acceptStates] != {}) &];
      dfaTransitionMatrix = 
-      Table[tr[states[[s]], a], {s, 1, Length[states]}, {a, 1, 
+      Table[stateNumber@tr[states[[s]], a], {s, 1, Length[states]}, {a, 1, 
         Length[alphabet]}];
      DFA[Length[states], alphabet, dfaTransitionMatrix, 
        dfaAcceptStates, 1] // hopcroft
@@ -739,7 +739,7 @@ ToRRGrammar[nfa: NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
         
         (* if the initial state has no outgoing edges, 
             and is not an accepting state, return {} *) 
-        If[FreeQ[grammar[[All, 1]], nonTermHead[initialState]], Return[{}]];
+        If[FreeQ[grammar[[All, 1]], nonTermHead[initialState]], Return[RRGrammar[{}]]];
         (* if start state appears, make one of its rules the first one *)
         posOfInitial = Position[grammar, nonTermHead[initialState]][[1, 1]];
         
