@@ -11,70 +11,68 @@ SMSet::usage = "";
 SMPointing::usage = "";
 SMSub::usage = "";
 SMMultiset::usage = "";
-GFEqns::usage = "";
 Cardinality::usage = "";
 Restricted::usage = "";
 ZClass::usage = "";
 EClass::usage = "";
+ToGenfunlibSpec::usage = "";
 
 Begin["`Private`"] (* Begin Private Context *) 
 
 (* ::Section:: *)
-(* Input validation *)
+(* Syntactic input validation *)
 
-nonTerminals[Spec[list_, _]] := list[[All, 1]];
-
-(* need to know if max is Infinity or less than Infinity *)
-(* need to know if 0 is included *)
-
-validatePred
-
-validateRHS[sym_Symbol, nonTerms_] /; MemberQ[nonTerms, sym] := True;
+validateRHS[sym_, nonTerms_] /; MemberQ[nonTerms, sym] := True;
 validateRHS[EClass, _] := True;
-validateRHS[ZClass[n_Integer] /; n >= 1, _] := True;
+validateRHS[ZClass[n_Integer?Positive] /; n >= 1, _] := True;
 
-validateRHS[SMPlus[args__]] := And @@ validateRHS /@ {args};
-validateRHS[SMTimes[args__]] := And @@ validateRHS /@ {args};
+validateRHS[SMPlus[args__], nonTerms_] := And @@ validateRHS[#, nonTerms]& /@ {args};
+validateRHS[SMTimes[args__], nonTerms_] := And @@ validateRHS[#, nonTerms]& /@ {args};
 
-validateRHS[SMSeq[arg_]] := validateRHS[arg];
-validateRHS[SMSeq[arg_, Cardinality -> pred_]] := validateRHS[arg] && validatePred[pred];
+validateRHS[SMSeq[arg_], nonTerms_] := validateRHS[arg, nonTerms];
+validateRHS[SMSeq[arg_, Cardinality -> pred_], nonTerms_] := validateRHS[arg, nonTerms] && validatePred[pred];
 
-validateRHS[SMCyc[arg_]] := validateRHS[arg];
-validateRHS[SMCyc[arg_, Cardinality -> pred_]] := validateRHS[arg] && validatePred[pred];
+validateRHS[SMCyc[arg_], nonTerms_] := validateRHS[arg, nonTerms];
+validateRHS[SMCyc[arg_, Cardinality -> pred_], nonTerms_] := validateRHS[arg, nonTerms] && validatePred[pred];
 
-validateRHS[SMSet[arg_]] := validateRHS[arg];
-validateRHS[SMSet[arg_, Cardinality -> pred_]] := validateRHS[arg] && validatePred[pred];
+validateRHS[SMSet[arg_], nonTerms_] := validateRHS[arg, nonTerms];
+validateRHS[SMSet[arg_, Cardinality -> pred_], nonTerms_] := validateRHS[arg, nonTerms] && validatePred[pred];
 
-validateRHS[SMMultiset[arg_]] := validateRHS[arg];
-validateRHS[SMMultiset[arg_, Cardinality -> pred_]] := validateRHS[arg] && validatePred[pred];
+validateRHS[SMMultiset[arg_], nonTerms_] := validateRHS[arg, nonTerms];
+validateRHS[SMMultiset[arg_, Cardinality -> pred_], nonTerms_] := validateRHS[arg, nonTerms] && validatePred[pred];
 
-validateRHS[SMSub[first_, second_, paramNumber_Integer?Positive]] := validateRHS[first] && validateRHS[second];
-validateRHS[SMPointing[arg_, paramNumber_Integer?Positive]] := validateRHS[arg];
+validateRHS[SMSub[first_, second_, paramNumber_Integer?Positive], nonTerms_] := validateRHS[first, nonTerms] && validateRHS[second, nonTerms];
+validateRHS[SMPointing[arg_, paramNumber_Integer?Positive], nonTerms] := validateRHS[arg, nonTerms];
 
-validateRHS[Restricted[arg_, rules:{(_Integer?Positive -> _)...}]] := Module[
+validateRHS[Restricted[arg_, rules:{(_Integer?Positive -> _)...}], nonTerms] := Module[
 	{
 		integers = rules[[All, 1]],
 		preds = rules[[All, 2]]
 	},
-	(Length@integers == Length@Union@integers) && And @@ validatePred /@ preds
+	(Length@integers == Length@Union@integers) && And @@ validatePred /@ preds && validatRHS[arg, nonTerms]
 ];
 
 validateRHS[___] := False;
 
-validateSpecSyntax[spec:Spec[list:{(_ == _)...}, labeled:True|False]] := Module[
+validateSpecSyntax[spec:Spec[list:{HoldPattern[_ == _]..}, labeled:True|False]] := Module[
 	{
 		ok = True,
 		lhss = list[[All, 1]],
 		rhss = list[[All, 2]]
 	},
-	ok = ok && MatchQ[lhss, {_Symbol...}];
-	ok = ok && Length@lhss == Length@Union[lhss];
+	ok = ok && MatchQ[lhss, {(_Symbol|(_Symbol)[_Integer])...}];
+	ok = ok && Length@lhss == Length@Union@lhss;
 	If[labeled && MemberQ[list, SMMultiset, {0, Infinity}, Heads -> True], ok = False];  
-	ok = ok && And @@ validateRHS[#, lhss]& /@ rhss;
+	ok = ok && And @@ (validateRHS[#, lhss]& /@ rhss);
 	
 	ok
 ];
 validateSpecSyntax[___] := False;
+
+(* ::Section:: *)
+(* Semantic input validation *)
+
+nonTerminals[Spec[list_, _]] := list[[All, 1]];
 
 (* returns true if... *)
 (* returns conditions under which input is semantically valid *)
@@ -160,172 +158,6 @@ makeGraph[spec_, v_] := spec /.
 
 circularQ[spec_, v_] := ! AcyclicGraphQ[makeGraph[spec, v]];
 
-
-(* ::Section:: *)
-(* To GF eqns *)
-
-(* simplifies Sum[generalTerm*Boole[pred[n]], {n, slb, sub}] *)
-restrictedSum[generalTerm_, Function[GreaterEqual[ub_: Infinity, Slot[1], lb_: 0]], {n_, slb_, sub_}] := 
-	Sum[generalTerm, {n, Max[slb, lb], Min[sub, ub]}];
-	
-restrictedSum[generalTerm_, Function[LessEqual[lb_: 0, Slot[1], ub_: Infinity]], {n_, slb_, sub_}] := 
-	Sum[generalTerm, {n, Max[slb, lb], Min[sub, ub]}];
-	
-restrictedSum[generalTerm_, pred_, {n_, slb_, sub_}] := 
-	Sum[Boole[pred[n]] * generalTerm, {n, slb, sub}];	
-
-(* labeled *)                     
-GFEqns[ spec:Spec[list_List, True], indet_Symbol ] := Module[
-	{
-		numAtomicClasses = Max @@ First /@ Cases[list, ZClass[n_], Infinity] //Max[0,#]&,
-		nonTerms = nonTerminals[spec],
-		indets,
-		unique,
-		ret = Hold[list]
-	},
-	(
-	indets = Sequence @@ indet /@ Range[numAtomicClasses];
-	
-	ret = Replace[ret,
-		{
-			ZClass[n_] :> indet[n],
-			EClass :> 1,
-			sym_Symbol?(MemberQ[nonTerms, #1] &) :> sym[indets]
-		}, 
-		{1, Infinity}, Heads -> True
-	];
-	
-	ret = FixedPoint[Function[iter, Replace[iter,
-		{
-			SMPlus[args__] :> Plus[args],
-			SMTimes[args__] :> Times[args],
-			
-			SMSeq[arg_] :> 1 / (1 - arg),
-			SMSeq[arg_, Cardinality -> pred_] :> (unique = Unique[];
-				restrictedSum[arg^unique, pred, {unique, 0, Infinity}]),
-			
-			SMCyc[arg_] :> Log[ 1/(1 - arg) ],
-			SMCyc[arg_, Cardinality -> pred_] :> (unique = Unique[];
-				Boole[pred[0]] + restrictedSum[arg^unique / unique, pred, {unique, 1, Infinity}]),
-			
-			SMSet[arg_] :> Exp[arg],
-			SMSet[arg_, Cardinality -> pred_] :> (unique = Unique[];
-				restrictedSum[arg^unique / (unique!), pred, {unique, 0, Infinity}]),
-			
-			Restricted[expr_, {}] :> expr,
-			Restricted[expr_, {param_ -> pred_, rest:((_) ...)}] :> (unique = Unique[];
-				restrictedSum[
-					SeriesCoefficient[Restricted[expr, {rest}], {indet[param], 0, unique}] * indet[param]^unique, 
-					pred, {unique, 0, Infinity}
-				]),
-			
-			SMPointing[expr_, param_] :> indet[param] * D[expr, indet[param]],
-				
-			SMSub[func_, arg_, param_] :> (func /. indet[param] :> arg)
-			
-		}, {1, Infinity}, Heads -> True
-	]], ret]; 
-		
-	ReleaseHold[ret]	
-			
-	) /; validateSpec[Spec]
-]; 
-
-(* unlabeled *)
-GFEqns[spec:Spec[list_List, False], indet_Symbol] := Module[
-	{
-		numAtomicClasses = Max @@ First /@ Cases[list, ZClass[n_], Infinity] //Max[0,#]&,
-		nonTerms = nonTerminals[spec],
-		indets,
-		unique, uniqueAux,
-		ret = Hold[list]
-	},
-	(
-	indets = Sequence @@ indet /@ Range[numAtomicClasses];
-	
-	ret = Replace[ret,
-		{
-			ZClass[n_] :> indet[n],
-			EClass :> 1,
-			sym_Symbol?(MemberQ[nonTerms, #1] &) :> sym[indets]
-		}, 
-		{1, Infinity}, Heads -> True
-	];
-	
-	ret = FixedPoint[Function[iter, Replace[iter,
-		{
-			SMPlus[args__] :> Plus[args],
-			SMTimes[args__] :> Times[args],
-			
-			SMSeq[arg_] :> 1 / (1 - arg),
-			SMSeq[arg_, Cardinality -> pred_] :> (unique = Unique[];
-				restrictedSum[arg^unique, pred, {unique, 0, Infinity}]),
-			
-			SMCyc[arg_] :> (unique = Unique[];
-				Sum[EulerPhi[unique]/unique * Log[1/(1 - (arg /. indet[n_] :> indet[n]^unique))], {unique, 1, Infinity}]),
-			(* p. 730 *)
-			SMCyc[arg_, Cardinality -> pred_] :> (unique = Unique[];
-				restrictedSum[
-					SeriesCoefficient[
-						Sum[EulerPhi[unique]/unique * Log[1/(1 - uniqueAux^unique * (arg /. indet[n_] :> indet[n]^unique))], 
-							{unique, 1, Infinity}
-						],
-						{uniqueAux, 0, unique}
-					], 
-					pred, 
-					{unique, 0, Infinity}
-				]
-			),
-			
-			SMSet[arg_] :> (unique = Unique[];
-				Exp@Sum[(-1)^(unique - 1)/unique * (arg /. indet[n_] :> indet[n]^unique), {unique, 1, Infinity}]),
-			SMSet[arg_, Cardinality -> pred_] :> (unique = Unique[];
-				restrictedSum[
-					SeriesCoefficient[
-						Exp@Sum[(-1)^(unique - 1)/unique * uniqueAux^unique * (arg /. indet[n_] :> indet[n]^unique), 
-							{unique, 1, Infinity}
-						],
-						{uniqueAux, 0, unique}
-					], 
-					pred, 
-					{unique, 0, Infinity}
-				]
-			),
-			
-			SMMultiset[arg_] :> (unique = Unique[];
-				Exp@Sum[1/unique * (arg /. indet[n_] :> indet[n]^unique), {unique, 1, Infinity}]),
-			SMMultiset[arg_, Cardinality -> pred_] :> (unique = Unique[];
-				restrictedSum[
-					SeriesCoefficient[
-						Exp@Sum[1/unique * uniqueAux^unique * (arg /. indet[n_] :> indet[n]^unique), 
-							{unique, 1, Infinity}
-						],
-						{uniqueAux, 0, unique}
-					], 
-					pred, 
-					{unique, 0, Infinity}
-				]
-			),
-			
-			Restricted[expr_, {}] :> expr,
-			Restricted[expr_, {param_ -> pred_, rest:((_) ...)}] :> (unique = Unique[];
-				restrictedSum[
-					SeriesCoefficient[Restricted[expr, {rest}], {indet[param], 0, unique}] * indet[param]^unique, 
-					pred, {unique, 0, Infinity}
-				]),
-			
-			SMPointing[expr_, param_] :> indet[param] * D[expr, indet[param]],
-				
-			SMSub[func_, arg_, param_] :> (func /. indet[param] :> arg)
-			
-		}, {1, Infinity}, Heads -> True
-	]], ret]; 
-		
-	ReleaseHold[ret]	
-			
-	) /; validateSpec[Spec]
-];
-
 (* ::Section:: *)
 (* Combstruct grammar to Genfunlib spec *)
 
@@ -338,7 +170,7 @@ ToGenfunlibSpec[str_String, labeled:(True|False)] := Module[
 	},
 	ret = StringReplace[ret, c_?UpperCaseQ :> ToLowerCase[c] <> ToLowerCase[c]];
 	ret = StringReplace[ret, {
-  		"=" -> "==",
+  		" = " -> " == ",
   		"(" -> "[", ")" -> "]",
   		"pprod" -> "SMTimes",
   		"uunion" -> "SMPlus",
@@ -356,9 +188,9 @@ ToGenfunlibSpec[str_String, labeled:(True|False)] := Module[
  		SMSub[first_, second_] :> SMSub[second, first], {0, Infinity}];
  	ret = Replace[ret, {
   		(head : (SMSet | SMSeq | SMCyc))[arg_, rel_[card, k_]] :> 
-   			SMSet[arg, Cardinality -> (rel[#, k] &)],
+   			head[arg, Cardinality -> (rel[#, k] &)],
   		(head : (SMSet | SMSeq | SMCyc))[arg_, rel_[k_, card]] :> 
-   			SMSet[arg, Cardinality -> (rel[k, #] &)]
+   			head[arg, Cardinality -> (rel[k, #] &)]
   		},
  		{0, Infinity}];
  	

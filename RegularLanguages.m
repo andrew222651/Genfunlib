@@ -591,7 +591,7 @@ deadStates[NFA[numStates_, _, transitionMatrix_, acceptStates_, _]] :=
    {adj = Flatten /@ transitionMatrix}, 
    graph = Graph[
      Range[numStates],
-     MapIndexed[DirectedEdge[First[#2], #1] &, adj, {2}] // Flatten];
+     MapIndexed[DirectedEdge[First[#2], #1] &, adj, {2}] // Flatten // Union];
    Complement[Range[numStates], 
     VertexInComponent[graph, acceptStates]
    ]

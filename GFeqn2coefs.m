@@ -18,7 +18,7 @@ variablePattern = Except[_String | _?NumberQ | _Plus | _Times |
 CoefsByDerivs::invalid = "Invalid input.";
 CoefsByNewton::invalid = "Invalid input.";
 
-validateSystem[system : {(x_ == _)..}, series: { variablePattern[__].. }, 
+validateSystem[system : {HoldPattern[_ == _]..}, series: { variablePattern.. }, 
     iters:({variablePattern, 0, _Integer?NonNegative}..)] := Module[
     {
         ok = True
