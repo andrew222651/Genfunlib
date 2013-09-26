@@ -70,93 +70,14 @@ validateSpecSyntax[spec:Spec[list:{HoldPattern[_ == _]..}, labeled:True|False]] 
 validateSpecSyntax[___] := False;
 
 (* ::Section:: *)
-(* Semantic input validation *)
+(* To species *)
 
-nonTerminals[Spec[list_, _]] := list[[All, 1]];
-
-(* returns true if... *)
-(* returns conditions under which input is semantically valid *)
-validateSpecSemantics
-
-validateSpec[spec_] := validateSpecSyntax[spec];
-
-specSymbols = {seq, cyc, set, multiset, prod, sum, zClass, eClass};
-
-atomClassQ[class_] := class === zClass || class === eClass;
-
-expandSpec[spec_] :=
-  spec //. {
-     specPre___, 
-     sym_ == con_[conPre___, expr_?(! (Head[#] === Symbol) &), 
-       conPost___],
-     specPost___
-     } :> With[
-     {name = Unique[]},
-     {specPre,
-      sym == con[conPre, name, conPost],
-      name == expr,
-      specPost
-      }
-     ];
-
-valuation[spec_] := Module[
-   {
-    v,
-    change = True
-    },
-   v[eClass] = 0; v[zClass] = 1;
-   Map[(v[#] = Infinity) &, nonTerminals[spec]];
-   While[change,
-    change = False;
-    Map[
-     Switch[#[[2]],
-       _Symbol,
-       change = (v[#[[1]]] != (v[#[[1]]] = v[#[[2]]])) || change,
-       _sum,
-       change = (v[#[[1]]] != (v[#[[1]]] = Min @@ v /@ #[[2]])) || 
-         change,
-       _prod,
-       change = (v[#[[1]]] != (v[#[[1]]] = Plus @@ v /@ #[[2]])) || 
-         change,
-       _seq | _set | _multiset, 
-       change = (v[#[[1]]] != (v[#[[1]]] = 0)) || change,
-       _cyc, 
-       change = (v[#[[1]]] != (v[#[[1]]] = v @@ #[[2]])) || change
-       ] &,
-     spec];
-    ];
-   v
-   ];
-
-finiteValuationsQ[spec_, v_] := 
-  Max[v /@ nonTerminals[spec]] < Infinity;
-
-reducedQ[spec_, v_] := ! MatchQ[
-    spec,
-    {
-     specPre___,
-     a_ == con_[sym_?(v[#] == 0 &)],
-     specPost___
-     }];
-
-(* throws out edges corresponding to a product where the other factor \
-has nonzero valuation; includes atomic classes as vertices *)
-makeGraph[spec_, v_] := spec /.
-     {
-      lhs_ == zClass -> Sequence[],
-      lhs_ == eClass -> Sequence[],
-      lhs_ == rhs_Symbol -> lhs \[DirectedEdge] rhs,
-      lhs_ == prod[first_?(v[#] == 0 &), second_?(v[#] == 0 &)] ->
-       {lhs \[DirectedEdge] first, lhs \[DirectedEdge] second},
-      lhs_ == prod[first_?(v[#] > 0 &), second_?(v[#] == 0 &)] -> 
-       lhs \[DirectedEdge] first,
-      lhs_ == prod[first_?(v[#] == 0 &), second_?(v[#] > 0 &)] -> 
-       lhs \[DirectedEdge] second,
-      lhs_ == prod[__] -> Sequence[],
-      lhs_ == con_[args__] :> (lhs \[DirectedEdge] # &) /@ {args}
-      } // Flatten // Graph;
-
-circularQ[spec_, v_] := ! AcyclicGraphQ[makeGraph[spec, v]];
+ToSpecies[spec:Spec[eqns_, labeled]] := Module[
+    {},
+    (
+        blah
+    ) /; validateSpecSyntax[spec]
+];
 
 (* ::Section:: *)
 (* Combstruct grammar to Genfunlib spec *)
