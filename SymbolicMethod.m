@@ -3,6 +3,7 @@
 BeginPackage["Genfunlib`SymbolicMethod`"]
 
 Spec::usage = "";
+ToSpecies::usage = "";
 SMPlus::usage = "";
 SMTimes::usage = "";
 SMSeq::usage = "";
@@ -22,9 +23,14 @@ Begin["`Private`"] (* Begin Private Context *)
 (* ::Section:: *)
 (* Syntactic input validation *)
 
+Spec::invalid = "Invalid specification.";
+
+validatePred[_Function] := True;
+validatePred[___] := False;
+
 validateRHS[sym_, nonTerms_] /; MemberQ[nonTerms, sym] := True;
 validateRHS[EClass, _] := True;
-validateRHS[ZClass[n_Integer?Positive] /; n >= 1, _] := True;
+validateRHS[ZClass[n_Integer?Positive], _] := True;
 
 validateRHS[SMPlus[args__], nonTerms_] := And @@ validateRHS[#, nonTerms]& /@ {args};
 validateRHS[SMTimes[args__], nonTerms_] := And @@ validateRHS[#, nonTerms]& /@ {args};
@@ -41,16 +47,10 @@ validateRHS[SMSet[arg_, Cardinality -> pred_], nonTerms_] := validateRHS[arg, no
 validateRHS[SMMultiset[arg_], nonTerms_] := validateRHS[arg, nonTerms];
 validateRHS[SMMultiset[arg_, Cardinality -> pred_], nonTerms_] := validateRHS[arg, nonTerms] && validatePred[pred];
 
-validateRHS[SMSub[first_, second_, paramNumber_Integer?Positive], nonTerms_] := validateRHS[first, nonTerms] && validateRHS[second, nonTerms];
-validateRHS[SMPointing[arg_, paramNumber_Integer?Positive], nonTerms] := validateRHS[arg, nonTerms];
+validateRHS[SMSub[first_, second_], nonTerms_] := validateRHS[first, nonTerms] && validateRHS[second, nonTerms];
+validateRHS[SMPointing[arg_], nonTerms] := validateRHS[arg, nonTerms];
 
-validateRHS[Restricted[arg_, rules:{(_Integer?Positive -> _)...}], nonTerms] := Module[
-	{
-		integers = rules[[All, 1]],
-		preds = rules[[All, 2]]
-	},
-	(Length@integers == Length@Union@integers) && And @@ validatePred /@ preds && validatRHS[arg, nonTerms]
-];
+validateRHS[Restricted[arg_, pred_], nonTerms] := validatePred[pred] && validateRHS[arg, nonTerms];
 
 validateRHS[___] := False;
 
@@ -65,6 +65,7 @@ validateSpecSyntax[spec:Spec[list:{HoldPattern[_ == _]..}, labeled:True|False]] 
 	If[labeled && MemberQ[list, SMMultiset, {0, Infinity}, Heads -> True], ok = False];  
 	ok = ok && And @@ (validateRHS[#, lhss]& /@ rhss);
 	
+    If[ !ok, Message[Spec::invalid]];
 	ok
 ];
 validateSpecSyntax[___] := False;
@@ -73,9 +74,28 @@ validateSpecSyntax[___] := False;
 (* To species *)
 
 ToSpecies[spec:Spec[eqns_, labeled]] := Module[
-    {},
+    {
+        ret = Hold[eqns], nonTerms = eqns[[All, 1]]
+    },
     (
-        blah
+        ret = Replace[ret,
+            {
+                ZClass[1] :> SCharacteristic[#==1&, 1],
+                ZClass[n_?(#>1&)] :> SCharacteristic[#==0&, z[n]],
+                EClass :> SCharacteristic[#==0&, 1]
+            },
+            {1, Infinity}, Heads -> True
+        ];
+
+        ret = FixedPoint[Function[iter, Replace[iter,
+            {
+                SMPlus[args__] :> SPlus[args],
+                SMTimes[args__] :> STimes[args],
+
+                SMSeq[arg_] :> L(arg)
+
+
+
     ) /; validateSpecSyntax[spec]
 ];
 
