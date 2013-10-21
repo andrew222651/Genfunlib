@@ -2,21 +2,31 @@
 
 BeginPackage["Genfunlib`SymbolicMethod`"]
 
-Spec::usage = "";
-SMPlus::usage = "";
-SMTimes::usage = "";
-SMSeq::usage = "";
-SMCyc::usage = "";
-SMSet::usage = "";
-SMPointing::usage = "";
-SMSub::usage = "";
-SMMultiset::usage = "";
-Cardinality::usage = "";
-Restricted::usage = "";
-ZClass::usage = "";
-EClass::usage = "";
-ToGenfunlibSpec::usage = "";
-ToGFEqns::usage = "";
+Spec::usage = "Spec[{lhs1 ==  rhs1, ...}, labeled] is a combinatorial " <>
+    "specification.";
+SMPlus::usage = "SMPlus is the addition construction from the symbolic method.";
+SMTimes::usage = "SMTimes is the multiplication construction from the " <>
+    "symbolic method.";
+SMSeq::usage = "SMSeq is the sequence construction from the symbolic method.";
+SMCyc::usage = "SMCyc is the cycle construction from the symbolic method.";
+SMSet::usage = "SMSet is the set construction from the symbolic method.";
+SMPointing::usage = "SMPointing is the pointing construction from the " <> 
+    "symbolic method.";
+SMSub::usage = "SMSub is the substitution construction from the symbolic " <>
+    "method.";
+SMMultiset::usage = "SMMultiset is the multiset construction from the " <>
+    "symbolic method.";
+Cardinality::usage = "Cardinality is an option for symbolic method " <>
+    "constructions which takes a Function on the integers with which to" <>
+    "restrict the construction.";
+Restricted::usage = "Restricted[class, pred] is the class of objects from " <>
+    "class with sizes in pred^(-1)(True).";
+ZClass::usage = "ZClass[n] is the nth atomic class.";
+EClass::usage = "EClass is the epsilon class.";
+ToGenfunlibSpec::usage = "ToGenfunlibSpec[mapleString, labeled] converts " <>
+    "from Combstruct to Genfunlib combinatorial specification syntax.";
+ToGFEqns::usage = "ToGFEqns[spec, indeterminate] gives the system of power " <>
+    "series equations corresponding to spec, using the given indeterminate." 
 
 Begin["`Private`"] (* Begin Private Context *) 
 
