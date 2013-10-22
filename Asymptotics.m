@@ -77,4 +77,36 @@ reduction[term1_*term2_, x_] := Module[
    ];
 End[]
 
+(* assumes expr is from elementary iterative class, so characteristic \
+eqn is satisfied and period is computed *)
+saiv[y_[z_] == z_*expr_, n_] := Module[
+   {
+    period = reduction[expr, y[z]], p,
+    t, res, nres,
+    d1, r
+    },
+   (
+     p = If[period[[2]] == Infinity,
+       period[[1]], period[[2]]];
+     res = Solve[expr - y[z]*D[expr, y[z]] == 0 && y[z] > 0, y[z]];
+     If[MatchQ[res, {__List}],
+      t = Min[y[z] /. res],
+      nres = 
+       NSolve[expr - y[z]*D[expr, y[z]] == 0 && y[z] > 0, y[z]];
+      t = Min[y[z] /. nres]
+      ];
+     r = t/(expr /. y[z] -> t);
+     d1 = Sqrt[(2*(expr /. y[z] -> t))/(
+      D[expr, {y[z], 2}] /. y[z] -> t)];
+     If[p >= 2,
+      Boole[Mod[n, p] == 1]*r^-n*
+       SeriesData[n, DirectedInfinity[1], {(p*d1)/(2*Sqrt[\[Pi]]), 0},
+         3, 5, 2],
+      r^-n*
+       SeriesData[n, DirectedInfinity[1], {d1/(2*Sqrt[\[Pi]]), 0}, 3, 
+        5, 2]
+      ]
+     ) /; (! (PolynomialQ[expr, y[z]] && Exponent[expr, y[z]] == 1)) &&
+      SeriesCoefficient[expr, {y[z], 0, 0}] != 0
+   ];
 EndPackage[]
