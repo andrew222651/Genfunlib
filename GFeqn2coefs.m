@@ -3,7 +3,8 @@
 BeginPackage["Genfunlib`GFeqn2coefs`"]
 
 CoefsByDerivs::usage = "CoefsByDerivs[{eqn1, eqn2,...}, {f,g, ...}, " <>
-    "{x, 0, nx}, {y, 0, ny}, ...] gives the Maclaurin expansions of the " <>
+    "{x, 0, nx}, {y, 0, ny}, ...] gives the Taylor expansions at (0,0,...) " <>
+    "of the " <>
     "power series f,g,... satisfying the equations.";
 CoefsByNewton::usage = "CoefsByNewton[eqn, f, {x, 0, nx}] gives the " <>
     "Maclaurin expansion in x of f satisfying eqn.";
