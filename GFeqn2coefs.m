@@ -4,8 +4,7 @@ BeginPackage["Genfunlib`GFeqn2coefs`"]
 
 CoefsByDerivs::usage = "CoefsByDerivs[{eqn1, eqn2,...}, {f,g, ...}, " <>
     "{x, 0, nx}, {y, 0, ny}, ...] gives the Taylor expansions at (0,0,...) " <>
-    "of the " <>
-    "power series f,g,... satisfying the equations.";
+    "of the power series f,g,... satisfying the equations.";
 CoefsByNewton::usage = "CoefsByNewton[eqn, f, {x, 0, nx}] gives the " <>
     "Maclaurin expansion in x of f satisfying eqn.";
 
@@ -18,6 +17,8 @@ variablePattern = Except[_String | _?NumberQ | _Plus | _Times |
 
 CoefsByDerivs::invalid = "Invalid input.";
 CoefsByNewton::invalid = "Invalid input.";
+CoefsByDerivs::invalidArgumentSyntax = "Invalid argument syntax.";
+CoefsByNewton::invalidArgumentSyntax = "Invalid argument syntax.";
 
 validateSystem[system : {HoldPattern[_ == _]..}, series: { variablePattern.. }, 
     iters:({variablePattern, 0, _Integer?NonNegative}..)] := Module[
@@ -61,6 +62,9 @@ CoefsByDerivs[system_, series_, iters__] := Module[
      ) /; validateSystem[system, series, iters]
    ];
 
+CoefsByDerivs[___] /; (Message[CoefsByDerivs::invalidArgumentSyntax]; False) := 
+    Null;
+
 CoefsByNewton[lhs_ == rhs_, series_, {var_, 0, n_}] := Module[
    {
     f = lhs - rhs, ff, approx = 0, m = 2^Ceiling[Log[2, n]]
@@ -74,6 +78,9 @@ CoefsByNewton[lhs_ == rhs_, series_, {var_, 0, n_}] := Module[
    approx + O[var]^(n + 1)
    )/; validateEquation[lhs==rhs, series, {var, 0, n}] 
    ];
+
+CoefsByNewton[___] /; (Message[CoefsByNewton::invalidArgumentSyntax]; False) := 
+    Null;
 
 End[] (* End Private Context *)
 

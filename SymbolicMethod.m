@@ -182,7 +182,8 @@ ToGFEqns[spec:Spec[list_List, False], indet_Symbol] := Module[
 			SMCyc[arg_] :> With[{unique = Unique[]},
 				Sum[EulerPhi[unique]/unique * Log[1/(1 - (arg /. indet[n_] :> indet[n]^unique))], {unique, 1, Infinity}]],
 			(* p. 730 *)
-			SMCyc[arg_, Cardinality -> pred_] :> With[{unique = Unique[]},
+			SMCyc[arg_, Cardinality -> pred_] :> With[{unique = Unique[], 
+                uniqueAux = Unique[]},
 				restrictedSum[
 					SeriesCoefficient[
 						Sum[EulerPhi[unique]/unique * Log[1/(1 - uniqueAux^unique * (arg /. indet[n_] :> indet[n]^unique))], 
@@ -197,7 +198,8 @@ ToGFEqns[spec:Spec[list_List, False], indet_Symbol] := Module[
 			
 			SMSet[arg_] :> With[{unique = Unique[]},
 				Exp@Sum[(-1)^(unique - 1)/unique * (arg /. indet[n_] :> indet[n]^unique), {unique, 1, Infinity}]],
-			SMSet[arg_, Cardinality -> pred_] :> With[{unique = Unique[]},
+			SMSet[arg_, Cardinality -> pred_] :> With[{unique = Unique[], 
+                uniqueAux = Unique[]},
 				restrictedSum[
 					SeriesCoefficient[
 						Exp@Sum[(-1)^(unique - 1)/unique * uniqueAux^unique * (arg /. indet[n_] :> indet[n]^unique), 
@@ -212,7 +214,8 @@ ToGFEqns[spec:Spec[list_List, False], indet_Symbol] := Module[
 			
 			SMMultiset[arg_] :> With[{unique = Unique[]},
 				Exp@Sum[1/unique * (arg /. indet[n_] :> indet[n]^unique), {unique, 1, Infinity}]],
-			SMMultiset[arg_, Cardinality -> pred_] :> With[{unique = Unique[]},
+			SMMultiset[arg_, Cardinality -> pred_] :> With[{unique = Unique[],
+                uniqueAux = Unique[]},
 				restrictedSum[
 					SeriesCoefficient[
 						Exp@Sum[1/unique * uniqueAux^unique * (arg /. indet[n_] :> indet[n]^unique), 
@@ -282,7 +285,12 @@ ToGenfunlibSpec[str_String, labeled:(True|False)] := Module[
  	
  	Spec[ret//ReleaseHold, labeled]
 ];                               
-                                          
+
+ToGFEqns::invalidArgumentSyntax = "Invalid argument syntax.";
+ToGenfunlibSpec::invalidArgumentSyntax = "Invalid argument syntax.";
+ToGFEqns[___] /; (Message[ToGFEqns::invalidArgumentSyntax]; False) := Null;
+ToGenfunlibSpec[___] /; (Message[ToGenfunlibSpec::invalidArgumentSyntax]; False) := Null;
+
 End[] (* End Private Context *)
 
 EndPackage[]

@@ -31,7 +31,7 @@ SeriesCoefficient[expr1_ + expr2_, arg2, opts:OptionsPattern[]] :=
     SeriesCoefficient[expr1, {x, 0, n}, opts] + SeriesCoefficient[expr2, 
     {x, 0, n}, opts];
 
-(* scaling (can produce simpler expressions than multiplication) *)
+(* scaling (can produce simpler expressions than general multiplication) *)
 SeriesCoefficient[fac_ * expr_, arg2, opts:OptionsPattern[]] /; FreeQ[fac, x] && 
     !FreeQ[expr, x] := 
   fac * SeriesCoefficient[expr, {x, 0, n}, opts];
@@ -114,9 +114,10 @@ SeriesCoefficient[Integrate[expr_,
         {},
     (
     Piecewise[{
-        {n >= 1,
-            (1/n) * SeriesCoefficient[expr /. t -> x, 
-            {x, 0, n - 1}, opts]}
+            {n >= 1,
+                (1/n) * SeriesCoefficient[expr /. t -> x, 
+                {x, 0, n - 1}, opts]
+            }
         }]
     ) /; $FullAnalytic
 ];
@@ -151,9 +152,8 @@ SeriesCoefficient[a_Symbol[j_, k_*x_], arg2, opts:OptionsPattern[]] /;
     k^n SeriesCoefficient[a[j, x], {x, 0, n}, opts];
 
 (* misc *)
-
 SeriesCoefficient[Sum[expr_, {i_, lb_, ub_}], arg2, opts:OptionsPattern[]] /;
-    FreeQ[i, x] && FreeQ[lb, x] && FreeQ[ub, x] :=
+    FreeQ[lb, x] && FreeQ[ub, x] :=
     Sum[SeriesCoefficient[expr, {x, 0, n}, opts], {i, lb, ub}];
 
 SeriesCoefficient[expr_, {x:variablePattern, 0, n_}, iters__List, 

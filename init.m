@@ -6,6 +6,7 @@ BeginPackage["Genfunlib`", {
 	"Genfunlib`GFeqn2rec`", 
 	"Genfunlib`rec2GFeqn`", 
 	"Genfunlib`RegularLanguages`"
+    (*"Genfunlib`Asymptotics`"*)
 	}]
 
 EndPackage[]
