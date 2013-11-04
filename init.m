@@ -1,3 +1,4 @@
+(* Mathematica Package *)
 (* this package loads all subpackages *)
 
 BeginPackage["Genfunlib`", {
@@ -5,8 +6,8 @@ BeginPackage["Genfunlib`", {
 	"Genfunlib`GFeqn2coefs`", 
 	"Genfunlib`GFeqn2rec`", 
 	"Genfunlib`rec2GFeqn`", 
-	"Genfunlib`RegularLanguages`"
-    (*"Genfunlib`Asymptotics`"*)
+	"Genfunlib`RegularLanguages`",
+    "Genfunlib`Asymptotics`"
 	}]
 
 EndPackage[]
