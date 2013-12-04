@@ -36,7 +36,7 @@ validateEquation[lhs_ == rhs_, series:variablePattern,
     {ok = True},
 
     ok = ok && !FreeQ[series, var] && !FreeQ[lhs-rhs, series];
-    ok = ok && D[lhs - rhs, series] =!= 0;
+    ok = ok && (D[lhs - rhs, series] /. {var->0, series->0}) =!= 0;
 
     If[ !ok, Message[CoefsByNewton::invalid]];
     ok
@@ -67,13 +67,15 @@ CoefsByDerivs[___] /; (Message[CoefsByDerivs::invalidArgumentSyntax]; False) :=
 
 CoefsByNewton[lhs_ == rhs_, series_, {var_, 0, n_}] := Module[
    {
-    f = lhs - rhs, ff, approx = 0, m = 2^Ceiling[Log[2, n]]
+    f = lhs - rhs, ff, m = 2^Ceiling[Log[2, n]],
+    approx = First[
+     (series/.var->0) /. Solve[(lhs==rhs)/.var->0, series/.var->0]]
    },
    (
-   ff[z_] := Normal[(f /. series :> z) + O[var]^m];
+   ff[z_] := (f /. series :> z);
    Do[
     approx = Normal[# - ff[#]/ff'[#] &[approx] + O[var]^(2^k)], 
-    {k, 1, Log[2, m]}
+    {k, 1, Log[2, m] + 1}
    ];
    approx + O[var]^(n + 1)
    )/; validateEquation[lhs==rhs, series, {var, 0, n}] 
