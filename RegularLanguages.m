@@ -2,124 +2,162 @@
 
 BeginPackage["Genfunlib`RegularLanguages`"]
 
-NFA::usage = "NFA[n, alphabet, transitions, acceptStates, initialState] is an NFA " <> 
+NFA::usage = "NFA[n, alphabet, transitions, acceptStates, initialState] is " <>
+    "an NFA " <> 
                 "with states [1..n], and transitions given by a matrix.";
-DFA::usage = "DFA[n, alphabet, transitions, acceptStates, initialState] is an DFA " <> 
+DFA::usage = "DFA[n, alphabet, transitions, acceptStates, initialState] is " <>
+    "an DFA " <> 
                 "with states [1..n], and transitions given by a matrix.";
-Regex::usage = "Regex is a wrapper for expressions built with strings, RegexOr, " <> 
+Regex::usage = "Regex is a wrapper for expressions built with strings, " <>
+    "RegexOr, " <> 
                 "RegexConcat, RegexStar, and EmptyWord.";
-RRGrammar::usage = "RRGrammar[{lhs -> rhs, ...}] is a right regular grammar given " <>
+RRGrammar::usage = "RRGrammar[{lhs -> rhs, ...}] is a right regular " <>
+    "grammar given " <>
                 "by a list of productions.";
-Digraph::usage = "Digraph[graph, startVertices, endVertices, \[Epsilon]Accepted] " <>
-                "is a directed graph with labeled vertices for counting walks " <> 
+Digraph::usage = "Digraph[graph, startVertices, endVertices, " <>
+    "\[Epsilon]Accepted] " <>
+                "is a directed graph with labeled vertices for counting " <>
+                "walks " <> 
                 "from start vertices to end vertices.";
                 
 ToNFA::usage = "ToNFA[DFA[...]] is an NFA defined from a DFA.\n" <>
-             "ToNFA[Regex[...]] is an NFA defined from a symbolic regular expression.\n" <>
-             "ToNFA[RRGrammar[...]] is an NFA defined from a right regular grammar.\n" <>
-             "ToNFA[Digraph[...]] is an NFA defined from a digraph with labeled vertices.";
+             "ToNFA[Regex[...]] is an NFA defined from a symbolic " <>
+             "regular expression.\n" <>
+             "ToNFA[RRGrammar[...]] is an NFA defined from a right " <>
+             "regular grammar.\n" <>
+             "ToNFA[Digraph[...]] is an NFA defined from a digraph with " <>
+             "labeled vertices.";
 ToDFA::usage = "ToDFA[NFA[...]] is a DFA defined from a NFA.\n" <>
-             "ToDFA[Regex[...]] is a DFA defined from a symbolic regular expression.\n" <>
-             "ToDFA[RRGrammar[...]] is a DFA defined from a right regular grammar.\n" <>
-             "ToDFA[Digraph[...]] is a DFA defined from a digraph with labeled vertices.";
-ToRegex::usage = "ToRegex[NFA[...]] is a symbolic regular expression defined from a NFA\n" <>
-             "ToRegex[DFA[...]] is a symbolic regular expression defined from a DFA.\n" <>
-             "ToRegex[RegularExpression[\"regex\"]] is a symbolic regular expression " <>
-                "defined from a restricted Mathematica regular expression.\n" <>
-             "ToRegex[RRGrammar[...]] is a symbolic regular expression defined " <>
-                "from a right regular grammar.\n" <>
-             "ToRegex[Digraph[...]] is a symbolic regular expression defined from a " <>
-                "digraph with labeled vertices.";
-ToRRGrammar::usage = "ToRRGrammar[NFA[...]] is a right regular grammar defined from a NFA.\n" <>
-             "ToRRGrammar[DFA[...]] is a right regular grammar defined from a DFA.\n" <>
-             "ToRRGrammar[Regex[...]] is a right regular grammar defined from a " <>
-                "symbolic regular expression.\n" <>
-             "ToRRGrammar[Digraph[...]] is a right regular grammar defined from a " <>
-                "digraph with labeled vertices.";
-ToDigraph::usage = "ToDigraph[NFA[...]] is a directed graph defined from a NFA.\n" <>
-             "ToDigraph[DFA[...]] is a directed graph defined from a DFA.\n" <>
-             "ToDigraph[Regex[...]] is a directed graph defined from a " <>
-                "symbolic regular expression.\n" <>
-             "ToDigraph[RRGrammar[...]] is a directed graph defined " <>
-                "from a right regular grammar.";                
+             "ToDFA[Regex[...]] is a DFA defined from a symbolic " <>
+             "regular expression.\n" <>
+             "ToDFA[RRGrammar[...]] is a DFA defined from a right " <>
+             "regular grammar.\n" <>
+             "ToDFA[Digraph[...]] is a DFA defined from a digraph with " <>
+             "labeled vertices.";
+ToRegex::usage = "ToRegex[NFA[...]] is a symbolic regular expression " <> 
+    "defined from a NFA\n" <>
+ "ToRegex[DFA[...]] is a symbolic regular expression defined from a DFA.\n" <>
+ "ToRegex[RegularExpression[\"regex\"]] is a symbolic regular expression " <>
+    "defined from a restricted Mathematica regular expression.\n" <>
+ "ToRegex[RRGrammar[...]] is a symbolic regular expression defined " <>
+    "from a right regular grammar.\n" <>
+ "ToRegex[Digraph[...]] is a symbolic regular expression defined from a " <>
+    "digraph with labeled vertices.";
+ToRRGrammar::usage = "ToRRGrammar[NFA[...]] is a right regular grammar "
+    <> "defined from a NFA.\n" <>
+ "ToRRGrammar[DFA[...]] is a right regular grammar defined from a DFA.\n" <>
+ "ToRRGrammar[Regex[...]] is a right regular grammar defined from a " <>
+    "symbolic regular expression.\n" <>
+ "ToRRGrammar[Digraph[...]] is a right regular grammar defined from a " <>
+    "digraph with labeled vertices.";
+ToDigraph::usage = "ToDigraph[NFA[...]] is a directed graph defined " <>
+    "from a NFA.\n" <>
+ "ToDigraph[DFA[...]] is a directed graph defined from a DFA.\n" <>
+ "ToDigraph[Regex[...]] is a directed graph defined from a " <>
+    "symbolic regular expression.\n" <>
+ "ToDigraph[RRGrammar[...]] is a directed graph defined " <>
+    "from a right regular grammar.";                
 
 RegStar::usage = "RegStar[NFA[...]] performs the star operation on an NFA.\n" <>
-             "RegStar[DFA[...]] performs the star operation on a DFA.\n" <>
-             "RegStar[Regex[...]] performs the star operation on a symbolic regular expression.\n" <>
-             "RegStar[RRGrammar[...]] performs the star operation on a right regular grammar.\n" <>
-             "RegStar[Digraph[...]] performs the star operation on a directed graph.";
+ "RegStar[DFA[...]] performs the star operation on a DFA.\n" <>
+ "RegStar[Regex[...]] performs the star operation on a symbolic " <>
+     "regular expression.\n" <>
+ "RegStar[RRGrammar[...]] performs the star operation on a right " <>
+     "regular grammar.\n" <>
+ "RegStar[Digraph[...]] performs the star operation on a directed graph.";
 
-RegComplement::usage = "RegComplement[NFA[...], {\"str1\", \"str2\",...}] performs the " <> 
-                "complement operation on an NFA with respect to a given alphabet.\n" <>
-             "RegComplement[DFA[...], {\"str1\", \"str2\",...}] performs the complement " <>
-                 "operation on a DFA with respect to a given alphabet.\n" <>
-             "RegComplement[Regex[...], {\"str1\", \"str2\",...}] performs the " <>
-                "complement operation on a symbolic regular expression with respect " <>
-                "to a given alphabet.\n" <>
-             "RegComplement[RRGrammar[...], {\"str1\", \"str2\",...}] performs the " <>
-                "complement operation on a right regular grammar with respect to a given " <> 
-                "alphabet.\n" <>
-             "RegComplement[Digraph[...], {\"str1\", \"str2\",...}] performs the complement " <>
-             "operation on a directed graph with respect to a given alphabet.";
+RegComplement::usage = "RegComplement[NFA[...], {\"str1\", \"str2\",...}] " <>
+    "performs the " <> 
+    "complement operation on an NFA with respect to a given alphabet.\n" <>
+ "RegComplement[DFA[...], {\"str1\", \"str2\",...}] performs the complement " <>
+     "operation on a DFA with respect to a given alphabet.\n" <>
+ "RegComplement[Regex[...], {\"str1\", \"str2\",...}] performs the " <>
+    "complement operation on a symbolic regular expression with respect " <>
+    "to a given alphabet.\n" <>
+ "RegComplement[RRGrammar[...], {\"str1\", \"str2\",...}] performs the " <>
+    "complement operation on a right regular grammar with respect to a " <>
+    "given " <> "alphabet.\n" <>
+ "RegComplement[Digraph[...], {\"str1\", \"str2\",...}] performs the " <>
+     "complement " <>
+     "operation on a directed graph with respect to a given alphabet.";
 
-RegReverse::usage = "RegReverse[NFA[...]] performs the reversal operation on an NFA.\n" <>
-             "RegReverse[DFA[...]] performs the reversal operation on a DFA.\n" <>
-             "RegReverse[Regex[...]] performs the reversal operation on a symbolic regular expression.\n" <>
-             "RegReverse[RRGrammar[...]] performs the reversal operation on a right regular grammar.\n" <>
-             "RegReverse[Digraph[...]] performs the reversal operation on a directed graph.";
+RegReverse::usage = "RegReverse[NFA[...]] performs the reversal " <>
+    "operation on an NFA.\n" <>
+ "RegReverse[DFA[...]] performs the reversal operation on a DFA.\n" <>
+ "RegReverse[Regex[...]] performs the reversal operation on a symbolic " <>
+    "regular expression.\n" <>
+ "RegReverse[RRGrammar[...]] performs the reversal operation on a right " <>
+    "regular grammar.\n" <>
+ "RegReverse[Digraph[...]] performs the reversal operation on a directed " <>
+    "graph.";
 
-RegUnion::usage = "RegUnion[NFA[...], NFA[...]] performs the reversal operation on two NFAs.\n" <>
-             "RegUnion[DFA[...], DFA[...]] performs the reversal operation on two DFAs.\n" <>
-             "RRegUnionRegex[...], Regex[...]] performs the reversal operation on two symbolic " <>
-                "regular expressions.\n" <>
-             "RegUnion[RRGrammar[...], RRGrammar[...]] performs the reversal operation on two " <>
-                "right regular grammars.\n" <>
-             "RegUnion[Digraph[...], Digraph[...]] performs the reversal operation on two directed " <>
-                "graphs.";
+RegUnion::usage = "RegUnion[NFA[...], NFA[...]] performs the reversal " <>
+    "operation on two NFAs.\n" <>
+ "RegUnion[DFA[...], DFA[...]] performs the reversal operation on two " <>
+     "DFAs.\n" <>
+ "RRegUnionRegex[...], Regex[...]] performs the reversal operation on two " <>
+     "symbolic " <> "regular expressions.\n" <>
+ "RegUnion[RRGrammar[...], RRGrammar[...]] performs the reversal operation " <>
+     "on two " <> "right regular grammars.\n" <>
+ "RegUnion[Digraph[...], Digraph[...]] performs the reversal operation on " <>
+     "two directed " <> "graphs.";
 
-RegConcat::usage = "RegConcat[NFA[...], NFA[...]] performs the concatenation operation on two NFAs.\n" <>
-             "RegConcat[DFA[...], DFA[...]] performs the concatenation operation on two DFAs.\n" <>
-             "ReRegConcategex[...], Regex[...]] performs the concatenation operation on two symbolic " <>
-                "regular expressions.\n" <>
-             "RegConcat[RRGrammar[...], RRGrammar[...]] performs the concatenation operation on two " <>
-                "right regular grammars.\n" <>
-             "RegConcat[Digraph[...], Digraph[...]] performs the concatenation operation on two directed " <>
-                "graphs.";
+RegConcat::usage = "RegConcat[NFA[...], NFA[...]] performs the " <>
+    "concatenation operation on two NFAs.\n" <>
+ "RegConcat[DFA[...], DFA[...]] performs the concatenation operation on " <>
+    "two DFAs.\n" <>
+ "ReRegConcategex[...], Regex[...]] performs the concatenation operation on " <>
+     "two symbolic " <> "regular expressions.\n" <>
+ "RegConcat[RRGrammar[...], RRGrammar[...]] performs the concatenation " <>
+    "operation on two " <> "right regular grammars.\n" <>
+ "RegConcat[Digraph[...], Digraph[...]] performs the concatenation " <>
+    "operation on two directed " <> "graphs.";
 
-RegIntersection::usage = "RegIntersection[NFA[...], NFA[...]] performs the intersection operation on two NFAs.\n" <>
-             "RegIntersection[DFA[...], DFA[...]] performs the intersection operation on two DFAs.\n" <>
-             "RegIntersection[Regex[...], Regex[...]] performs the intersection operation on two symbolic " <>
-                "regular expressions.\n" <>
-             "RegIntersection[RRGrammar[...], RRGrammar[...]] performs the intersection operation on two " <>
-                "right regular grammars.\n" <>
-             "RegIntersection[Digraph[...], Digraph[...]] performs the intersection operation on two directed " <>
-                "graphs.";
+RegIntersection::usage = "RegIntersection[NFA[...], NFA[...]] performs the " <>
+    "intersection operation on two NFAs.\n" <>
+ "RegIntersection[DFA[...], DFA[...]] performs the intersection operation " <>
+     "on two DFAs.\n" <>
+ "RegIntersection[Regex[...], Regex[...]] performs the intersection " <>
+    "operation on two symbolic " <>
+    "regular expressions.\n" <>
+ "RegIntersection[RRGrammar[...], RRGrammar[...]] performs the intersection " <>
+    "operation on two " <> "right regular grammars.\n" <>
+ "RegIntersection[Digraph[...], Digraph[...]] performs the intersection " <>
+    "operation on two directed " <> "graphs.";
 
-ToRegularExpression::usage = "ToRegularExpression[Regex[...]] converts a symbolic regular " <>
-            "expression to a Mathematica regular expression.";
+ToRegularExpression::usage = "ToRegularExpression[Regex[...]] converts a " <>
+    "symbolic regular " <> "expression to a Mathematica regular expression.";
 
-RegexOr::usage = "RegexOr is a head used to define symbolic regular expressions.  It " <>
-            "represents the regular expression equal to the union of its arguments."; 
+RegexOr::usage = "RegexOr is a head used to define symbolic regular " <>
+    "expressions.  It " <>
+    "represents the regular expression equal to the union of its arguments."; 
 
-RegexConcat::usage = "RegexConcat is a head used to define symbolic regular expressions.  It " <>
-            "represents the regular expression equal to the concatentation of its arguments."; 
+RegexConcat::usage = "RegexConcat is a head used to define symbolic " <>
+    "regular expressions.  It " <>
+    "represents the regular expression equal to the concatentation of its " <>
+    "arguments."; 
 
-RegexStar::usage = "RegexStar is a head used to define symbolic regular expressions.  It " <>
-            "represents the regular expression equal to the star of its argument."; 
+RegexStar::usage = "RegexStar is a head used to define symbolic regular " <>
+    "expressions.  It " <>
+    "represents the regular expression equal to the star of its argument."; 
 
-RRGrammarOr::usage = "RRGrammarOr is a head used to define right regular grammars.  It " <>
-            "represents a possible choice between its arguments.";
+RRGrammarOr::usage = "RRGrammarOr is a head used to define right regular " <>
+    "grammars.  It " <> "represents a possible choice between its arguments.";
 
-RRGrammarConcat::usage = "RRGrammarConcat is a head used to define right regular grammars.  It " <>
-            "is used to concatenate a letter with a nonterminal symbol.";
+RRGrammarConcat::usage = "RRGrammarConcat is a head used to define right " <>
+    "regular grammars.  It " <>
+    "is used to concatenate a letter with a nonterminal symbol.";
 
-EmptyWord::usage = "EmptyWord represents the empty word.  It may be used in symbolic regular expressions.";
+EmptyWord::usage = "EmptyWord represents the empty word.  It may be used in " <>
+    "symbolic regular expressions.";
 
-GeneratingFunction::usage = "GeneratingFunction[Regex[...], {\"letter1\" -> expr1, \"letter2\" -> expr2,...}] " <>
-            "gives the generating function for the regular language specified by a symbolic " <>
-            "regular expression.  It takes as its second argument a list of rules giving a marker/weight " <>
-            "for each letter in the alphabet.\n" <>
-            GeneratingFunction::usage;
+GeneratingFunction::usage = "GeneratingFunction[Regex[...], {\"letter1\" -> " <>
+ "expr1, \"letter2\" -> expr2,...}] " <>
+    "gives the generating function for the regular language specified by a " <>
+    "symbolic " <>
+    "regular expression.  It takes as its second argument a list of rules " <>
+    "giving a marker/weight " <> "for each letter in the alphabet.\n" <>
+    GeneratingFunction::usage;
 
 Begin["`Private`"] (* Begin Private Context *) 
 
@@ -159,8 +197,8 @@ GeneratingFunction::invalidRules = "Invalid rules.";
 RegComplement::invalidAlphabet = "Invalid alphabet.";
 
 validateRLR[NFA[numStates_Integer?NonNegative, alphabet:{___String}, 
-    transitionMatrix_, acceptStates:{___Integer}, initialState:_Integer|Null]] :=
-    Module[ {
+    transitionMatrix_, acceptStates:{___Integer}, 
+    initialState:_Integer|Null]] := Module[ {
     ok = True
     },
         (* alphabet is valid *)
@@ -178,7 +216,8 @@ validateRLR[NFA[numStates_Integer?NonNegative, alphabet:{___String},
         
         (* accept states are valid *)
         ok = ok && ((numStates == 0 && acceptStates == {}) || 
-            (numStates > 0 && Max[acceptStates] <= numStates && Min[acceptStates] >= 1));
+            (numStates > 0 && Max[acceptStates] <= numStates && 
+            Min[acceptStates] >= 1));
         
         (* initial state is valid *)
         ok = ok && ((numStates == 0 && initialState == Null) || 
@@ -190,8 +229,8 @@ validateRLR[NFA[numStates_Integer?NonNegative, alphabet:{___String},
 validateRLR[NFA[___]] := (Message[NFA::invalid];False);   
 
 validateRLR[DFA[numStates_Integer?NonNegative, alphabet:{___String}, 
-    transitionMatrix_, acceptStates:{___Integer}, initialState:_Integer|Null]] :=
-    Module[ {
+    transitionMatrix_, acceptStates:{___Integer}, 
+    initialState:_Integer|Null]] := Module[ {
     ok = True
     },
         (* alphabet is valid *)
@@ -209,7 +248,8 @@ validateRLR[DFA[numStates_Integer?NonNegative, alphabet:{___String},
         
         (* accept states are valid *)
         ok = ok && ((numStates == 0 && acceptStates == {}) || 
-            (numStates > 0 && Max[acceptStates] <= numStates && Min[acceptStates] >= 1));
+            (numStates > 0 && Max[acceptStates] <= numStates && 
+                Min[acceptStates] >= 1));
         
         (* initial state is valid *)
         ok = ok && ((numStates == 0 && initialState == Null) || 
@@ -224,23 +264,27 @@ validateRLR[RegularExpression[regex_String]] := Module[
     {
         ok = True
     },
-    ok = ok && StringMatchQ[regex, (LetterCharacter | DigitCharacter | "\\*" | "(" | 
+    ok = ok && StringMatchQ[regex, (LetterCharacter | DigitCharacter | "\\*" | 
+        "(" | 
     ")" | "|") ...];
     (* test validity as a regex according to Mathematica *)
-    ok = ok && Check[StringMatchQ["", RegularExpression[regex]], $Failed] =!= $Failed;
+    ok = ok && Check[StringMatchQ["", RegularExpression[regex]], $Failed] =!= 
+        $Failed;
     
     If[!ok, Message[RegularExpression::invalid]];
     ok
 ];
 validateRLR[RegularExpression[Null]] := True;
-validateRLR[RegularExpression[___]] := (Message[RegularExpression::invalid];False);
+validateRLR[RegularExpression[___]] := (Message[RegularExpression::invalid];
+    False);
 
 validateRawRegex[Null] := True;
 validateRawRegex[EmptyWord] := True;
 validateRawRegex[str_String /; str != ""] := True;
 validateRawRegex[RegexStar[regex_]] := validateRawRegex[regex];
 validateRawRegex[RegexOr[regexes__]] := And @@ validateRawRegex /@ {regexes};
-validateRawRegex[RegexConcat[regexes__]] := And @@ validateRawRegex /@ {regexes};
+validateRawRegex[RegexConcat[regexes__]] := And @@ validateRawRegex /@ 
+    {regexes};
 validateRawRegex[___] := False;
 
 validateRLR[Regex[regex_]] := Module[
@@ -269,17 +313,20 @@ validateRLR[g:RRGrammar[grammar:{(_ -> _) ...}]] := Module[
     validateTerm[sym_Symbol[n_Integer]] := True;
     validateTerm[str_String /; str != ""] := True;
     validateTerm[RRGrammarConcat[str_String /; str != "", sym_Symbol]] := True;
-    validateTerm[RRGrammarConcat[str_String /; str != "", sym_Symbol[n_Integer]]] := True;
+    validateTerm[RRGrammarConcat[str_String /; str != "", sym_Symbol[
+        n_Integer]]] := True;
     validateTerm[_] := False;
     
-    ok = ok && MatchQ[grammar[[All,2]], {( _?validateTerm | RRGrammarOr[ _?validateTerm .. ]) ...}];
+    ok = ok && MatchQ[grammar[[All,2]], {( _?validateTerm | RRGrammarOr[ 
+        _?validateTerm .. ]) ...}];
     
     If[!ok, Message[RRGrammar::invalid]];
     ok
 ];
 validateRLR[RRGrammar[___]] := (Message[RRGrammar::invalid];False);
 
-validateRLR[Digraph[graph_Graph, startVertices_List, endVertices_List, True | False]] := Module[
+validateRLR[Digraph[graph_Graph, startVertices_List, endVertices_List, True | 
+    False]] := Module[
     {
         ok = True,
         vertices
@@ -290,7 +337,8 @@ validateRLR[Digraph[graph_Graph, startVertices_List, endVertices_List, True | Fa
     ok = ok && MatchQ[vertices, {___Integer}];
     
     (* make sure vertex labels are nonempty strings *)
-    ok = ok && And @@ ( (Head[PropertyValue[{graph, #}, VertexLabels]] === String && 
+    ok = ok && And @@ ( (Head[PropertyValue[{graph, #}, VertexLabels]] === 
+        String && 
         PropertyValue[{graph, #}, VertexLabels] != "") & /@ vertices );
     (* validate vertex lists *)
     ok = ok && Union[startVertices, endVertices, vertices] == Union[vertices];
@@ -401,24 +449,33 @@ ToNFA[g: RRGrammar[grammar_], OptionsPattern[]] :=
         (* expand or[...]'s into separate rules in extendedGrammar *)
         expandedGrammar = grammar /. (rhs_ -> RRGrammarOr[args__]) :> 
             Sequence@@((rhs -> # &) /@ {args});
-        transitionMatrix = ConstantArray[{}, {Length[stateSet], Length[alphabet] + 1}];
+        transitionMatrix = ConstantArray[{}, {Length[stateSet], 
+            Length[alphabet] + 1}];
         
         (* incorporate each rule into transitionMatrix and acceptStates *)
         Function[rule,
             rule /. {
-            (lhs_ -> EmptyWord) :> (acceptStates = Union[acceptStates, {stateNumber[lhs]}];),
-                (lhs_ -> st:(_Symbol|_Symbol[_])) :> (transitionMatrix[[stateNumber[lhs], -1]] = 
-                    Union[transitionMatrix[[stateNumber[lhs], -1]], {stateNumber[st]}];),
+            (lhs_ -> EmptyWord) :> (acceptStates = Union[acceptStates, {
+                stateNumber[lhs]}];),
+                (lhs_ -> st:(_Symbol|_Symbol[_])) :> (transitionMatrix[[
+                    stateNumber[lhs], -1]] = 
+                    Union[transitionMatrix[[stateNumber[lhs], -1]], {
+                    stateNumber[st]}];),
                 (lhs_ -> RRGrammarConcat[str_, st:(_Symbol|_Symbol[_])])
-                    :> (transitionMatrix[[stateNumber[lhs], alphabetNumber[str]]] = 
-                        Union[transitionMatrix[[stateNumber[lhs], alphabetNumber[str]]], {stateNumber[st]}];),
+                    :> (transitionMatrix[[stateNumber[lhs], 
+                        alphabetNumber[str]]] = 
+                        Union[transitionMatrix[[stateNumber[lhs], 
+                    alphabetNumber[str]]], {stateNumber[st]}];),
                 (lhs_ -> str_String) 
-                    :> (transitionMatrix[[stateNumber[lhs], alphabetNumber[str]]] = 
-                        Union[transitionMatrix[[stateNumber[lhs], alphabetNumber[str]]], {stateNumber[acceptState]}];)
+                    :> (transitionMatrix[[stateNumber[lhs], 
+                        alphabetNumber[str]]] = 
+                        Union[transitionMatrix[[stateNumber[lhs], 
+                alphabetNumber[str]]], {stateNumber[acceptState]}];)
             }
         ] /@ expandedGrammar;
         
-        NFA[Length[stateSet], alphabet, transitionMatrix, acceptStates, grammar[[1,1]]//stateNumber]
+        NFA[Length[stateSet], alphabet, transitionMatrix, acceptStates, 
+            grammar[[1,1]]//stateNumber]
         
         ) /; (!OptionValue[validationRequired] || validateRLR[g])
 ];
@@ -727,19 +784,21 @@ ToRRGrammar[nfa: NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
             (* #1 == list of stateNums *)
             (* #2[[1]] == stateNum, #2[[2]] == letterNum *)
             (nonTermHead[#2[[1]]] -> RRGrammarOr @@ (Function[st,
-                RRGrammarConcat[augmentedAlphabet[[#2[[2]]]], nonTermHead[st]]] /@
-                    #1)) &,
+                RRGrammarConcat[augmentedAlphabet[[#2[[2]]]], 
+                nonTermHead[st]]] /@ #1)) &,
             transitionMatrix, {2}
         ];
         grammar = grammar /. RRGrammarConcat[EmptyWord, x_] :> x;
         grammar = grammar /. (_ -> RRGrammarOr[]) :> Sequence[];
         grammar = grammar /. (lhs_ -> RRGrammarOr[arg_]) :> (lhs -> arg);
         (* handle acceptStates *)
-        grammar = {grammar, (nonTermHead[#] -> EmptyWord) & /@ acceptStates}//Flatten;
+        grammar = {grammar, (nonTermHead[#] -> EmptyWord) & /@ acceptStates}//
+            Flatten;
         
         (* if the initial state has no outgoing edges, 
             and is not an accepting state, return {} *) 
-        If[FreeQ[grammar[[All, 1]], nonTermHead[initialState]], Return[RRGrammar[{}]]];
+        If[FreeQ[grammar[[All, 1]], nonTermHead[initialState]], Return[
+            RRGrammar[{}]]];
         (* if start state appears, make one of its rules the first one *)
         posOfInitial = Position[grammar, nonTermHead[initialState]][[1, 1]];
         
@@ -756,7 +815,8 @@ ToRRGrammar[nfa: NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
 
 cartesian[lists___List] := Flatten[Outer[List, lists, 1], Length[{lists}] - 1];
 
-ToDigraph[DFA[0, _, _, _, _], OptionsPattern[]] := Digraph[Graph[{}], {}, {}, False];
+ToDigraph[DFA[0, _, _, _, _], OptionsPattern[]] := Digraph[Graph[{}], {}, {}, 
+    False];
     
 ToDigraph[dfa: DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
     initialState_], OptionsPattern[]] := Module[
@@ -790,9 +850,11 @@ ToDigraph[dfa: DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
         
         (* start vertices are colored green, end vertices have dotted edges *)
         (PropertyValue[{graph, #}, VertexStyle] = Green;)& /@ startVertices;
-        (PropertyValue[{graph, #}, VertexStyle] = EdgeForm[{Thick, Dotted}];)& /@ endVertices;
+        (PropertyValue[{graph, #}, VertexStyle] = EdgeForm[{Thick, Dotted}];
+            )& /@ endVertices;
         (PropertyValue[{graph, #}, VertexStyle] = 
-            Directive[Green, EdgeForm[{Thick, Dotted}]];)& /@ Intersection[startVertices, endVertices];
+            Directive[Green, EdgeForm[{Thick, Dotted}]];)& /@ Intersection[
+                startVertices, endVertices];
         
         (* add String labels to the vertices *)     
         (# /. {from_, to_, letterNum_} :> (PropertyValue[{graph, 
@@ -851,14 +913,17 @@ ToRegex[RegularExpression[Null], OptionsPattern[]] := Regex[Null];
 
 ToRegex[r:RegularExpression[regex_], OptionsPattern[]] := Module[
     {},
-    Regex@pars["(" <> regex <> ")"] /; !OptionValue[validationRequired] || validateRLR[r]
+    Regex@pars["(" <> regex <> ")"] /; !OptionValue[validationRequired] || 
+    validateRLR[r]
 ]; 
 
 regex2regularexpression[Null] := Null;
 regex2regularexpression[str_String] := str;
 regex2regularexpression[EmptyWord] := "()";
-regex2regularexpression[RegexStar[expr_]] := "(" <> regex2regularexpression[expr] <> ")*";
-regex2regularexpression[RegexConcat[args__]] := StringJoin[regex2regularexpression /@ {args}];
+regex2regularexpression[RegexStar[expr_]] := "(" <> 
+    regex2regularexpression[expr] <> ")*";
+regex2regularexpression[RegexConcat[args__]] := StringJoin[
+    regex2regularexpression /@ {args}];
 regex2regularexpression[RegexOr[args__]] := "(" <> 
     StringJoin[Riffle[regex2regularexpression /@ {args},"|"]] <> ")";
 
@@ -1025,8 +1090,9 @@ Module[
     (validateRLR[grammar1] && validateRLR[grammar2])
 ];
 
-RegIntersection[dfa1:DFA[numStates1_, alphabet1_, transitionMatrix1_, acceptStates1_, 
-    initialState1_], dfa2:DFA[numStates2_, alphabet2_, transitionMatrix2_, 
+RegIntersection[dfa1:DFA[numStates1_, alphabet1_, transitionMatrix1_, 
+    acceptStates1_, initialState1_], dfa2:DFA[numStates2_, alphabet2_, 
+        transitionMatrix2_, 
     acceptStates2_, initialState2_], OptionsPattern[]] := Module[
     {
         newAlphabet = Intersection[alphabet1, alphabet2],
@@ -1040,10 +1106,10 @@ RegIntersection[dfa1:DFA[numStates1_, alphabet1_, transitionMatrix1_, acceptStat
         Return[DFA[0, newAlphabet, {}, {}, Null]];
     ];
     
-    alphabet1Num[alphabetNum_] := Position[alphabet1, newAlphabet[[alphabetNum]], 
-        {1}, Heads -> False][[1, 1]];
-    alphabet2Num[alphabetNum_] := Position[alphabet2, newAlphabet[[alphabetNum]], 
-        {1}, Heads -> False][[1, 1]];
+    alphabet1Num[alphabetNum_] := Position[alphabet1, 
+        newAlphabet[[alphabetNum]], {1}, Heads -> False][[1, 1]];
+    alphabet2Num[alphabetNum_] := Position[alphabet2, 
+        newAlphabet[[alphabetNum]], {1}, Heads -> False][[1, 1]];
     
     stateNum[state_] := Position[stateSet, state, {1}, Heads-> False][[1, 1]];
     

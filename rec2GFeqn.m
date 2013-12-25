@@ -4,7 +4,7 @@ BeginPackage["Genfunlib`rec2GFeqn`"]
 
 Begin["`Private`"] 
 
-(* http://mathematica.stackexchange.com/questions/32531/how-to-unprotect-generatingfunction/32533#32533 *)
+(* http://bit.ly/1lgtAt1 *)
 GeneratingFunction;
 protected = Unprotect[GeneratingFunction];
 
@@ -22,7 +22,8 @@ GeneratingFunction[expr_, arg2,
     opts:OptionsPattern[]] /; expr =!= Apart[expr, n] :=
     GeneratingFunction[Apart[expr, n], n, x, opts];
 
-GeneratingFunction[expr_ * (n_ + k_Integer?Positive)^(j_Integer?Negative), arg2, opts:OptionsPattern[]] := With[
+GeneratingFunction[expr_ * (n_ + k_Integer?Positive)^(j_Integer?Negative), arg2, 
+    opts:OptionsPattern[]] := With[
     {t = Unique[]},
     x^(-k) * Integrate[t^(k-1) * GeneratingFunction[expr * (n + k)^(j + 1),
         n, t, opts], {t, 0, x}]

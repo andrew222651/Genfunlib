@@ -53,7 +53,8 @@ SeriesCoefficient[expr1_ * expr2_, arg2, opts:OptionsPattern[]] := With[
     iterator = Unique[]
    }, 
    Module[{
-    newOpts = Sequence@@(DeleteCases[{opts}, Verbatim[Rule][Assumptions, _]] ~ Append ~ (Assumptions -> 
+    newOpts = Sequence@@(DeleteCases[{opts}, Verbatim[Rule][Assumptions, _]] ~ 
+    Append ~ (Assumptions -> 
     OptionValue[Assumptions] && Element[iterator, Integers] && iterator >= 0))
    },
        Sum[SeriesCoefficient[expr1, {x, 0, iterator}, newOpts] 

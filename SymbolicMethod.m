@@ -42,29 +42,38 @@ validateRHS[sym_, nonTerms_] /; MemberQ[nonTerms, sym] := True;
 validateRHS[EClass, _] := True;
 validateRHS[ZClass[n_Integer?Positive], _] := True;
 
-validateRHS[SMPlus[args__], nonTerms_] := And @@ (validateRHS[#, nonTerms]& /@ {args});
-validateRHS[SMTimes[args__], nonTerms_] := And @@ (validateRHS[#, nonTerms]& /@ {args});
+validateRHS[SMPlus[args__], nonTerms_] := And @@ (validateRHS[#, nonTerms]& /@ 
+    {args});
+validateRHS[SMTimes[args__], nonTerms_] := And @@ (validateRHS[#, nonTerms]& /@ 
+    {args});
 
 validateRHS[SMSeq[arg_], nonTerms_] := validateRHS[arg, nonTerms];
-validateRHS[SMSeq[arg_, Cardinality -> pred_], nonTerms_] := validateRHS[arg, nonTerms] && validatePred[pred];
+validateRHS[SMSeq[arg_, Cardinality -> pred_], nonTerms_] := validateRHS[arg, 
+    nonTerms] && validatePred[pred];
 
 validateRHS[SMCyc[arg_], nonTerms_] := validateRHS[arg, nonTerms];
-validateRHS[SMCyc[arg_, Cardinality -> pred_], nonTerms_] := validateRHS[arg, nonTerms] && validatePred[pred];
+validateRHS[SMCyc[arg_, Cardinality -> pred_], nonTerms_] := validateRHS[arg, 
+    nonTerms] && validatePred[pred];
 
 validateRHS[SMSet[arg_], nonTerms_] := validateRHS[arg, nonTerms];
-validateRHS[SMSet[arg_, Cardinality -> pred_], nonTerms_] := validateRHS[arg, nonTerms] && validatePred[pred];
+validateRHS[SMSet[arg_, Cardinality -> pred_], nonTerms_] := validateRHS[arg, 
+    nonTerms] && validatePred[pred];
 
 validateRHS[SMMultiset[arg_], nonTerms_] := validateRHS[arg, nonTerms];
-validateRHS[SMMultiset[arg_, Cardinality -> pred_], nonTerms_] := validateRHS[arg, nonTerms] && validatePred[pred];
+validateRHS[SMMultiset[arg_, Cardinality -> pred_], nonTerms_] := validateRHS[
+    arg, nonTerms] && validatePred[pred];
 
-validateRHS[SMSub[first_, second_], nonTerms_] := validateRHS[first, nonTerms] && validateRHS[second, nonTerms];
+validateRHS[SMSub[first_, second_], nonTerms_] := validateRHS[first, 
+    nonTerms] && validateRHS[second, nonTerms];
 validateRHS[SMPointing[arg_], nonTerms_] := validateRHS[arg, nonTerms];
 
-validateRHS[Restricted[arg_, pred_], nonTerms_] := validatePred[pred] && validateRHS[arg, nonTerms];
+validateRHS[Restricted[arg_, pred_], nonTerms_] := validatePred[pred] && 
+    validateRHS[arg, nonTerms];
 
 validateRHS[___] := False;
 
-validateSpecSyntax[spec:Spec[list:{HoldPattern[_ == _]..}, labeled:True|False]] := Module[
+validateSpecSyntax[spec:Spec[list:{HoldPattern[_ == _]..}, 
+    labeled:True|False]] := Module[
     {
         ok = True,
         lhss = list[[All, 1]],
@@ -85,10 +94,12 @@ validateSpecSyntax[___] := False;
 (* To GF eqns *)
 
 (* simplifies Sum[generalTerm*Boole[pred[n]], {n, slb, sub}] *)
-restrictedSum[generalTerm_, Function[GreaterEqual[ub_: Infinity, Slot[1], lb_: 0]], {n_, slb_, sub_}] := 
+restrictedSum[generalTerm_, Function[GreaterEqual[ub_: Infinity, Slot[1], 
+    lb_: 0]], {n_, slb_, sub_}] := 
     Sum[generalTerm, {n, Max[slb, lb], Min[sub, ub]}];
     
-restrictedSum[generalTerm_, Function[LessEqual[lb_: 0, Slot[1], ub_: Infinity]], {n_, slb_, sub_}] := 
+restrictedSum[generalTerm_, Function[LessEqual[lb_: 0, Slot[1], ub_: Infinity]], 
+    {n_, slb_, sub_}] := 
     Sum[generalTerm, {n, Max[slb, lb], Min[sub, ub]}];
     
 restrictedSum[generalTerm_, pred_, {n_, slb_, sub_}] := 
@@ -97,7 +108,8 @@ restrictedSum[generalTerm_, pred_, {n_, slb_, sub_}] :=
 (* labeled *)                     
 ToGFEqns[ spec:Spec[list_List, True], indet_Symbol ] := Module[
     {
-        numAtomicClasses = Max @@ First /@ Cases[list, ZClass[n_], Infinity] //Max[0,#]&,
+        numAtomicClasses = Max @@ First /@ Cases[list, ZClass[n_], Infinity] //
+        Max[0,#]&,
         nonTerms = list[[All, 1]],
         indets,
         ret = Hold[list]
@@ -125,16 +137,19 @@ ToGFEqns[ spec:Spec[list_List, True], indet_Symbol ] := Module[
             
             SMCyc[arg_] :> Log[ 1/(1 - arg) ],
             SMCyc[arg_, Cardinality -> pred_] :> With[{unique = Unique[]},
-                Boole[pred[0]] + restrictedSum[arg^unique / unique, pred, {unique, 1, Infinity}]],
+                Boole[pred[0]] + restrictedSum[arg^unique / unique, pred, {
+                unique, 1, Infinity}]],
             
             SMSet[arg_] :> Exp[arg],
             SMSet[arg_, Cardinality -> pred_] :> With[{unique = Unique[]},
-                restrictedSum[arg^unique / (unique!), pred, {unique, 0, Infinity}]],
+                restrictedSum[arg^unique / (unique!), pred, {unique, 0, 
+                Infinity}]],
             
             Restricted[expr_, {}] :> expr,
             Restricted[expr_, pred_] :> With[{unique = Unique[]},
                 restrictedSum[
-                    SeriesCoefficient[expr, {indet[1], 0, unique}] * indet[1]^unique, 
+                    SeriesCoefficient[expr, {indet[1], 0, unique}] * indet[1]^
+                    unique, 
                     pred, {unique, 0, Infinity}
                 ]],
             
@@ -153,7 +168,8 @@ ToGFEqns[ spec:Spec[list_List, True], indet_Symbol ] := Module[
 (* unlabeled *)
 ToGFEqns[spec:Spec[list_List, False], indet_Symbol] := Module[
     {
-        numAtomicClasses = Max @@ First /@ Cases[list, ZClass[n_], Infinity] //Max[0,#]&,
+        numAtomicClasses = Max @@ First /@ Cases[list, ZClass[n_], Infinity] //
+        Max[0,#]&,
         nonTerms = list[[All, 1]],
         indets,
         unique, uniqueAux,
@@ -181,13 +197,15 @@ ToGFEqns[spec:Spec[list_List, False], indet_Symbol] := Module[
                 restrictedSum[arg^unique, pred, {unique, 0, Infinity}]],
             
             SMCyc[arg_] :> With[{unique = Unique[]},
-                Sum[EulerPhi[unique]/unique * Log[1/(1 - (arg /. indet[n_] :> indet[n]^unique))], {unique, 1, Infinity}]],
-            (* p. 730 *)
+                Sum[EulerPhi[unique]/unique * Log[1/(1 - (arg /. indet[n_] :> 
+                indet[n]^unique))], {unique, 1, Infinity}]],
+            (* p. 730 of Flajolet and Sedgewick *)
             SMCyc[arg_, Cardinality -> pred_] :> With[{unique = Unique[], 
                 uniqueAux = Unique[]},
                 restrictedSum[
                     SeriesCoefficient[
-                        Sum[EulerPhi[unique]/unique * Log[1/(1 - uniqueAux^unique * (arg /. indet[n_] :> indet[n]^unique))], 
+                        Sum[EulerPhi[unique]/unique * Log[1/(1 - uniqueAux^
+                        unique * (arg /. indet[n_] :> indet[n]^unique))], 
                             {unique, 1, Infinity}
                         ],
                         {uniqueAux, 0, unique}
@@ -198,12 +216,14 @@ ToGFEqns[spec:Spec[list_List, False], indet_Symbol] := Module[
             ],
             
             SMSet[arg_] :> With[{unique = Unique[]},
-                Exp@Sum[(-1)^(unique - 1)/unique * (arg /. indet[n_] :> indet[n]^unique), {unique, 1, Infinity}]],
+                Exp@Sum[(-1)^(unique - 1)/unique * (arg /. indet[n_] :> 
+                indet[n]^unique), {unique, 1, Infinity}]],
             SMSet[arg_, Cardinality -> pred_] :> With[{unique = Unique[], 
                 uniqueAux = Unique[]},
                 restrictedSum[
                     SeriesCoefficient[
-                        Exp@Sum[(-1)^(unique - 1)/unique * uniqueAux^unique * (arg /. indet[n_] :> indet[n]^unique), 
+                        Exp@Sum[(-1)^(unique - 1)/unique * uniqueAux^unique * 
+                        (arg /. indet[n_] :> indet[n]^unique), 
                             {unique, 1, Infinity}
                         ],
                         {uniqueAux, 0, unique}
@@ -214,12 +234,14 @@ ToGFEqns[spec:Spec[list_List, False], indet_Symbol] := Module[
             ],
             
             SMMultiset[arg_] :> With[{unique = Unique[]},
-                Exp@Sum[1/unique * (arg /. indet[n_] :> indet[n]^unique), {unique, 1, Infinity}]],
+                Exp@Sum[1/unique * (arg /. indet[n_] :> indet[n]^unique), 
+                {unique, 1, Infinity}]],
             SMMultiset[arg_, Cardinality -> pred_] :> With[{unique = Unique[],
                 uniqueAux = Unique[]},
                 restrictedSum[
                     SeriesCoefficient[
-                        Exp@Sum[1/unique * uniqueAux^unique * (arg /. indet[n_] :> indet[n]^unique), 
+                        Exp@Sum[1/unique * uniqueAux^unique * (arg /. 
+                            indet[n_] :> indet[n]^unique), 
                             {unique, 1, Infinity}
                         ],
                         {uniqueAux, 0, unique}
@@ -232,7 +254,8 @@ ToGFEqns[spec:Spec[list_List, False], indet_Symbol] := Module[
             Restricted[expr_, {}] :> expr,
             Restricted[expr_, param_] :> With[{unique = Unique[]},
                 restrictedSum[
-                    SeriesCoefficient[expr, {indet[1], 0, unique}] * indet[1]^unique, 
+                    SeriesCoefficient[expr, {indet[1], 0, unique}] * 
+                    indet[1]^unique, 
                     pred, {unique, 0, Infinity}
                 ]],
             
@@ -290,7 +313,8 @@ ToGenfunlibSpec[str_String, labeled:(True|False)] := Module[
 ToGFEqns::invalidArgumentSyntax = "Invalid argument syntax.";
 ToGenfunlibSpec::invalidArgumentSyntax = "Invalid argument syntax.";
 ToGFEqns[___] /; (Message[ToGFEqns::invalidArgumentSyntax]; False) := Null;
-ToGenfunlibSpec[___] /; (Message[ToGenfunlibSpec::invalidArgumentSyntax]; False) := Null;
+ToGenfunlibSpec[___] /; (Message[ToGenfunlibSpec::invalidArgumentSyntax]; 
+    False) := Null;
 
 End[] (* End Private Context *)
 
