@@ -3,39 +3,34 @@
 BeginPackage["Genfunlib`RegularLanguages`"]
 
 NFA::usage = "NFA[n, alphabet, transitions, acceptStates, initialState] is " <>
-    "an NFA " <> 
-                "with states [1..n], and transitions given by a matrix.";
+    "an NFA " <> "with states [1..n], and transitions given by a matrix.";
 DFA::usage = "DFA[n, alphabet, transitions, acceptStates, initialState] is " <>
-    "an DFA " <> 
-                "with states [1..n], and transitions given by a matrix.";
+    "a DFA " <> "with states [1..n], and transitions given by a matrix.";
 Regex::usage = "Regex is a wrapper for expressions built with strings, " <>
-    "RegexOr, " <> 
-                "RegexConcat, RegexStar, and EmptyWord.";
+    "RegexOr, " <> "RegexConcat, RegexStar, and EmptyWord.";
 RRGrammar::usage = "RRGrammar[{lhs -> rhs, ...}] is a right regular " <>
-    "grammar given " <>
-                "by a list of productions.";
+    "grammar given " <> "by a list of productions.";
 Digraph::usage = "Digraph[graph, startVertices, endVertices, " <>
     "\[Epsilon]Accepted] " <>
-                "is a directed graph with labeled vertices for counting " <>
-                "walks " <> 
-                "from start vertices to end vertices.";
+    "is a directed graph with labeled vertices for counting " <>
+    "walks " <> "from start vertices to end vertices.";
                 
 ToNFA::usage = "ToNFA[DFA[...]] is an NFA defined from a DFA.\n" <>
-             "ToNFA[Regex[...]] is an NFA defined from a symbolic " <>
-             "regular expression.\n" <>
-             "ToNFA[RRGrammar[...]] is an NFA defined from a right " <>
-             "regular grammar.\n" <>
-             "ToNFA[Digraph[...]] is an NFA defined from a digraph with " <>
-             "labeled vertices.";
+    "ToNFA[Regex[...]] is an NFA defined from a symbolic " <>
+    "regular expression.\n" <>
+    "ToNFA[RRGrammar[...]] is an NFA defined from a right " <>
+    "regular grammar.\n" <>
+    "ToNFA[Digraph[...]] is an NFA defined from a digraph with " <>
+    "labeled vertices.";
 ToDFA::usage = "ToDFA[NFA[...]] is a DFA defined from a NFA.\n" <>
-             "ToDFA[Regex[...]] is a DFA defined from a symbolic " <>
-             "regular expression.\n" <>
-             "ToDFA[RRGrammar[...]] is a DFA defined from a right " <>
-             "regular grammar.\n" <>
-             "ToDFA[Digraph[...]] is a DFA defined from a digraph with " <>
-             "labeled vertices.";
+    "ToDFA[Regex[...]] is a DFA defined from a symbolic " <>
+    "regular expression.\n" <>
+    "ToDFA[RRGrammar[...]] is a DFA defined from a right " <>
+    "regular grammar.\n" <>
+    "ToDFA[Digraph[...]] is a DFA defined from a digraph with " <>
+    "labeled vertices.";
 ToRegex::usage = "ToRegex[NFA[...]] is a symbolic regular expression " <> 
-    "defined from a NFA\n" <>
+    "defined from an NFA.\n" <>
  "ToRegex[DFA[...]] is a symbolic regular expression defined from a DFA.\n" <>
  "ToRegex[RegularExpression[\"regex\"]] is a symbolic regular expression " <>
     "defined from a restricted Mathematica regular expression.\n" <>
@@ -43,15 +38,15 @@ ToRegex::usage = "ToRegex[NFA[...]] is a symbolic regular expression " <>
     "from a right regular grammar.\n" <>
  "ToRegex[Digraph[...]] is a symbolic regular expression defined from a " <>
     "digraph with labeled vertices.";
-ToRRGrammar::usage = "ToRRGrammar[NFA[...]] is a right regular grammar "
-    <> "defined from a NFA.\n" <>
+ToRRGrammar::usage = "ToRRGrammar[NFA[...]] is a right regular grammar " <>
+    "defined from a NFA.\n" <>
  "ToRRGrammar[DFA[...]] is a right regular grammar defined from a DFA.\n" <>
  "ToRRGrammar[Regex[...]] is a right regular grammar defined from a " <>
     "symbolic regular expression.\n" <>
  "ToRRGrammar[Digraph[...]] is a right regular grammar defined from a " <>
     "digraph with labeled vertices.";
 ToDigraph::usage = "ToDigraph[NFA[...]] is a directed graph defined " <>
-    "from a NFA.\n" <>
+    "from an NFA.\n" <>
  "ToDigraph[DFA[...]] is a directed graph defined from a DFA.\n" <>
  "ToDigraph[Regex[...]] is a directed graph defined from a " <>
     "symbolic regular expression.\n" <>

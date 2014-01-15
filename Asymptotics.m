@@ -64,8 +64,7 @@ ea[expr_, x_] /; PolynomialQ[expr, x] := Module[
     ok = True
     },
    ok = ok && 
-     And @@ ((Element[#, Rationals] && # >= 0) & /@ 
-        CoefficientList[expr, x]);
+     And @@ ((Element[#, Rationals] && # >= 0) & /@ CoefficientList[expr, x]);
    ok = ok && CoefficientList[expr, x] != {0};
    ok
    ];
