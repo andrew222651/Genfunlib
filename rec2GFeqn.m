@@ -2,6 +2,9 @@
 
 BeginPackage["Genfunlib`rec2GFeqn`"]
 
+(* this file defines no public functions, however it does *)
+(* override GeneratingFunction*)
+
 Begin["`Private`"] 
 
 (* http://bit.ly/1lgtAt1 *)

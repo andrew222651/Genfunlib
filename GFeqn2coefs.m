@@ -20,6 +20,8 @@ CoefsByNewton::invalid = "Invalid input.";
 CoefsByDerivs::invalidArgumentSyntax = "Invalid argument syntax.";
 CoefsByNewton::invalidArgumentSyntax = "Invalid argument syntax.";
 
+(* validate the equation or system of equations that the user supplies *)
+
 validateSystem[system : {HoldPattern[_ == _]..}, series: { variablePattern.. }, 
     iters:({variablePattern, 0, _Integer?NonNegative}..)] := Module[
     {

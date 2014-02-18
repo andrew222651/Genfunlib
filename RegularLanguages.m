@@ -156,6 +156,7 @@ GeneratingFunction::usage = "GeneratingFunction[Regex[...], {\"letter1\" -> " <>
 
 Begin["`Private`"] (* Begin Private Context *) 
 
+(* all public symbols in this package *)
 publicSymbols = {NFA, DFA, Regex, RRGrammar, Digraph,
     ToNFA, ToDFA, ToRegex, ToRRGrammar, ToDigraph, ToRegularExpression,  
     RegStar, RegComplement, RegReverse, RegUnion, RegConcat, RegIntersection,
@@ -166,6 +167,8 @@ publicSymbols = {NFA, DFA, Regex, RRGrammar, Digraph,
 (* ::Section:: *)
 (* Input validation *)
 
+(* returns a list of the unique nonterminal symbols in a right regular *)
+(* grammar *)
 nonTerminals[RRGrammar[grammar_]] := Module[
     {
         extendedGrammar
@@ -191,6 +194,7 @@ Digraph::invalid = "Invalid directed graph.";
 GeneratingFunction::invalidRules = "Invalid rules.";
 RegComplement::invalidAlphabet = "Invalid alphabet.";
 
+(* validate NFAs *)
 validateRLR[NFA[numStates_Integer?NonNegative, alphabet:{___String}, 
     transitionMatrix_, acceptStates:{___Integer}, 
     initialState:_Integer|Null]] := Module[ {
@@ -223,6 +227,7 @@ validateRLR[NFA[numStates_Integer?NonNegative, alphabet:{___String},
     ];
 validateRLR[NFA[___]] := (Message[NFA::invalid];False);   
 
+(* validate DFAs *)
 validateRLR[DFA[numStates_Integer?NonNegative, alphabet:{___String}, 
     transitionMatrix_, acceptStates:{___Integer}, 
     initialState:_Integer|Null]] := Module[ {
@@ -255,6 +260,7 @@ validateRLR[DFA[numStates_Integer?NonNegative, alphabet:{___String},
     ];
 validateRLR[DFA[___]] := (Message[DFA::invalid];False);   
 
+(* validate Mathematica regular expressions *)
 validateRLR[RegularExpression[regex_String]] := Module[
     {
         ok = True
@@ -273,6 +279,7 @@ validateRLR[RegularExpression[Null]] := True;
 validateRLR[RegularExpression[___]] := (Message[RegularExpression::invalid];
     False);
 
+(* validate symbolic regex without Regex head *)
 validateRawRegex[Null] := True;
 validateRawRegex[EmptyWord] := True;
 validateRawRegex[str_String /; str != ""] := True;
@@ -282,6 +289,7 @@ validateRawRegex[RegexConcat[regexes__]] := And @@ validateRawRegex /@
     {regexes};
 validateRawRegex[___] := False;
 
+(* validate symbolic regex *)
 validateRLR[Regex[regex_]] := Module[
     {
         ok = True
@@ -293,6 +301,7 @@ validateRLR[Regex[regex_]] := Module[
 ];
 validateRLR[Regex[___]] := (Message[Regex::invalid];False);
 
+(* validate right regular grammars *)
 validateRLR[g:RRGrammar[grammar:{(_ -> _) ...}]] := Module[
     {
         ok = True,
@@ -320,6 +329,7 @@ validateRLR[g:RRGrammar[grammar:{(_ -> _) ...}]] := Module[
 ];
 validateRLR[RRGrammar[___]] := (Message[RRGrammar::invalid];False);
 
+(* validate digraphs *)
 validateRLR[Digraph[graph_Graph, startVertices_List, endVertices_List, True | 
     False]] := Module[
     {
@@ -343,6 +353,7 @@ validateRLR[Digraph[graph_Graph, startVertices_List, endVertices_List, True |
 ];
 validateRLR[Digraph[___]] := (Message[Digraph::invalid];False);
 
+(* validate rules passed to GeneratingFunction for making letters *)
 validateRules[rules_, regex_] := Module[
     {
         strings = Cases[regex, _String, {0, Infinity}],
@@ -357,6 +368,7 @@ validateRules[rules_, regex_] := Module[
     ok
 ];
 
+(* validate alphabet passed to RegComplement *)
 validateAlphabet[alphabet_] := Module[
     {
         ok = True
@@ -372,9 +384,9 @@ validateAlphabet[alphabet_] := Module[
 
 
 (* ::Section:: *)
-(* Regex2NFA *)
+(* Regex to NFA conversion *)
 
-(* AC p 735 *)
+(* This algorithm is simply described in Flajolet and Sedgewick on p 735 *)
 regex2nfa[Null] := NFA[0, {}, {}, {}, Null];
 
 regex2nfa[str_String] := NFA[
@@ -416,7 +428,9 @@ ToNFA[Regex[regex_], OptionsPattern[]] := Module[
 ];
 
 (* ::Section:: *)
-(* RRGrammar2NFA *)
+(* RRGrammar to NFA conversion *)
+(* in this straightforward algorithm, the nonterminal symbols become states *)
+(* in the NFA *)
 
 ToNFA[RRGrammar[{}], OptionsPattern[]] := NFA[0, {}, {}, {}, Null];
 
@@ -476,7 +490,7 @@ ToNFA[g: RRGrammar[grammar_], OptionsPattern[]] :=
 ];
 
 (* ::Section:: *)
-(* Digraph2NFA *)
+(* Digraph to NFA conversion *)
         
 ToNFA[dg: Digraph[graph_, startVertices_, endVertices_, eAccepted_], 
     OptionsPattern[]] :=
@@ -561,10 +575,9 @@ ToNFA[dg: Digraph[graph_, startVertices_, endVertices_, eAccepted_],
 ];
 
 (* ::Section:: *)
-(* NFA2DFA *)
+(* conversion from NFA to DFA (determinization) *)
 
-(* http://en.wikipedia.org/wiki/DFA_minimization#Hopcroft \
-.27s_algorithm *)
+(* hopcroft implements the algorithm at http://bit.ly/1kT6P2n directly *)
 hopcroft[DFA[numStates:(0|1), alphabet_, transitionMatrix_, acceptStates_, 
     initialState_]] := 
   DFA[numStates, alphabet, transitionMatrix, acceptStates, initialState];
@@ -624,7 +637,8 @@ hopcroft[DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
 ];
 
 SetAttributes[floydWarshall, HoldFirst];
-(* computes transitive closure *)
+(* this computes transitive closure of a graph via the Floyd-Warshall *)
+(* algorithm *)
 (* "pass by reference": assigns to the symbol passed *)
 floydWarshall[m_] := Module[
    {n = Length[m],i,j,k},
@@ -637,7 +651,7 @@ floydWarshall[m_] := Module[
      ];
 ];
 
-(* states with no path to an accept state *)
+(* deadStates finds states with no path to an accept state in an NFA *)
 deadStates[NFA[numStates_, _, transitionMatrix_, acceptStates_, _]] :=
    Module[
    {adj = Flatten /@ transitionMatrix}, 
@@ -666,7 +680,8 @@ ToDFA[nfa :
        List /@ (transitionMatrix[[k, -1]]) -> True], {k, 1, 
        numStates}],
     nfaDeadStates = deadStates[nfa],
-    tr, state, neighbor,
+    (* function that stores transitions in the DFA *) tr, 
+    state, neighbor,
     dfaInitialState, dfaAcceptStates, stateNumber, 
     dfaTransitionMatrix
     },
@@ -674,20 +689,24 @@ ToDFA[nfa :
      If[MemberQ[nfaDeadStates, initialState], 
       Return[DFA[0, {}, {}, {}, Null]]];
      floydWarshall[adjacency];
+     (* incrementally search for possible states in the DFA *)
      queue = {Complement[
         Flatten[{initialState, 
           Position[adjacency[[initialState]], True]}], nfaDeadStates]};
      While[Length[queue] > 0,
+      (* process "state": the next state that was found *)
       {state, queue} = {First[queue], Rest[queue]};
       If[! MemberQ[states, state],
        For[i = 1, i <= Length[alphabet], ++i,
+        (* assign to "neighbor" the set of accessible states from "state" *)
         neighbor = 
          Flatten[Map[
             Function[
              st, {transitionMatrix[[st, i]], 
               Map[Position[adjacency[[#]], True] &, 
                transitionMatrix[[st, i]]]}], state
-            ]]~Complement~nfaDeadStates;
+            ]]~Complement~nfaDeadStates; (* remove dead states from list *)
+        (* store neighbor in tr *)
         tr[state, i] = neighbor;
         queue = Append[queue, neighbor];
         ];
@@ -704,13 +723,15 @@ ToDFA[nfa :
       Table[stateNumber@tr[states[[s]], a], {s, 1, Length[states]}, {a, 1, 
         Length[alphabet]}];
      DFA[Length[states], alphabet, dfaTransitionMatrix, 
-       dfaAcceptStates, 1] // hopcroft
+       dfaAcceptStates, 1] // hopcroft (* minimize just before returning *)
      ) /; ! OptionValue[validationRequired] || validateRLR[nfa]
 ];
    
 (* ::Section:: *)
-(* DFA2Regex *)
+(* conversion from DFA to Regex *)
         
+(* simplifyRawRegex takes a symbolic regex, without the head Regex, and *)
+(* simplifies it if possible by removing redundancies *)
 simplifyRawRegex[regex_] := FixedPoint[
   Replace[#, {
      RegexStar[RegexStar[args__]] :> RegexStar[args],
@@ -732,7 +753,11 @@ ToRegex[DFA[0, _, _, _, _], OptionsPattern[]] := Regex[Null];
 ToRegex[dfa: DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
     initialState_], OptionsPattern[]] := 
   Module[
-    {edgeRawRegex, k, i, j}, 
+    {
+    (* edgeRawRegex is a function that stores the current regex corresponding *)
+    (* to each transition during the conversion process *)
+        edgeRawRegex, 
+        k, i, j}, 
     (
     edgeRawRegex[_, _] = Null;
  MapIndexed[
@@ -741,7 +766,7 @@ ToRegex[dfa: DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
    edgeRawRegex[pos[[1]], endState] = 
      RegexOr[edgeRawRegex[pos[[1]], endState], alphabet[[pos[[2]]]]];], 
   transitionMatrix, {2}];
- (*setup beginning and end states*)
+ (* setup beginning and end states *)
  edgeRawRegex[0, initialState] = EmptyWord;
  edgeRawRegex[x_?(MemberQ[acceptStates, #] &), numStates + 1] = 
   EmptyWord;
@@ -759,10 +784,11 @@ ToRegex[dfa: DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
 ];
 
 (* ::Section:: *)
-(* NFA2RRGrammar *)
+(* conversion from NFA to RRGrammar *)
 
 ToRRGrammar[NFA[0, _, _, _, _], OptionsPattern[]] := RRGrammar[{}];
 
+(* simply convert states to nonterminal symbols *)
 ToRRGrammar[nfa: NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
     initialState_], OptionsPattern[]]  :=
     Module[
@@ -774,7 +800,9 @@ ToRRGrammar[nfa: NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
             posOfInitial
         },
         (
+        (* create nonterminal for each state *)
         nonTerms = nonTermHead /@ Range[numStates];
+        (* convert transitions to grammar productions *)
         grammar = Flatten@MapIndexed[
             (* #1 == list of stateNums *)
             (* #2[[1]] == stateNum, #2[[2]] == letterNum *)
@@ -783,6 +811,7 @@ ToRRGrammar[nfa: NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
                 nonTermHead[st]]] /@ #1)) &,
             transitionMatrix, {2}
         ];
+        (* simplify resulting grammar *)
         grammar = grammar /. RRGrammarConcat[EmptyWord, x_] :> x;
         grammar = grammar /. (_ -> RRGrammarOr[]) :> Sequence[];
         grammar = grammar /. (lhs_ -> RRGrammarOr[arg_]) :> (lhs -> arg);
@@ -806,7 +835,7 @@ ToRRGrammar[nfa: NFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
     ]; 
 
 (* ::Section:: *)
-(* DFA2Digraph *)
+(* conversion from DFA to Digraph *)
 
 cartesian[lists___List] := Flatten[Outer[List, lists, 1], Length[{lists}] - 1];
 
@@ -863,7 +892,12 @@ ToDigraph[dfa: DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
 (* ::Section:: *)
 (* Regular expression conversions *)
 
-(* crappy: "," not allowed in the regex *)
+(* conversion from Mathematica regular expression to symbolic regular *)
+(* expression *)
+
+(* "," not allowed in the regex *)
+(* pars takes a Mathematica regular expression and comes up with a symbolic *)
+(* regex (except for the head Regex) *)
 pars[""] := EmptyWord;
 pars[regex_] := 
   Module[{temp=regex},
@@ -882,9 +916,14 @@ pars[regex_] :=
             "|)" -> "|EmptyWord)", 
             "()" -> "(EmptyWord)"
         }] &, temp];
+   (*make the star operation the squaring operation *)
    temp = StringReplace[temp, "*" -> "^2"];
+   (*make the concatenation operation the ** operation *)
    temp = StringReplace[temp, "," -> "**"];
+   (* use ToExpression to obtain a Mathematica expression from the string *)
    temp = ToExpression[temp, InputForm, Hold];
+   (* replace the operations present in the expressions with the ones *)
+   (* found in Regex expressions *)
    temp = 
     Replace[temp, 
      sym_Symbol?( 
@@ -912,6 +951,7 @@ ToRegex[r:RegularExpression[regex_], OptionsPattern[]] := Module[
     validateRLR[r]
 ]; 
 
+(* symbolic regular expression to Mathematica regular expression conversion *)
 regex2regularexpression[Null] := Null;
 regex2regularexpression[str_String] := str;
 regex2regularexpression[EmptyWord] := "()";
@@ -932,6 +972,7 @@ ToRegularExpression[r:Regex[regex_], OptionsPattern[]] := Module[
 (* ::Section:: *)
 (* Closure properties *)
 
+(* Kleene star for right regular grammars *)
 RegStar[RRGrammar[{}], OptionsPattern[]] := RRGrammar[{Unique[] -> EmptyWord}];
 
 RegStar[grammar : RRGrammar[_], OptionsPattern[]] := Module[
@@ -952,15 +993,19 @@ RegStar[grammar : RRGrammar[_], OptionsPattern[]] := Module[
     )/; !OptionValue[validationRequired] || validateRLR[grammar]
 ];
 
+(* complement for DFAs *)
 RegComplement[dfa:DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_, 
     initialState_], compAlphabet_, OptionsPattern[]] := Module[
     {
-        compDFA, intersectionAlphabet = Intersection[alphabet, compAlphabet],
+        compDFA, 
+        intersectionAlphabet = Intersection[alphabet, compAlphabet],
         intersectionAlphabetRegex, 
         compNotAlphabetLetters = Complement[compAlphabet, alphabet],
         compNotAlphabetRegex
     },
     (
+    (* compute the DFA that accepts the words, over the alphabet "alphabet", *)
+    (* that dfa rejects *)
     compDFA = If[numStates == 0,
         (* no states *)
         If[alphabet == {},
@@ -972,14 +1017,15 @@ RegComplement[dfa:DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
         Complement[Range[numStates], acceptStates], initialState]
     ];
 
-    (* union(compDFA \[Intersection] intersectionAlphabet*, 
-        words in compAlphabet* but not in alphabet* *)
-    
+    (* define a regex that parses all words with letters found in alphabet *)
+    (* and compAlphabet *)
     intersectionAlphabetRegex = If[intersectionAlphabet == {},
         Regex[EmptyWord],
         Regex[RegexStar[RegexOr@@intersectionAlphabet]]
     ];
     
+    (* define a regex that parses all words containg a letter in compAlphabet *)
+    (* but not alphabet *)
     compNotAlphabetRegex = If[compNotAlphabetLetters == {},
         Regex[Null],
         Regex[RegexConcat[
@@ -989,6 +1035,9 @@ RegComplement[dfa:DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
         ]
     ];
         
+    (* return the DFA that accepts any words with a letter in compAlphabet *)
+    (* that is not in alphabet AND any words over compAlphabet that dfa *)
+    (* rejects *)
     RegUnion[RegIntersection[ToRegex[compDFA], intersectionAlphabetRegex], 
         compNotAlphabetRegex]//ToDFA
     )/; !OptionValue[validationRequired] || 
@@ -996,6 +1045,10 @@ RegComplement[dfa:DFA[numStates_, alphabet_, transitionMatrix_, acceptStates_,
 ];
 
 
+(* reverse for regexes *)
+
+(* regexReverse reverses a symbolic regular expression lacking the head *)
+(* Regex *)
 regexReverse[str_String] := str;
 
 regexReverse[Null] := Null;
@@ -1016,6 +1069,7 @@ RegReverse[Regex[regex_], OptionsPattern[]] := Module[
     )/; !OptionValue[validationRequired] || validateRLR[Regex[regex]]
 ];
 
+(* union for right regular grammars *)
 RegUnion[grammar1 : RRGrammar[_], RRGrammar[{}], OptionsPattern[]] := Module[
     {},
     (
@@ -1039,12 +1093,15 @@ Module[
         replacements, rules
     },
     (
+    (* do some stuff to make sure the two grammars don't share any *)
+    (* nonterminals *)
     commonNonTerms = Intersection[nonTerms1, nonTerms2];
     replacements = Table[Unique[], {Length[commonNonTerms]}];
     rules = MapThread[Rule, {commonNonTerms, replacements}];
     initial1 = grammar1[[1, 1, 1]]; 
     initial2 = grammar2[[1, 1, 1]] /. rules;
 
+    (* combine the grammars *)
     RRGrammar[{Unique[] -> RRGrammarOr[initial1, initial2],
         grammar1//First, grammar2 /. rules //First}//Flatten]
 
@@ -1052,6 +1109,7 @@ Module[
     (validateRLR[grammar1] && validateRLR[grammar2])
 ];
 
+(* concatenation for right regular grammars *)
 RegConcat[grammar1 : RRGrammar[_], RRGrammar[{}], OptionsPattern[]] := Module[
     {},
     RRGrammar[{}] /; !OptionValue[validationRequired] || 
@@ -1068,6 +1126,8 @@ Module[
         replacements, rules
     },
     (
+        (* do some stuff to make sure the two grammars don't share any *)
+        (* nonterminals *)
         commonNonTerms = Intersection[nonTerms1, nonTerms2];
         replacements = Table[Unique[], {Length[commonNonTerms]}];
         rules = MapThread[Rule, {commonNonTerms, replacements}];
@@ -1085,12 +1145,14 @@ Module[
     (validateRLR[grammar1] && validateRLR[grammar2])
 ];
 
+(* intersection for DFAs *)
 RegIntersection[dfa1:DFA[numStates1_, alphabet1_, transitionMatrix1_, 
     acceptStates1_, initialState1_], dfa2:DFA[numStates2_, alphabet2_, 
         transitionMatrix2_, 
     acceptStates2_, initialState2_], OptionsPattern[]] := Module[
     {
         newAlphabet = Intersection[alphabet1, alphabet2],
+        (* new state set is cartesian product of state sets *)
         stateSet = cartesian[Range[numStates1], Range[numStates2]],
         stateNum,
         newTransitionMatrix, newAcceptStates, newInitialState,
@@ -1101,11 +1163,16 @@ RegIntersection[dfa1:DFA[numStates1_, alphabet1_, transitionMatrix1_,
         Return[DFA[0, newAlphabet, {}, {}, Null]];
     ];
     
+    (* the alphabet1Num function looks up the position of a letter in *)
+    (* alphabet1 *)
     alphabet1Num[alphabetNum_] := Position[alphabet1, 
         newAlphabet[[alphabetNum]], {1}, Heads -> False][[1, 1]];
+    (* the alphabet2Num function looks up the position of a letter in *)
+    (* alphabet2 *)
     alphabet2Num[alphabetNum_] := Position[alphabet2, 
         newAlphabet[[alphabetNum]], {1}, Heads -> False][[1, 1]];
     
+    (* the stateNum function looks up the position of a state in stateSet *)
     stateNum[state_] := Position[stateSet, state, {1}, Heads-> False][[1, 1]];
     
     newInitialState = stateNum[{initialState1, initialState2}];
@@ -1113,6 +1180,7 @@ RegIntersection[dfa1:DFA[numStates1_, alphabet1_, transitionMatrix1_,
     newAcceptStates = stateNum /@ Select[stateSet, 
         MemberQ[acceptStates1, #[[1]]] && MemberQ[acceptStates2, #[[2]]]&];
     
+    (* compute new transition matrix *)
     newTransitionMatrix = Table[
         stateNum[
             {
@@ -1133,7 +1201,8 @@ RegIntersection[dfa1:DFA[numStates1_, alphabet1_, transitionMatrix1_,
 (* ::Section:: *)
 (* To generating functions *)
 
-(* takes an unambiguous regex *)
+(* takes an unambiguous regex lacking the head Regex and returns the *)
+(* corresponding generating function *)
 regex2GF[regex_, rules_] := 
 FixedPoint[Replace[#,
     {
@@ -1163,6 +1232,7 @@ GeneratingFunction[regex:Regex[_], rules_, OptionsPattern[]] :=
     Module[
         {},
         (
+            (* disambiguate the regex and pass to regex2GF *)
         regex2GF[First@ToRegex@ToDFA@regex, rules]
         )/; !OptionValue[validationRequired] || validateRules[rules, regex]
     ];
@@ -1170,6 +1240,13 @@ Protect[GeneratingFunction];
 
 (* ::Section:: *)
 (* Code generation for repetitive bits and pieces *)
+
+(* in this section we do dynamic code generation to set up the automatic *)
+(* conversion necessary before and/or after the operations and conversions *)
+(* that are implemented above *)
+(* for example, we implemented the intersection operation for DFAs only; this *)
+(* section defines how to convert each RLR to and from DFAs in order to *)
+(* use that implementation *)
 
 viaAlgorithms = {
    (* {to, from, via} *)

@@ -2,6 +2,9 @@
 
 BeginPackage["Genfunlib`GFeqn2rec`"]
 
+(* this file defines no public functions, however it does *)
+(* override SeriesCoefficient *)
+
 $FullAnalytic::usage = "$FullAnalytic is True iff SeriesCoefficient should " <> 
     "assume that " <>
     "all subexpressions of the expression to be expanded are " <> 

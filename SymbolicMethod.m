@@ -93,7 +93,8 @@ validateSpecSyntax[___] := False;
 (* ::Section:: *)
 (* To GF eqns *)
 
-(* simplifies Sum[generalTerm*Boole[pred[n]], {n, slb, sub}] *)
+(* the function restrictedSum returns a simplified form of *)
+(* Sum[generalTerm*Boole[pred[n]], {n, slb, sub}] *)
 restrictedSum[generalTerm_, Function[GreaterEqual[ub_: Infinity, Slot[1], 
     lb_: 0]], {n_, slb_, sub_}] := 
     Sum[generalTerm, {n, Max[slb, lb], Min[sub, ub]}];
@@ -274,8 +275,8 @@ ToGFEqns[spec:Spec[list_List, False], indet_Symbol] := Module[
 (* ::Section:: *)
 (* Combstruct grammar to Genfunlib spec *)
 
-(* assumes there are no parenthesis except to group function arguments *)
-(* assumes nonterminals are only one character *)
+(* this function assumes there are no parentheses except to group function *)
+(* arguments, assumes nonterminals are only one character, and *)
 (* assumes the grammar is explicit *)
 ToGenfunlibSpec[str_String, labeled:(True|False)] := Module[
     {

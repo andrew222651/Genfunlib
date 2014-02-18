@@ -14,6 +14,7 @@ CoefLimit::usage = "CoefLimit[f,z,n] gives an expression that is " <>
 Begin["`Private`"]
 
 
+(* define GCD and Mod when Infinity is an argument *)
 protected = Unprotect[GCD, Mod];
 
 GCD[Infinity, rest__] := GCD[rest];
@@ -24,6 +25,8 @@ Mod[n_, Infinity] := n;
 
 Protect[Evaluate[protected]];
 
+
+(* validation of equations given as input to asymptotic functions *)
 
 TreeAsymptot::invalid = "Not an elementary functional equation.";
 CoefLimit::invalid = "Not an elementary function.";
@@ -58,6 +61,8 @@ validateExpr[expr_, x_] := Module[
     If[ ok =!= True, Message[CoefLimit::invalid]];
     ok
 ];
+
+(* ea tests whether an expression is an "elementary function" *)
 
 ea[expr_, x_] /; PolynomialQ[expr, x] := Module[
    {
@@ -108,6 +113,8 @@ ea[___] := False;
 exponents[y_, x_] := 
   Union[Flatten[CoefficientRules[y, x][[All, 1]]]];
 
+(* reduction implements the algorithm in Flajolet et al. (Automatic *)
+(* average-case analysis of algorithms) on p78 *)
 reduction[y_, x_] := Module[
    {exps = exponents[y, x]},
    (
@@ -143,8 +150,10 @@ reduction[y : Exp[arg_], x_] := Module[
    {0, GCD[arga, argp]}
    ];
 
-(* proof: give equiv def of a and p in terms of GCD and mod,
-show that the following supplies that; note: term1a=term2a (mod pp) *)
+(* some details of this algorithm in Flajolet et al. were left out. to prove *)
+(* that the following is correct, *)
+(* give equivalent definitions of a and p in terms of GCD and Mod, *)
+(* show that the following supplies that; note: term1a=term2a (mod pp) *)
 
 reduction[term1_ + term2_, x_] := Module[
    {
@@ -209,6 +218,8 @@ TreeAsymptot[(y:variablePattern)[z:variablePattern] ==
 TreeAsymptot[___] /; (Message[TreeAsymptot::invalidArgumentSyntax]; False) :=
     Null;
 
+(* radius implements the algorithm from Flajolet et al. on p77 *)
+
 radius[y_, x_] /; PolynomialQ[y, x] := Infinity;
 
 radius[Exp[y_], x_] := radius[y, x];
@@ -248,6 +259,7 @@ radius[Power[expr_, j_Integer?Positive], x_] := radius[Unevaluated[
 radius[Power[expr_, j_Integer?(#<-1&)], x_] := radius[Unevaluated[
     Power[expr, -1] * Power[expr, j + 1]], x];
  
+(* directions implements the algorithm from Flajolet et al. on p79 *)
 
 directions[Exp[expr_], x_] := directions[expr, x];
 
@@ -301,6 +313,10 @@ directions[Power[expr_, j_Integer?Positive], x_] := directions[Unevaluated[
     expr * Power[expr, j - 1]], x];
 directions[Power[expr_, j_Integer?(#<-1&)], x_] := directions[Unevaluated[
     Power[expr, -1] * Power[expr, j + 1]], x];
+
+(* allimit implements the Expansion algorithm from Flajolet et al. on p81. *)
+(* it returns a 4-tuple {a, b, c, d}, where the expansion is *)
+(* a*(1-z/d)^b*Log[1-z/d]^c *)
 
 allimit[1/(1 + expr_), x_] := Module[
    {
