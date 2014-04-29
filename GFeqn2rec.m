@@ -118,9 +118,9 @@ SeriesCoefficient[Integrate[expr_,
         {},
     (
     Piecewise[{
-            {n >= 1,
-                (1/n) * SeriesCoefficient[expr /. t -> x, 
-                {x, 0, n - 1}, opts]
+            {
+                (1/n) * SeriesCoefficient[expr /. t -> x, {x, 0, n - 1}, opts],
+                n >= 1
             }
         }]
     ) /; $FullAnalytic
